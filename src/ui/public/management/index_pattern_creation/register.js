@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import { IndexPatternCreationRegistry } from './index_pattern_creation';
-import { IndexPatternCreationType } from './index_pattern_creation_type';
+import { IndexPatternCreationConfig } from './index_pattern_creation_config';
+import { IndexPatternCreationConfigRegistry } from './index_pattern_creation_config_registry';
 
-IndexPatternCreationRegistry.register(() => IndexPatternCreationType);
+IndexPatternCreationConfigRegistry.register(() => IndexPatternCreationConfig);
