@@ -131,13 +131,44 @@ export function CallClientProvider(Private, Promise, es) {
         requestsToFetch = requestsToFetch.filter(request => request !== undefined);
         return requestFetchParamsToBody(requestsWithFetchParams);
       })
-      .then(function (body) {
-      // while the strategy was converting, our request was aborted
+      .then(body => {
+        // while the strategy was converting, our request was aborted
         if (esPromise === ABORTED) {
           throw ABORTED;
         }
 
-        return (esPromise = es.msearch({ body }));
+        const indexPatternType = 'indexPattern';
+
+        if (indexPatternType === 'indexPattern') {
+          return (esPromise = es.msearch({ body }));
+        }
+
+        if (indexPatternType === 'rollup') {
+          // TODO: Replace this hardcoded dummy data with dynamically defined data.
+          const index = 'test_rollup_index';
+          const query = {
+            'size': 0,
+            'aggregations': {
+              'max_bytes': {
+                'max': {
+                  'field': 'bytes',
+                },
+              },
+            },
+          };
+
+          // TODO: Handle errors gracefully and surface them to the user.
+          return (esPromise = fetch('../api/rollup/search', {
+            method: 'post',
+            body: JSON.stringify({ index, query }),
+            headers: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              'kbn-xsrf': 'kibana',
+            },
+            credentials: 'same-origin'
+          }));
+        }
       })
       .then((clientResponse => respond(clientResponse.responses)))
       .catch(function (error) {
