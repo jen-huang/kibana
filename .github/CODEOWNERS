@@ -65,7 +65,6 @@
 
 # Logs & Metrics UI
 /x-pack/legacy/plugins/infra/ @elastic/logs-metrics-ui
-/x-pack/legacy/plugins/epm/ @elastic/epm
 
 # Machine Learning
 /x-pack/legacy/plugins/ml/  @elastic/ml-ui
