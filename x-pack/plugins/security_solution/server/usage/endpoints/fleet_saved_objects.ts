@@ -10,7 +10,8 @@ import {
   AGENT_SAVED_OBJECT_TYPE,
   AGENT_EVENT_SAVED_OBJECT_TYPE,
 } from './../../../../fleet/common/constants/agent';
-import { Agent, defaultPackages as FleetDefaultPackages } from '../../../../fleet/common';
+import { Agent } from '../../../../fleet/common';
+import { defaultPackages as FleetDefaultPackages } from '../../../../integrations/common';
 
 export const FLEET_ENDPOINT_PACKAGE_CONSTANT = FleetDefaultPackages.Endpoint;
 

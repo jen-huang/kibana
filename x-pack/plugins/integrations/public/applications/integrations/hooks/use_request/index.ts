@@ -3,5 +3,6 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-export * from './constants';
-export * from './types';
+export { setHttpClient, sendRequest, useRequest } from './use_request';
+export * from './data_stream';
+export * from './epm';

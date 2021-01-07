@@ -6,6 +6,12 @@
 export * from './models';
 export * from './rest_spec';
 
+export interface IntegrationsConfigType {
+  enabled: boolean;
+  registryUrl?: string;
+  registryProxyUrl?: string;
+}
+
 /**
  * Creates a Union Type for all the values of an object
  */

@@ -24,12 +24,9 @@ import {
 } from './hooks';
 import { Error, Loading } from './components';
 import { IntraAppStateProvider } from './hooks/use_intra_app_state';
-import { PackageInstallProvider } from './sections/epm/hooks';
 import { PAGE_ROUTING_PATHS } from './constants';
 import { DefaultLayout, WithoutHeaderLayout } from './layouts';
-import { EPMApp } from './sections/epm';
 import { AgentPolicyApp } from './sections/agent_policy';
-import { DataStreamApp } from './sections/data_stream';
 import { FleetApp } from './sections/agents';
 import { IngestManagerOverview } from './sections/overview';
 import { ProtectedRoute } from './index';
@@ -200,11 +197,7 @@ export const FleetAppContext: React.FC<{
                   <UIExtensionsContext.Provider value={extensions}>
                     <FleetStatusProvider>
                       <IntraAppStateProvider kibanaScopedHistory={history}>
-                        <Router history={routerHistoryInstance}>
-                          <PackageInstallProvider notifications={startServices.notifications}>
-                            {children}
-                          </PackageInstallProvider>
-                        </Router>
+                        <Router history={routerHistoryInstance}>{children}</Router>
                       </IntraAppStateProvider>
                     </FleetStatusProvider>
                   </UIExtensionsContext.Provider>
@@ -223,19 +216,9 @@ export const AppRoutes = memo(() => {
 
   return (
     <Switch>
-      <Route path={PAGE_ROUTING_PATHS.integrations}>
-        <DefaultLayout section="epm">
-          <EPMApp />
-        </DefaultLayout>
-      </Route>
       <Route path={PAGE_ROUTING_PATHS.policies}>
         <DefaultLayout section="agent_policy">
           <AgentPolicyApp />
-        </DefaultLayout>
-      </Route>
-      <Route path={PAGE_ROUTING_PATHS.data_streams}>
-        <DefaultLayout section="data_stream">
-          <DataStreamApp />
         </DefaultLayout>
       </Route>
       <ProtectedRoute path={PAGE_ROUTING_PATHS.fleet} isAllowed={agents.enabled}>

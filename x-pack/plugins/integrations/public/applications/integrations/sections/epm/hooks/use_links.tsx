@@ -3,10 +3,10 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-import { useStartServices } from '../../../hooks/use_core';
+import { useStartServices } from '../../../hooks/use_start_services';
 import { PLUGIN_ID } from '../../../constants';
 import { epmRouteService } from '../../../services';
-import { PackageSpecIcon, PackageSpecScreenshot, RegistryImage } from '../../../../../../common';
+import { PackageSpecIcon, PackageSpecScreenshot, RegistryImage } from '../../../types';
 
 const removeRelativePath = (relativePath: string): string =>
   new URL(relativePath, 'http://example.com').pathname;

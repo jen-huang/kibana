@@ -7,9 +7,15 @@
 import { SavedObjectsClientContract } from 'src/core/server';
 import { INDEX_PATTERN_SAVED_OBJECT_TYPE } from '../../../../constants';
 import { loadFieldsFromYaml, Fields, Field } from '../../fields/field';
-import { dataTypes, installationStatuses } from '../../../../../common/constants';
-import { ArchivePackage, InstallSource, ValueOf } from '../../../../../common/types';
-import { RegistryPackage, DataType } from '../../../../types';
+import { ValueOf } from '../../../../../common/types';
+import {
+  RegistryPackage,
+  DataType,
+  dataTypes,
+  installationStatuses,
+  ArchivePackage,
+  InstallSource,
+} from '../../../../types';
 import { getPackageFromSource, getPackageSavedObjects } from '../../packages/get';
 
 interface FieldFormatMap {

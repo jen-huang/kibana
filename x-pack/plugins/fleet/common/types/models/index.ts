@@ -6,6 +6,5 @@
 export * from './agent';
 export * from './agent_policy';
 export * from './output';
-export * from './package_spec';
 export * from './enrollment_api_key';
 export * from './settings';

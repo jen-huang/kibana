@@ -8,8 +8,6 @@ export * from './rest_spec';
 
 export interface FleetConfigType {
   enabled: boolean;
-  registryUrl?: string;
-  registryProxyUrl?: string;
   agents: {
     enabled: boolean;
     tlsCheckDisabled: boolean;

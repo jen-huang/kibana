@@ -4,8 +4,9 @@
  * you may not use this file except in compliance with the Elastic License.
  */
 import { schema } from '@kbn/config-schema';
+import { dataTypes } from '../../../../integrations/common';
 import { PackagePolicySchema, NamespaceSchema } from './package_policy';
-import { agentPolicyStatuses, dataTypes } from '../../../common';
+import { agentPolicyStatuses } from '../../../common';
 
 const AgentPolicyBaseSchema = {
   name: schema.string({ minLength: 1 }),

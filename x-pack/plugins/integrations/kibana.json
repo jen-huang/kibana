@@ -1,11 +1,11 @@
 {
   "id": "integrations",
   "version": "kibana",
-  "server": true,
+  "server": false,
   "ui": true,
   "configPath": ["integrations"],
   "requiredPlugins": ["licensing"],
   "optionalPlugins": ["fleet"],
   "extraPublicDirs": ["common"],
-  "requiredBundles": ["kibanaReact"]
+  "requiredBundles": ["kibanaReact", "esUiShared"]
 }

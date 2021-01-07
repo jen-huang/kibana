@@ -9,12 +9,9 @@ export { getFlattenedObject } from '@kbn/std';
 export {
   AgentStatusKueryHelper,
   agentPolicyRouteService,
-  packagePolicyRouteService,
-  dataStreamRouteService,
   fleetSetupRouteService,
   agentRouteService,
   enrollmentAPIKeyRouteService,
-  epmRouteService,
   setupRouteService,
   outputRoutesService,
   settingsRoutesService,
