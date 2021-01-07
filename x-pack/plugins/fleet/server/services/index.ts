@@ -5,13 +5,11 @@
  */
 
 import { SavedObjectsClientContract, KibanaRequest } from 'kibana/server';
-import { AgentStatus, Agent, EsAssetReference } from '../types';
+import { AgentStatus, Agent } from '../types';
 import * as settingsService from './settings';
 import { getAgent, listAgents } from './agents';
 export { ESIndexPatternSavedObjectService } from './es_index_pattern';
 import { agentPolicyService } from './agent_policy';
-
-export { getRegistryUrl } from './epm/registry/registry_url';
 
 /**
  * Service to return the index pattern of EPM packages
@@ -22,17 +20,6 @@ export interface ESIndexPatternService {
     pkgName: string,
     datasetPath: string
   ): Promise<string | undefined>;
-}
-
-/**
- * Service that provides exported function that return information about EPM packages
- */
-
-export interface PackageService {
-  getInstalledEsAssetReferences(
-    savedObjectsClient: SavedObjectsClientContract,
-    pkgName: string
-  ): Promise<EsAssetReference[]>;
 }
 
 /**
@@ -69,7 +56,6 @@ export interface AgentPolicyServiceInterface {
 
 // Saved object services
 export { agentPolicyService } from './agent_policy';
-export { packagePolicyService } from './package_policy';
 export { outputService } from './output';
 export { settingsService };
 

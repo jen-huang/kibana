@@ -1,7 +1,7 @@
 {
   "id": "integrations",
   "version": "kibana",
-  "server": false,
+  "server": true,
   "ui": true,
   "configPath": ["integrations"],
   "requiredPlugins": ["licensing"],

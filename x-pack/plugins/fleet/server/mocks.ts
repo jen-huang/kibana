@@ -8,7 +8,6 @@ import { loggingSystemMock, savedObjectsServiceMock } from 'src/core/server/mock
 import { FleetAppContext } from './plugin';
 import { encryptedSavedObjectsMock } from '../../encrypted_saved_objects/server/mocks';
 import { securityMock } from '../../security/server/mocks';
-import { PackagePolicyServiceInterface } from './services/package_policy';
 import { AgentPolicyServiceInterface, AgentService } from './services';
 
 export const createAppContextStartContractMock = (): FleetAppContext => {
@@ -21,21 +20,6 @@ export const createAppContextStartContractMock = (): FleetAppContext => {
     kibanaVersion: '8.0.0',
     kibanaBranch: 'master',
   };
-};
-
-export const createPackagePolicyServiceMock = () => {
-  return {
-    compilePackagePolicyInputs: jest.fn(),
-    buildPackagePolicyFromPackage: jest.fn(),
-    bulkCreate: jest.fn(),
-    create: jest.fn(),
-    delete: jest.fn(),
-    get: jest.fn(),
-    getByIDs: jest.fn(),
-    list: jest.fn(),
-    update: jest.fn(),
-    runExternalCallbacks: jest.fn(),
-  } as jest.Mocked<PackagePolicyServiceInterface>;
 };
 
 /**

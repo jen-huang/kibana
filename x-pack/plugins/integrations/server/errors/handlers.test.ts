@@ -9,12 +9,18 @@ import { errors } from 'elasticsearch';
 import { httpServerMock } from 'src/core/server/mocks';
 import { createAppContextStartContractMock } from '../mocks';
 import { appContextService } from '../services';
-import { IngestManagerError, defaultIngestErrorHandler } from './index';
+import {
+  IntegrationsError,
+  RegistryError,
+  PackageNotFoundError,
+  PackageUnsupportedMediaTypeError,
+  defaultIntegrationsErrorHandler,
+} from './index';
 
 const LegacyESErrors = errors as Record<string, any>;
 type ITestEsErrorsFnParams = [errorCode: string, error: any, expectedMessage: string];
 
-describe('defaultIngestErrorHandler', () => {
+describe('defaultIntegrationsErrorHandler', () => {
   let mockContract: ReturnType<typeof createAppContextStartContractMock>;
   beforeEach(async () => {
     // prevents `Logger not set.` and other appContext errors
@@ -31,7 +37,7 @@ describe('defaultIngestErrorHandler', () => {
     const [, error, expectedMessage] = args;
     jest.clearAllMocks();
     const response = httpServerMock.createResponseFactory();
-    await defaultIngestErrorHandler({ error, response });
+    await defaultIntegrationsErrorHandler({ error, response });
 
     // response
     expect(response.ok).toHaveBeenCalledTimes(0);
@@ -76,12 +82,69 @@ describe('defaultIngestErrorHandler', () => {
     test.each(casesWithoutMeta)('%d - without metadata', testEsErrorsFn);
   });
 
-  describe('IngestManagerError', () => {
-    it('400: IngestManagerError', async () => {
-      const error = new IngestManagerError('123');
+  describe('IntegrationsError', () => {
+    it('502: RegistryError', async () => {
+      const error = new RegistryError('xyz');
       const response = httpServerMock.createResponseFactory();
 
-      await defaultIngestErrorHandler({ error, response });
+      await defaultIntegrationsErrorHandler({ error, response });
+
+      // response
+      expect(response.ok).toHaveBeenCalledTimes(0);
+      expect(response.customError).toHaveBeenCalledTimes(1);
+      expect(response.customError).toHaveBeenCalledWith({
+        statusCode: 502,
+        body: { message: error.message },
+      });
+
+      // logging
+      expect(mockContract.logger?.error).toHaveBeenCalledTimes(1);
+      expect(mockContract.logger?.error).toHaveBeenCalledWith(error.message);
+    });
+
+    it('415: PackageUnsupportedMediaType', async () => {
+      const error = new PackageUnsupportedMediaTypeError('123');
+      const response = httpServerMock.createResponseFactory();
+
+      await defaultIntegrationsErrorHandler({ error, response });
+
+      // response
+      expect(response.ok).toHaveBeenCalledTimes(0);
+      expect(response.customError).toHaveBeenCalledTimes(1);
+      expect(response.customError).toHaveBeenCalledWith({
+        statusCode: 415,
+        body: { message: error.message },
+      });
+
+      // logging
+      expect(mockContract.logger?.error).toHaveBeenCalledTimes(1);
+      expect(mockContract.logger?.error).toHaveBeenCalledWith(error.message);
+    });
+
+    it('404: PackageNotFoundError', async () => {
+      const error = new PackageNotFoundError('123');
+      const response = httpServerMock.createResponseFactory();
+
+      await defaultIntegrationsErrorHandler({ error, response });
+
+      // response
+      expect(response.ok).toHaveBeenCalledTimes(0);
+      expect(response.customError).toHaveBeenCalledTimes(1);
+      expect(response.customError).toHaveBeenCalledWith({
+        statusCode: 404,
+        body: { message: error.message },
+      });
+
+      // logging
+      expect(mockContract.logger?.error).toHaveBeenCalledTimes(1);
+      expect(mockContract.logger?.error).toHaveBeenCalledWith(error.message);
+    });
+
+    it('400: IntegrationsError', async () => {
+      const error = new IntegrationsError('123');
+      const response = httpServerMock.createResponseFactory();
+
+      await defaultIntegrationsErrorHandler({ error, response });
 
       // response
       expect(response.ok).toHaveBeenCalledTimes(0);
@@ -102,7 +165,7 @@ describe('defaultIngestErrorHandler', () => {
       const error = new Boom.Boom('bam');
       const response = httpServerMock.createResponseFactory();
 
-      await defaultIngestErrorHandler({ error, response });
+      await defaultIntegrationsErrorHandler({ error, response });
 
       // response
       expect(response.ok).toHaveBeenCalledTimes(0);
@@ -123,7 +186,7 @@ describe('defaultIngestErrorHandler', () => {
       });
       const response = httpServerMock.createResponseFactory();
 
-      await defaultIngestErrorHandler({ error, response });
+      await defaultIntegrationsErrorHandler({ error, response });
 
       // response
       expect(response.ok).toHaveBeenCalledTimes(0);
@@ -142,7 +205,7 @@ describe('defaultIngestErrorHandler', () => {
       const error = Boom.badRequest('nope');
       const response = httpServerMock.createResponseFactory();
 
-      await defaultIngestErrorHandler({ error, response });
+      await defaultIntegrationsErrorHandler({ error, response });
 
       // response
       expect(response.ok).toHaveBeenCalledTimes(0);
@@ -161,7 +224,7 @@ describe('defaultIngestErrorHandler', () => {
       const error = Boom.notFound('sorry');
       const response = httpServerMock.createResponseFactory();
 
-      await defaultIngestErrorHandler({ error, response });
+      await defaultIntegrationsErrorHandler({ error, response });
 
       // response
       expect(response.ok).toHaveBeenCalledTimes(0);
@@ -182,7 +245,7 @@ describe('defaultIngestErrorHandler', () => {
       const error = new Error('something');
       const response = httpServerMock.createResponseFactory();
 
-      await defaultIngestErrorHandler({ error, response });
+      await defaultIntegrationsErrorHandler({ error, response });
 
       // response
       expect(response.ok).toHaveBeenCalledTimes(0);

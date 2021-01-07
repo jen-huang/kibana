@@ -13,14 +13,8 @@ import {
 } from '../common';
 
 export { default as apm } from 'elastic-apm-node';
-export {
-  AgentService,
-  ESIndexPatternService,
-  getRegistryUrl,
-  PackageService,
-  AgentPolicyServiceInterface,
-} from './services';
-export { FleetSetupContract, FleetSetupDeps, FleetStartContract, ExternalCallback } from './plugin';
+export { AgentService, ESIndexPatternService, AgentPolicyServiceInterface } from './services';
+export { FleetSetupContract, FleetSetupDeps, FleetStartContract } from './plugin';
 
 export const config: PluginConfigDescriptor = {
   exposeToBrowser: {
@@ -33,8 +27,6 @@ export const config: PluginConfigDescriptor = {
   ],
   schema: schema.object({
     enabled: schema.boolean({ defaultValue: true }),
-    registryUrl: schema.maybe(schema.uri({ scheme: ['http', 'https'] })),
-    registryProxyUrl: schema.maybe(schema.uri({ scheme: ['http', 'https'] })),
     agents: schema.object({
       enabled: schema.boolean({ defaultValue: true }),
       tlsCheckDisabled: schema.boolean({ defaultValue: false }),
@@ -67,8 +59,6 @@ export const config: PluginConfigDescriptor = {
 };
 
 export type FleetConfigType = TypeOf<typeof config.schema>;
-
-export { PackagePolicyServiceInterface } from './services/package_policy';
 
 export const plugin = (initializerContext: PluginInitializerContext) => {
   return new FleetPlugin(initializerContext);

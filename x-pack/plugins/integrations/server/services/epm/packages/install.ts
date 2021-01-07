@@ -38,7 +38,7 @@ import {
 import { toAssetReference, ArchiveAsset } from '../kibana/assets/install';
 import { removeInstallation } from './remove';
 import {
-  IngestManagerError,
+  IntegrationsError,
   PackageOperationNotSupportedError,
   PackageOutdatedError,
 } from '../../../errors';
@@ -122,13 +122,13 @@ export async function handleInstallPackageFailure({
   callCluster,
 }: {
   savedObjectsClient: SavedObjectsClientContract;
-  error: IngestManagerError | Boom.Boom | Error;
+  error: IntegrationsError | Boom.Boom | Error;
   pkgName: string;
   pkgVersion: string;
   installedPkg: SavedObject<Installation> | undefined;
   callCluster: CallESAsCurrentUser;
 }) {
-  if (error instanceof IngestManagerError) {
+  if (error instanceof IntegrationsError) {
     return;
   }
   const logger = appContextService.getLogger();

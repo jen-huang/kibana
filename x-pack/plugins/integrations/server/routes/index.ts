@@ -3,11 +3,6 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-export * from './common';
-export * from './agent_policy';
-export * from './agent';
-export * from './enrollment_api_key';
-export * from './install_script';
-export * from './output';
-export * from './settings';
-export * from './setup';
+export { registerRoutes as registerPackagePolicyRoutes } from './package_policy';
+export { registerRoutes as registerDataStreamRoutes } from './data_streams';
+export { registerRoutes as registerEPMRoutes } from './epm';

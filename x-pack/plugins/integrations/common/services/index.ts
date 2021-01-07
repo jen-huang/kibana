@@ -4,3 +4,4 @@
  * you may not use this file except in compliance with the Elastic License.
  */
 export * from './routes';
+export { isValidNamespace } from './is_valid_namespace';

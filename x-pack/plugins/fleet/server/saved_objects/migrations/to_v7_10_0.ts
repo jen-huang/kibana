@@ -14,7 +14,6 @@ import {
   EnrollmentAPIKey,
   Settings,
   AgentAction,
-  Installation,
 } from '../../types';
 
 export const migrateAgentToV7100: SavedObjectMigrationFn<
@@ -70,19 +69,6 @@ export const migrateEnrollmentApiKeysToV7100: SavedObjectMigrationFn<
   return enrollmentApiKeyDoc;
 };
 
-export const migratePackagePolicyToV7100: SavedObjectMigrationFn<
-  Exclude<PackagePolicy, 'policy_id'> & {
-    config_id: string;
-  },
-  PackagePolicy
-> = (packagePolicyDoc) => {
-  packagePolicyDoc.attributes.policy_id = packagePolicyDoc.attributes.config_id;
-  // @ts-expect-error
-  delete packagePolicyDoc.attributes.config_id;
-
-  return packagePolicyDoc;
-};
-
 export const migrateSettingsToV7100: SavedObjectMigrationFn<
   Exclude<Settings, 'kibana_urls'> & {
     kibana_url: string;
@@ -134,13 +120,4 @@ export const migrateAgentActionToV7100 = (
       }
     }
   );
-};
-
-export const migrateInstallationToV7100: SavedObjectMigrationFn<
-  Exclude<Installation, 'install_source'>,
-  Installation
-> = (installationDoc) => {
-  installationDoc.attributes.install_source = 'registry';
-
-  return installationDoc;
 };

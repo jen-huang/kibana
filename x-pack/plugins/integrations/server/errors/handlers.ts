@@ -14,13 +14,19 @@ import {
 import { errors as LegacyESErrors } from 'elasticsearch';
 import { ResponseError } from '@elastic/elasticsearch/lib/errors';
 import { appContextService } from '../services';
-import { IngestManagerError, AgentPolicyNameExistsError } from './index';
+import {
+  IntegrationsError,
+  RegistryError,
+  PackageNotFoundError,
+  PackageUnsupportedMediaTypeError,
+  ConcurrentInstallOperationError,
+} from './index';
 
 type IngestErrorHandler = (
   params: IngestErrorHandlerParams
 ) => IKibanaResponse | Promise<IKibanaResponse>;
 interface IngestErrorHandlerParams {
-  error: IngestManagerError | Boom.Boom | Error;
+  error: IntegrationsError | Boom.Boom | Error;
   response: KibanaResponseFactory;
   request?: KibanaRequest;
   context?: RequestHandlerContext;
@@ -50,8 +56,17 @@ export function isESClientError(error: unknown): error is ResponseError {
   return error instanceof ResponseError;
 }
 
-const getHTTPResponseCode = (error: IngestManagerError): number => {
-  if (error instanceof AgentPolicyNameExistsError) {
+const getHTTPResponseCode = (error: IntegrationsError): number => {
+  if (error instanceof RegistryError) {
+    return 502; // Bad Gateway
+  }
+  if (error instanceof PackageNotFoundError) {
+    return 404; // Not Found
+  }
+  if (error instanceof PackageUnsupportedMediaTypeError) {
+    return 415; // Unsupported Media Type
+  }
+  if (error instanceof ConcurrentInstallOperationError) {
     return 409; // Conflict
   }
   return 400; // Bad Request
@@ -77,7 +92,7 @@ export function ingestErrorToResponseOptions(error: IngestErrorHandlerParams['er
   }
 
   // our "expected" errors
-  if (error instanceof IngestManagerError) {
+  if (error instanceof IntegrationsError) {
     // only log the message
     logger.error(error.message);
     return {
@@ -104,7 +119,7 @@ export function ingestErrorToResponseOptions(error: IngestErrorHandlerParams['er
   };
 }
 
-export const defaultIngestErrorHandler: IngestErrorHandler = async ({
+export const defaultIntegrationsErrorHandler: IngestErrorHandler = async ({
   error,
   response,
 }: IngestErrorHandlerParams): Promise<IKibanaResponse> => {

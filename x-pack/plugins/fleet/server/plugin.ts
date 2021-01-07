@@ -13,9 +13,6 @@ import {
   PluginInitializerContext,
   SavedObjectsServiceStart,
   HttpServiceSetup,
-  SavedObjectsClientContract,
-  RequestHandlerContext,
-  KibanaRequest,
 } from 'kibana/server';
 import { UsageCollectionSetup } from 'src/plugins/usage_collection/server';
 import { DEFAULT_APP_CATEGORIES } from '../../../../src/core/server';
@@ -39,9 +36,6 @@ import {
 import { registerSavedObjects, registerEncryptedSavedObjects } from './saved_objects';
 import {
   registerLimitedConcurrencyRoutes,
-  registerEPMRoutes,
-  registerPackagePolicyRoutes,
-  registerDataStreamRoutes,
   registerAgentPolicyRoutes,
   registerSetupRoutes,
   registerAgentAPIRoutes,
@@ -52,12 +46,7 @@ import {
   registerSettingsRoutes,
   registerAppRoutes,
 } from './routes';
-import {
-  EsAssetReference,
-  FleetConfigType,
-  NewPackagePolicy,
-  UpdatePackagePolicy,
-} from '../common';
+import { FleetConfigType } from '../common';
 import {
   appContextService,
   licenseService,
@@ -66,8 +55,6 @@ import {
   AgentService,
   AgentPolicyServiceInterface,
   agentPolicyService,
-  packagePolicyService,
-  PackageService,
 } from './services';
 import {
   getAgentStatusById,
@@ -78,7 +65,6 @@ import {
 import { CloudSetup } from '../../cloud/server';
 import { agentCheckinState } from './services/agents/checkin/state';
 import { registerFleetUsageCollector } from './collectors/register';
-import { getInstallation } from './services/epm/packages';
 import { makeRouterEnforcingSuperuser } from './routes/security';
 
 export interface FleetSetupDeps {
@@ -122,45 +108,12 @@ const allSavedObjectTypes = [
 ];
 
 /**
- * Callbacks supported by the Fleet plugin
- */
-export type ExternalCallback =
-  | [
-      'packagePolicyCreate',
-      (
-        newPackagePolicy: NewPackagePolicy,
-        context: RequestHandlerContext,
-        request: KibanaRequest
-      ) => Promise<NewPackagePolicy>
-    ]
-  | [
-      'packagePolicyUpdate',
-      (
-        newPackagePolicy: UpdatePackagePolicy,
-        context: RequestHandlerContext,
-        request: KibanaRequest
-      ) => Promise<UpdatePackagePolicy>
-    ];
-
-export type ExternalCallbacksStorage = Map<ExternalCallback[0], Set<ExternalCallback[1]>>;
-
-/**
  * Describes public Fleet plugin contract returned at the `startup` stage.
  */
 export interface FleetStartContract {
   esIndexPatternService: ESIndexPatternService;
-  packageService: PackageService;
   agentService: AgentService;
-  /**
-   * Services for Fleet's package policies
-   */
-  packagePolicyService: typeof packagePolicyService;
   agentPolicyService: AgentPolicyServiceInterface;
-  /**
-   * Register callbacks for inclusion in fleet API processing
-   * @param args
-   */
-  registerExternalCallback: (...args: ExternalCallback) => void;
 }
 
 export class FleetPlugin
@@ -242,11 +195,8 @@ export class FleetPlugin
     if (deps.security) {
       registerSetupRoutes(routerSuperuserOnly, config);
       registerAgentPolicyRoutes(routerSuperuserOnly);
-      registerPackagePolicyRoutes(routerSuperuserOnly);
       registerOutputRoutes(routerSuperuserOnly);
       registerSettingsRoutes(routerSuperuserOnly);
-      registerDataStreamRoutes(routerSuperuserOnly);
-      registerEPMRoutes(routerSuperuserOnly);
 
       // Conditional config routes
       if (config.agents.enabled) {
@@ -293,15 +243,6 @@ export class FleetPlugin
 
     return {
       esIndexPatternService: new ESIndexPatternSavedObjectService(),
-      packageService: {
-        getInstalledEsAssetReferences: async (
-          savedObjectsClient: SavedObjectsClientContract,
-          pkgName: string
-        ): Promise<EsAssetReference[]> => {
-          const installation = await getInstallation({ savedObjectsClient, pkgName });
-          return installation?.installed_es || [];
-        },
-      },
       agentService: {
         getAgent,
         listAgents,
@@ -313,10 +254,6 @@ export class FleetPlugin
         list: agentPolicyService.list,
         getDefaultAgentPolicyId: agentPolicyService.getDefaultAgentPolicyId,
         getFullAgentPolicy: agentPolicyService.getFullAgentPolicy,
-      },
-      packagePolicyService,
-      registerExternalCallback: (type: ExternalCallback[0], callback: ExternalCallback[1]) => {
-        return appContextService.addExternalCallback(type, callback);
       },
     };
   }

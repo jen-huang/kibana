@@ -3,11 +3,10 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-export * from './common';
-export * from './agent_policy';
-export * from './agent';
-export * from './enrollment_api_key';
-export * from './install_script';
-export * from './output';
-export * from './settings';
-export * from './setup';
+import { LegacyScopedClusterClient } from 'src/core/server';
+
+export * from '../../common/types';
+export * from './models';
+export * from './rest_spec';
+
+export type CallESAsCurrentUser = LegacyScopedClusterClient['callAsCurrentUser'];
