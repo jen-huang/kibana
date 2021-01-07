@@ -8,8 +8,6 @@ export * from './routes';
 
 export * from './agent';
 export * from './agent_policy';
-export * from './package_policy';
-export * from './epm';
 export * from './output';
 export * from './enrollment_api_key';
 export * from './settings';

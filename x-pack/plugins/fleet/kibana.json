@@ -4,7 +4,7 @@
   "server": true,
   "ui": true,
   "configPath": ["xpack", "fleet"],
-  "requiredPlugins": ["licensing", "data"],
+  "requiredPlugins": ["licensing", "data", "integrations"],
   "optionalPlugins": [
     "security",
     "features",

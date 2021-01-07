@@ -3,9 +3,6 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-export * from './agent';
-export * from './agent_policy';
-export * from './output';
-export * from './package_spec';
-export * from './enrollment_api_key';
-export * from './settings';
+export * from './data_stream';
+export * from './epm';
+export * from './package_policy';
