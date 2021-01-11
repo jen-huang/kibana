@@ -35,7 +35,7 @@ export const config: PluginConfigDescriptor = {
 export type IntegrationsConfigType = TypeOf<typeof config.schema>;
 
 export { PackagePolicySchema, NamespaceSchema } from './types/models';
-export { PackagePolicyServiceInterface } from './services/package_policy';
+export { PackagePolicyServiceInterface, packagePolicyService } from './services/package_policy';
 
 export const plugin = (initializerContext: PluginInitializerContext) => {
   return new IntegrationsPlugin(initializerContext);

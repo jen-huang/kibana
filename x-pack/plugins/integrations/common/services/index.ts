@@ -5,3 +5,5 @@
  */
 export * from './routes';
 export { isValidNamespace } from './is_valid_namespace';
+export { isPackageLimited, doesAgentPolicyAlreadyIncludePackage } from './limited_package';
+export { packageToPackagePolicyInputs, packageToPackagePolicy } from './package_to_package_policy';

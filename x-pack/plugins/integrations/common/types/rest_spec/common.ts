@@ -3,7 +3,12 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-export * from './common';
-export * from './data_stream';
-export * from './epm';
-export * from './package_policy';
+import { HttpFetchQuery } from 'src/core/public';
+
+export interface ListWithKuery extends HttpFetchQuery {
+  page?: number;
+  perPage?: number;
+  sortField?: string;
+  sortOrder?: 'desc' | 'asc';
+  kuery?: string;
+}

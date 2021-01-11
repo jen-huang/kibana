@@ -19,17 +19,17 @@ import {
   AgentPolicySOAttributes,
   FullAgentPolicy,
   ListWithKuery,
+  dataTypes,
 } from '../types';
 import {
   DeleteAgentPolicyResponse,
   Settings,
   agentPolicyStatuses,
   storedPackagePoliciesToAgentInputs,
-  dataTypes,
 } from '../../common';
 import { AgentPolicyNameExistsError } from '../errors';
+import { packagePolicyService } from './';
 import { createAgentPolicyAction, listAgents } from './agents';
-import { packagePolicyService } from './package_policy';
 import { outputService } from './output';
 import { agentPolicyUpdateEventHandler } from './agent_policy_update';
 import { getSettings } from './settings';

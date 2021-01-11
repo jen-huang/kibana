@@ -7,3 +7,9 @@ export * from './epm';
 export * from './package_policy';
 export * from './plugin';
 export * from './routes';
+
+// TODO: This is the default `index.max_result_window` ES setting, which dictates
+// the maximum amount of results allowed to be returned from a search. It's possible
+// for the actual setting to differ from the default. Can we retrieve the real
+// setting in the future?
+export const SO_SEARCH_LIMIT = 10000;

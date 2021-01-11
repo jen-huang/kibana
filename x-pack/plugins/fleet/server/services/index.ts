@@ -8,8 +8,9 @@ import { SavedObjectsClientContract, KibanaRequest } from 'kibana/server';
 import { AgentStatus, Agent } from '../types';
 import * as settingsService from './settings';
 import { getAgent, listAgents } from './agents';
-export { ESIndexPatternSavedObjectService } from './es_index_pattern';
 import { agentPolicyService } from './agent_policy';
+
+export { packagePolicyService } from '../../../integrations/server';
 
 /**
  * Service to return the index pattern of EPM packages

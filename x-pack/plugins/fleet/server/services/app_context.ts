@@ -13,7 +13,7 @@ import {
 import packageJSON from '../../../../../package.json';
 import { SecurityPluginStart } from '../../../security/server';
 import { FleetConfigType } from '../../common';
-import { ExternalCallback, ExternalCallbacksStorage, FleetAppContext } from '../plugin';
+import { FleetAppContext } from '../plugin';
 import { CloudSetup } from '../../../cloud/server';
 
 class AppContextService {
@@ -29,7 +29,6 @@ class AppContextService {
   private cloud?: CloudSetup;
   private logger: Logger | undefined;
   private httpSetup?: HttpServiceSetup;
-  private externalCallbacks: ExternalCallbacksStorage = new Map();
 
   public async start(appContext: FleetAppContext) {
     this.encryptedSavedObjects = appContext.encryptedSavedObjectsStart?.getClient();
@@ -51,9 +50,7 @@ class AppContextService {
     }
   }
 
-  public stop() {
-    this.externalCallbacks.clear();
-  }
+  public stop() {}
 
   public getEncryptedSavedObjects() {
     if (!this.encryptedSavedObjects) {
@@ -123,19 +120,6 @@ class AppContextService {
 
   public getKibanaBranch() {
     return this.kibanaBranch;
-  }
-
-  public addExternalCallback(type: ExternalCallback[0], callback: ExternalCallback[1]) {
-    if (!this.externalCallbacks.has(type)) {
-      this.externalCallbacks.set(type, new Set());
-    }
-    this.externalCallbacks.get(type)!.add(callback);
-  }
-
-  public getExternalCallbacks(type: ExternalCallback[0]) {
-    if (this.externalCallbacks) {
-      return this.externalCallbacks.get(type);
-    }
   }
 }
 

@@ -60,6 +60,9 @@ export const config: PluginConfigDescriptor = {
 
 export type FleetConfigType = TypeOf<typeof config.schema>;
 
+export { agentPolicyService } from './services/agent_policy';
+export { outputService } from './services/output';
+
 export const plugin = (initializerContext: PluginInitializerContext) => {
   return new FleetPlugin(initializerContext);
 };

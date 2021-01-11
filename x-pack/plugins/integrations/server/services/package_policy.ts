@@ -28,9 +28,8 @@ import {
   NewPackagePolicySchema,
   UpdatePackagePolicySchema,
 } from '../types';
-import { agentPolicyService } from './agent_policy';
-import { outputService } from './output';
 import * as Registry from './epm/registry';
+import { agentPolicyService, outputService } from './';
 import { getPackageInfo, getInstallation, ensureInstalledPackage } from './epm/packages';
 import { getAssetsData } from './epm/packages/assets';
 import { compileTemplate } from './epm/agent/agent';
