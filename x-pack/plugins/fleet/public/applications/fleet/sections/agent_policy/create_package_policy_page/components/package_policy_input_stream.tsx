@@ -18,7 +18,11 @@ import {
   EuiSpacer,
   EuiButtonEmpty,
 } from '@elastic/eui';
-import { NewPackagePolicyInputStream, RegistryStream, RegistryVarsEntry } from '../../../../types';
+import {
+  NewPackagePolicyInputStream,
+  RegistryStream,
+  RegistryVarsEntry,
+} from '../../../../../../types';
 import {
   isAdvancedVar,
   PackagePolicyConfigValidationResults,

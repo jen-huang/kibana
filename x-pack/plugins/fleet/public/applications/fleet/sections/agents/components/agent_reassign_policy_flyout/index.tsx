@@ -23,13 +23,13 @@ import {
   EuiText,
 } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n/react';
-import { Agent } from '../../../../types';
+import { Agent } from '../../../../../../types';
 import {
   sendPutAgentReassign,
   sendPostBulkAgentReassign,
   useStartServices,
   useGetAgentPolicies,
-} from '../../../../hooks';
+} from '../../../../../../hooks';
 import { AgentPolicyPackageBadges } from '../agent_policy_package_badges';
 
 interface Props {

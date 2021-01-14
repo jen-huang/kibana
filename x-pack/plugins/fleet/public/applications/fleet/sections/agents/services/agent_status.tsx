@@ -7,7 +7,7 @@
 
 import { euiPaletteColorBlindBehindText } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
-import { SimplifiedAgentStatus } from '../../../types';
+import { SimplifiedAgentStatus } from '../../../../../types';
 
 const visColors = euiPaletteColorBlindBehindText();
 const colorToHexMap = {

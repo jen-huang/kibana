@@ -11,8 +11,8 @@ import {
   IFieldType,
   esKuery,
 } from '../../../../../../../src/plugins/data/public';
-import { useStartServices } from '../hooks';
-import { INDEX_NAME, AGENT_SAVED_OBJECT_TYPE } from '../constants';
+import { useStartServices } from '../../../hooks';
+import { INDEX_NAME, AGENT_SAVED_OBJECT_TYPE } from '../../../constants';
 
 const HIDDEN_FIELDS = [`${AGENT_SAVED_OBJECT_TYPE}.actions`];
 

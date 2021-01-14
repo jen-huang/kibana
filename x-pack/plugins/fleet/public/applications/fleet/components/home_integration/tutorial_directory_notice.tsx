@@ -19,7 +19,7 @@ import {
   EuiSpacer,
 } from '@elastic/eui';
 import type { TutorialDirectoryNoticeComponent } from 'src/plugins/home/public';
-import { sendPutSettings, useGetSettings, useLink, useCapabilities } from '../../hooks';
+import { sendPutSettings, useGetSettings, useLink, useCapabilities } from '../../../../hooks';
 
 const FlexItemButtonWrapper = styled(EuiFlexItem)`
   &&& {

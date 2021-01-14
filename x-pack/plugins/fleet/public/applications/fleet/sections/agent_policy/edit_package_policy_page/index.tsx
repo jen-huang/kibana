@@ -17,7 +17,7 @@ import {
   EuiFlexItem,
   EuiSpacer,
 } from '@elastic/eui';
-import { AgentPolicy, PackageInfo, UpdatePackagePolicy } from '../../../types';
+import { AgentPolicy, PackageInfo, UpdatePackagePolicy } from '../../../../../types';
 import {
   useLink,
   useBreadcrumbs,
@@ -28,7 +28,7 @@ import {
   sendGetOneAgentPolicy,
   sendGetOnePackagePolicy,
   sendGetPackageInfoByKey,
-} from '../../../hooks';
+} from '../../../../../hooks';
 import { Loading, Error } from '../../../components';
 import { ConfirmDeployAgentPolicyModal } from '../components';
 import { CreatePackagePolicyPageLayout } from '../create_package_policy_page/components';
@@ -43,11 +43,11 @@ import {
 } from '../create_package_policy_page/types';
 import { StepConfigurePackagePolicy } from '../create_package_policy_page/step_configure_package';
 import { StepDefinePackagePolicy } from '../create_package_policy_page/step_define_package_policy';
-import { useUIExtension } from '../../../hooks/use_ui_extension';
+import { useUIExtension } from '../../../../../hooks/use_ui_extension';
 import { ExtensionWrapper } from '../../../components/extension_wrapper';
 import { GetOnePackagePolicyResponse } from '../../../../../../common/types/rest_spec';
-import { PackagePolicyEditExtensionComponentProps } from '../../../types';
-import { pkgKeyFromPackageInfo } from '../../../services/pkg_key_from_package_info';
+import { PackagePolicyEditExtensionComponentProps } from '../../../../../types';
+import { pkgKeyFromPackageInfo } from '../../../../../services/pkg_key_from_package_info';
 
 export const EditPackagePolicyPage = memo(() => {
   const {

@@ -6,10 +6,10 @@
  */
 
 import React from 'react';
-import { useRequest } from '../../../../hooks';
-import { GetAgentStatusResponse } from '../../../../types';
-import { agentRouteService } from '../../../../services';
-import { UseRequestConfig } from '../../../../hooks/use_request/use_request';
+import { useRequest } from '../../../../../../hooks';
+import { GetAgentStatusResponse } from '../../../../../../types';
+import { agentRouteService } from '../../../../../../services';
+import { UseRequestConfig } from '../../../../../../hooks/use_request/use_request';
 
 type RequestOptions = Pick<Partial<UseRequestConfig>, 'pollIntervalMs'>;
 

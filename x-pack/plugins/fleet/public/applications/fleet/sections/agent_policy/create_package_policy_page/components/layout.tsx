@@ -18,8 +18,8 @@ import {
   EuiSpacer,
 } from '@elastic/eui';
 import { WithHeaderLayout } from '../../../../layouts';
-import { AgentPolicy, PackageInfo } from '../../../../types';
-import { PackageIcon } from '../../../../components/package_icon';
+import { AgentPolicy, PackageInfo } from '../../../../../../types';
+import { PackageIcon } from '../../../../components';
 import { CreatePackagePolicyFrom } from '../types';
 
 export const CreatePackagePolicyPageLayout: React.FunctionComponent<{

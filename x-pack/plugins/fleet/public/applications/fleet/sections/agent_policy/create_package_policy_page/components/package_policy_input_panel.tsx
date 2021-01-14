@@ -23,7 +23,7 @@ import {
   PackagePolicyInputStream,
   RegistryInput,
   RegistryStream,
-} from '../../../../types';
+} from '../../../../../../types';
 import {
   PackagePolicyInputValidationResults,
   hasInvalidButRequiredVar,

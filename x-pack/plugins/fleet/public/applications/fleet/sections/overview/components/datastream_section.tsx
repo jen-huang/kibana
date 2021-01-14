@@ -16,7 +16,7 @@ import {
 } from '@elastic/eui';
 import { OverviewPanel } from './overview_panel';
 import { OverviewStats } from './overview_stats';
-import { useLink, useGetDataStreams, useStartServices } from '../../../hooks';
+import { useLink, useGetDataStreams, useStartServices } from '../../../../../hooks';
 import { Loading } from '../../agents/components';
 
 export const OverviewDatastreamSection: React.FC = () => {

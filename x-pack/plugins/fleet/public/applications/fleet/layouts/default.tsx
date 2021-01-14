@@ -11,7 +11,7 @@ import { EuiTabs, EuiTab, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } from '@ela
 import { FormattedMessage } from '@kbn/i18n/react';
 import { Section } from '../sections';
 import { AlphaMessaging, SettingFlyout } from '../components';
-import { useLink, useConfig } from '../hooks';
+import { useLink, useConfig } from '../../../hooks';
 
 interface Props {
   showSettings?: boolean;
@@ -75,12 +75,12 @@ export const DefaultLayout: React.FunctionComponent<Props> = ({
                       defaultMessage="Overview"
                     />
                   </EuiTab>
-                  <EuiTab isSelected={section === 'epm'} href={getHref('integrations_all')}>
+                  {/* <EuiTab isSelected={section === 'epm'} href={getHref('integrations_all')}>
                     <FormattedMessage
                       id="xpack.fleet.appNavigation.epmLinkText"
                       defaultMessage="Integrations"
                     />
-                  </EuiTab>
+                  </EuiTab> */}
                   <EuiTab isSelected={section === 'agent_policy'} href={getHref('policies_list')}>
                     <FormattedMessage
                       id="xpack.fleet.appNavigation.policiesLinkText"
@@ -97,12 +97,12 @@ export const DefaultLayout: React.FunctionComponent<Props> = ({
                       defaultMessage="Agents"
                     />
                   </EuiTab>
-                  <EuiTab isSelected={section === 'data_stream'} href={getHref('data_streams')}>
+                  {/* <EuiTab isSelected={section === 'data_stream'} href={getHref('data_streams')}>
                     <FormattedMessage
                       id="xpack.fleet.appNavigation.dataStreamsLinkText"
                       defaultMessage="Data streams"
                     />
-                  </EuiTab>
+                  </EuiTab> */}
                 </EuiTabs>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>

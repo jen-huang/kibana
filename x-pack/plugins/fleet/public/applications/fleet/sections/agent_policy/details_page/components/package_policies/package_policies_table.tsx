@@ -17,10 +17,10 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
 } from '@elastic/eui';
-import { AgentPolicy, PackagePolicy } from '../../../../../types';
+import { AgentPolicy, PackagePolicy } from '../../../../../../../types';
 import { PackageIcon, ContextMenuActions } from '../../../../../components';
 import { PackagePolicyDeleteProvider, DangerEuiContextMenuItem } from '../../../components';
-import { useCapabilities, useLink } from '../../../../../hooks';
+import { useCapabilities, useLink } from '../../../../../../../hooks';
 import { useAgentPolicyRefresh } from '../../hooks';
 
 interface InMemoryPackagePolicy extends PackagePolicy {

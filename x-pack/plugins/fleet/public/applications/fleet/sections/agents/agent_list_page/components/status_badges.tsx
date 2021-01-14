@@ -12,7 +12,7 @@ import {
   getColorForAgentStatus,
   getLabelForAgentStatus,
 } from '../../services/agent_status';
-import { SimplifiedAgentStatus } from '../../../../types';
+import { SimplifiedAgentStatus } from '../../../../../../types';
 
 export const AgentStatusBadges: React.FC<{
   showInactive?: boolean;

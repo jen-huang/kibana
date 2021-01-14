@@ -24,8 +24,8 @@ import {
   EuiSpacer,
 } from '@elastic/eui';
 import { dataTypes } from '../../../../../../../common';
-import { NewAgentPolicy, AgentPolicy } from '../../../../types';
-import { useCapabilities, useStartServices, sendCreateAgentPolicy } from '../../../../hooks';
+import { NewAgentPolicy, AgentPolicy } from '../../../../../../types';
+import { useCapabilities, useStartServices, sendCreateAgentPolicy } from '../../../../../../hooks';
 import { AgentPolicyForm, agentPolicyFormValidation } from '../../components';
 
 const FlyoutWithHigherZIndex = styled(EuiFlyout)`

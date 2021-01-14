@@ -16,9 +16,9 @@ import {
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { FormattedMessage } from '@kbn/i18n/react';
-import { AgentPolicy } from '../../../../types';
+import { AgentPolicy } from '../../../../../../types';
 import { SearchBar } from '../../../../components';
-import { AGENT_SAVED_OBJECT_TYPE } from '../../../../constants';
+import { AGENT_SAVED_OBJECT_TYPE } from '../../../../../../constants';
 
 const statusFilters = [
   {

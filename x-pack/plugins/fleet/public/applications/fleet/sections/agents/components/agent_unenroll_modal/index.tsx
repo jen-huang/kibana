@@ -9,12 +9,12 @@ import React, { useState } from 'react';
 import { i18n } from '@kbn/i18n';
 import { EuiConfirmModal, EuiOverlayMask, EuiFormFieldset, EuiCheckbox } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n/react';
-import { Agent } from '../../../../types';
+import { Agent } from '../../../../../../types';
 import {
   sendPostAgentUnenroll,
   sendPostBulkAgentUnenroll,
   useStartServices,
-} from '../../../../hooks';
+} from '../../../../../../hooks';
 
 interface Props {
   onClose: () => void;

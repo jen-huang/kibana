@@ -5,12 +5,16 @@
  * 2.0.
  */
 
-import { createTestRendererMock, MockedFleetStartServices, TestRenderer } from '../../../mock';
-import { PAGE_ROUTING_PATHS, pagePathGetters, PLUGIN_ID } from '../../../constants';
+import {
+  createTestRendererMock,
+  MockedFleetStartServices,
+  TestRenderer,
+} from '../../../../../mock';
+import { PAGE_ROUTING_PATHS, pagePathGetters, PLUGIN_ID } from '../../../../../constants';
 import { Route } from 'react-router-dom';
 import { CreatePackagePolicyPage } from './index';
 import React from 'react';
-import { CreatePackagePolicyRouteState } from '../../../types';
+import { CreatePackagePolicyRouteState } from '../../../../../types';
 import { act } from 'react-test-renderer';
 
 describe('when on the package policy create page', () => {

@@ -8,9 +8,9 @@
 import React from 'react';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { PAGE_ROUTING_PATHS } from '../../constants';
+import { PAGE_ROUTING_PATHS } from '../../../../constants';
 import { Loading, Error } from '../../components';
-import { useConfig, useFleetStatus, useBreadcrumbs, useCapabilities } from '../../hooks';
+import { useConfig, useFleetStatus, useBreadcrumbs, useCapabilities } from '../../../../hooks';
 import { AgentListPage } from './agent_list_page';
 import { SetupPage } from './setup_page';
 import { AgentDetailsPage } from './agent_details_page';

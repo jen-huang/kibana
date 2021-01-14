@@ -19,7 +19,7 @@ import {
   RegistryStream,
   NewPackagePolicy,
   NewPackagePolicyInput,
-} from '../../../types';
+} from '../../../../../types';
 import { Loading } from '../../../components';
 import { PackagePolicyValidationResults } from './services';
 import { PackagePolicyInputPanel } from './components';

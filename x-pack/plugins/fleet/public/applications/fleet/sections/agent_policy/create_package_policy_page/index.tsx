@@ -26,7 +26,7 @@ import {
   PackageInfo,
   NewPackagePolicy,
   CreatePackagePolicyRouteState,
-} from '../../../types';
+} from '../../../../../types';
 import {
   useLink,
   useBreadcrumbs,
@@ -34,7 +34,7 @@ import {
   useStartServices,
   useConfig,
   sendGetAgentStatus,
-} from '../../../hooks';
+} from '../../../../../hooks';
 import { Loading } from '../../../components';
 import { ConfirmDeployAgentPolicyModal } from '../components';
 import { CreatePackagePolicyPageLayout } from './components';
@@ -48,12 +48,12 @@ import { StepSelectPackage } from './step_select_package';
 import { StepSelectAgentPolicy } from './step_select_agent_policy';
 import { StepConfigurePackagePolicy } from './step_configure_package';
 import { StepDefinePackagePolicy } from './step_define_package_policy';
-import { useIntraAppState } from '../../../hooks/use_intra_app_state';
-import { useUIExtension } from '../../../hooks/use_ui_extension';
+import { useIntraAppState } from '../../../../../hooks/use_intra_app_state';
+import { useUIExtension } from '../../../../../hooks/use_ui_extension';
 import { ExtensionWrapper } from '../../../components/extension_wrapper';
-import { PackagePolicyEditExtensionComponentProps } from '../../../types';
+import { PackagePolicyEditExtensionComponentProps } from '../../../../../types';
 import { PLUGIN_ID } from '../../../../../../common/constants';
-import { pkgKeyFromPackageInfo } from '../../../services/pkg_key_from_package_info';
+import { pkgKeyFromPackageInfo } from '../../../../../services/pkg_key_from_package_info';
 
 const StepsWithLessPadding = styled(EuiSteps)`
   .euiStep__content {

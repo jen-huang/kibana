@@ -28,8 +28,8 @@ import { createStateContainerReactHelpers } from '../../../../../../../../../../
 import { RedirectAppLinks } from '../../../../../../../../../../../src/plugins/kibana_react/public';
 import { TimeRange, esKuery } from '../../../../../../../../../../../src/plugins/data/public';
 import { LogStream } from '../../../../../../../../../infra/public';
-import { Agent } from '../../../../../types';
-import { useStartServices } from '../../../../../hooks';
+import { Agent } from '../../../../../../../types';
+import { useStartServices } from '../../../../../../../hooks';
 import { DEFAULT_DATE_RANGE } from './constants';
 import { DatasetFilter } from './filter_dataset';
 import { LogLevelFilter } from './filter_log_level';

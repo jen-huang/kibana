@@ -10,15 +10,15 @@ import { i18n } from '@kbn/i18n';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { EuiFlexGroup, EuiFlexItem, EuiSelectable, EuiSpacer } from '@elastic/eui';
 import { Error } from '../../../components';
-import { AgentPolicy, PackageInfo, PackagePolicy, GetPackagesResponse } from '../../../types';
+import { AgentPolicy, PackageInfo, PackagePolicy, GetPackagesResponse } from '../../../../../types';
 import {
   useGetOneAgentPolicy,
   useGetPackages,
   useGetLimitedPackages,
   sendGetPackageInfoByKey,
-} from '../../../hooks';
-import { PackageIcon } from '../../../components/package_icon';
-import { pkgKeyFromPackageInfo } from '../../../services/pkg_key_from_package_info';
+} from '../../../../../hooks';
+import { PackageIcon } from '../../../components';
+import { pkgKeyFromPackageInfo } from '../../../../../services/pkg_key_from_package_info';
 
 export const StepSelectPackage: React.FunctionComponent<{
   agentPolicyId: string;

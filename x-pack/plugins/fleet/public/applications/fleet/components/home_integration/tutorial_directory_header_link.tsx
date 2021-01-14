@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { EuiButtonEmpty } from '@elastic/eui';
 import type { TutorialDirectoryHeaderLinkComponent } from 'src/plugins/home/public';
-import { useLink, useCapabilities } from '../../hooks';
+import { useLink, useCapabilities } from '../../../../hooks';
 
 const tutorialDirectoryNoticeState$ = new BehaviorSubject({
   settingsDataLoaded: false,

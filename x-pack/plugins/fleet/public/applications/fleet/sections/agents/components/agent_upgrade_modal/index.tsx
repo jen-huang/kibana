@@ -15,12 +15,12 @@ import {
   EuiFlexItem,
 } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n/react';
-import { Agent } from '../../../../types';
+import { Agent } from '../../../../../../types';
 import {
   sendPostAgentUpgrade,
   sendPostBulkAgentUpgrade,
   useStartServices,
-} from '../../../../hooks';
+} from '../../../../../../hooks';
 
 interface Props {
   onClose: () => void;

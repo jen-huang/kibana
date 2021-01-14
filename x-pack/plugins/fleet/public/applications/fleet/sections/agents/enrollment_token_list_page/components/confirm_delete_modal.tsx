@@ -8,7 +8,7 @@
 import React from 'react';
 import { i18n } from '@kbn/i18n';
 import { EuiConfirmModal, EuiCallOut, EuiOverlayMask } from '@elastic/eui';
-import { EnrollmentAPIKey } from '../../../../types';
+import { EnrollmentAPIKey } from '../../../../../../types';
 
 interface Props {
   onCancel: () => void;

@@ -20,7 +20,7 @@ import {
   HorizontalAlignment,
 } from '@elastic/eui';
 import { FormattedMessage, FormattedDate } from '@kbn/i18n/react';
-import { ENROLLMENT_API_KEYS_SAVED_OBJECT_TYPE } from '../../../constants';
+import { ENROLLMENT_API_KEYS_SAVED_OBJECT_TYPE } from '../../../../../constants';
 import {
   useBreadcrumbs,
   usePagination,
@@ -29,8 +29,8 @@ import {
   sendGetOneEnrollmentAPIKey,
   useStartServices,
   sendDeleteOneEnrollmentAPIKey,
-} from '../../../hooks';
-import { EnrollmentAPIKey } from '../../../types';
+} from '../../../../../hooks';
+import { EnrollmentAPIKey } from '../../../../../types';
 import { SearchBar } from '../../../components/search_bar';
 import { NewEnrollmentTokenFlyout } from './components/new_enrollment_key_flyout';
 import { ConfirmEnrollmentTokenDelete } from './components/confirm_delete_modal';

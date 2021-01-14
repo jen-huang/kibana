@@ -22,21 +22,21 @@ import {
 } from '@elastic/eui';
 import { Props as EuiTabProps } from '@elastic/eui/src/components/tabs/tab';
 import styled from 'styled-components';
-import { AgentPolicy, AgentPolicyDetailsDeployAgentAction } from '../../../types';
-import { PAGE_ROUTING_PATHS } from '../../../constants';
+import { AgentPolicy, AgentPolicyDetailsDeployAgentAction } from '../../../../../types';
+import { PAGE_ROUTING_PATHS } from '../../../../../constants';
 import {
   useGetOneAgentPolicy,
   useLink,
   useBreadcrumbs,
   useStartServices,
   useFleetStatus,
-} from '../../../hooks';
+} from '../../../../../hooks';
 import { Loading, Error } from '../../../components';
 import { WithHeaderLayout } from '../../../layouts';
 import { AgentPolicyRefreshContext, useGetAgentStatus, AgentStatusRefreshContext } from './hooks';
 import { LinkedAgentCount, AgentPolicyActionMenu } from '../components';
 import { PackagePoliciesView, SettingsView } from './components';
-import { useIntraAppState } from '../../../hooks/use_intra_app_state';
+import { useIntraAppState } from '../../../../../hooks/use_intra_app_state';
 
 const Divider = styled.div`
   width: 0;

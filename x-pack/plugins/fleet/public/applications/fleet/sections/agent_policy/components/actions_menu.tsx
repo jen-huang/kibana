@@ -8,8 +8,8 @@
 import React, { memo, useState, useMemo } from 'react';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { EuiContextMenuItem, EuiPortal } from '@elastic/eui';
-import { AgentPolicy } from '../../../types';
-import { useCapabilities } from '../../../hooks';
+import { AgentPolicy } from '../../../../../types';
+import { useCapabilities } from '../../../../../hooks';
 import { ContextMenuActions } from '../../../components';
 import { AgentEnrollmentFlyout } from '../../agents/components';
 import { AgentPolicyYamlFlyout } from './agent_policy_yaml_flyout';

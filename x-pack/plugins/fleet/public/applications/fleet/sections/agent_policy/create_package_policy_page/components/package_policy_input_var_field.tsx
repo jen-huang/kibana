@@ -16,7 +16,7 @@ import {
   EuiText,
   EuiCodeEditor,
 } from '@elastic/eui';
-import { RegistryVarsEntry } from '../../../../types';
+import { RegistryVarsEntry } from '../../../../../../types';
 
 import 'brace/mode/yaml';
 import 'brace/theme/textmate';

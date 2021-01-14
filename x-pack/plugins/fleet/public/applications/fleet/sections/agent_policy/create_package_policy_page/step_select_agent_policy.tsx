@@ -20,15 +20,15 @@ import {
   EuiLink,
 } from '@elastic/eui';
 import { Error } from '../../../components';
-import { AgentPolicy, PackageInfo, GetAgentPoliciesResponseItem } from '../../../types';
-import { isPackageLimited, doesAgentPolicyAlreadyIncludePackage } from '../../../services';
+import { AgentPolicy, PackageInfo, GetAgentPoliciesResponseItem } from '../../../../../types';
+import { isPackageLimited, doesAgentPolicyAlreadyIncludePackage } from '../../../../../services';
 import {
   useGetPackageInfoByKey,
   useGetAgentPolicies,
   sendGetOneAgentPolicy,
   useCapabilities,
   useFleetStatus,
-} from '../../../hooks';
+} from '../../../../../hooks';
 import { CreateAgentPolicyFlyout } from '../list_page/components';
 
 const AgentPolicyWrapper = styled(EuiFormRow)`

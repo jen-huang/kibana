@@ -33,8 +33,8 @@ import {
   useGetSettings,
   useInput,
   sendPutSettings,
-} from '../hooks';
-import { useGetOutputs, sendPutOutput } from '../hooks/use_request/outputs';
+} from '../../../hooks';
+import { useGetOutputs, sendPutOutput } from '../../../hooks/use_request/outputs';
 import { isDiffPathProtocol } from '../../../../common/';
 
 const URL_REGEX = /^(https?):\/\/[^\s$.?#].[^\s]*$/gm;

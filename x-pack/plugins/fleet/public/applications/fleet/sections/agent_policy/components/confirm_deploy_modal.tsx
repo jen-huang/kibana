@@ -9,7 +9,7 @@ import React from 'react';
 import { EuiCallOut, EuiOverlayMask, EuiConfirmModal, EuiSpacer } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { i18n } from '@kbn/i18n';
-import { AgentPolicy } from '../../../types';
+import { AgentPolicy } from '../../../../../types';
 
 export const ConfirmDeployAgentPolicyModal: React.FunctionComponent<{
   onConfirm: () => void;

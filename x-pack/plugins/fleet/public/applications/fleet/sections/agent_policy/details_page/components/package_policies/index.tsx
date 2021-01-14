@@ -6,7 +6,7 @@
  */
 
 import React, { memo } from 'react';
-import { AgentPolicy, PackagePolicy } from '../../../../../types';
+import { AgentPolicy, PackagePolicy } from '../../../../../../../types';
 import { NoPackagePolicies } from './no_package_policies';
 import { PackagePoliciesTable } from './package_policies_table';
 

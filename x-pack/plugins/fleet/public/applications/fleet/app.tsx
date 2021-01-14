@@ -22,23 +22,21 @@ import {
   sendSetup,
   useBreadcrumbs,
   useConfig,
-} from './hooks';
+} from '../../hooks';
 import { Error, Loading } from './components';
-import { IntraAppStateProvider } from './hooks/use_intra_app_state';
-import { PackageInstallProvider } from './sections/epm/hooks';
-import { PAGE_ROUTING_PATHS } from './constants';
+import { IntraAppStateProvider } from '../../hooks/use_intra_app_state';
+// import { PackageInstallProvider } from './sections/epm/hooks';
+import { PAGE_ROUTING_PATHS } from '../../constants';
 import { DefaultLayout, WithoutHeaderLayout } from './layouts';
-import { EPMApp } from './sections/epm';
 import { AgentPolicyApp } from './sections/agent_policy';
-import { DataStreamApp } from './sections/data_stream';
 import { FleetApp } from './sections/agents';
 import { IngestManagerOverview } from './sections/overview';
 import { ProtectedRoute } from './index';
 import { FleetConfigType, FleetStartServices } from '../../plugin';
-import { UIExtensionsStorage } from './types';
+import { UIExtensionsStorage } from '../../types';
 import { KibanaContextProvider } from '../../../../../../src/plugins/kibana_react/public';
 import { EuiThemeProvider } from '../../../../../../src/plugins/kibana_react/common';
-import { UIExtensionsContext } from './hooks/use_ui_extension';
+import { UIExtensionsContext } from '../../hooks/use_ui_extension';
 
 const ErrorLayout = ({ children }: { children: JSX.Element }) => (
   <EuiErrorBoundary>
@@ -202,9 +200,9 @@ export const FleetAppContext: React.FC<{
                     <FleetStatusProvider>
                       <IntraAppStateProvider kibanaScopedHistory={history}>
                         <Router history={routerHistoryInstance}>
-                          <PackageInstallProvider notifications={startServices.notifications}>
-                            {children}
-                          </PackageInstallProvider>
+                          {/* <PackageInstallProvider notifications={startServices.notifications}> */}
+                          {children}
+                          {/* </PackageInstallProvider> */}
                         </Router>
                       </IntraAppStateProvider>
                     </FleetStatusProvider>
@@ -224,21 +222,21 @@ export const AppRoutes = memo(() => {
 
   return (
     <Switch>
-      <Route path={PAGE_ROUTING_PATHS.integrations}>
+      {/* <Route path={PAGE_ROUTING_PATHS.integrations}>
         <DefaultLayout section="epm">
           <EPMApp />
         </DefaultLayout>
-      </Route>
+      </Route> */}
       <Route path={PAGE_ROUTING_PATHS.policies}>
         <DefaultLayout section="agent_policy">
           <AgentPolicyApp />
         </DefaultLayout>
       </Route>
-      <Route path={PAGE_ROUTING_PATHS.data_streams}>
+      {/* <Route path={PAGE_ROUTING_PATHS.data_streams}>
         <DefaultLayout section="data_stream">
           <DataStreamApp />
         </DefaultLayout>
-      </Route>
+      </Route> */}
       <ProtectedRoute path={PAGE_ROUTING_PATHS.fleet} isAllowed={agents.enabled}>
         <DefaultLayout section="fleet">
           <FleetApp />
