@@ -10,7 +10,7 @@ import {
   MockedFleetStartServices,
   TestRenderer,
 } from '../../../../../mock';
-import { PAGE_ROUTING_PATHS, pagePathGetters, PLUGIN_ID } from '../../../../../constants';
+import { INTEGRATION_ROUTING_PATHS, pagePathGetters, PLUGIN_ID } from '../../../../../constants';
 import { Route } from 'react-router-dom';
 import { CreatePackagePolicyPage } from './index';
 import React from 'react';
@@ -18,12 +18,12 @@ import { CreatePackagePolicyRouteState } from '../../../../../types';
 import { act } from 'react-test-renderer';
 
 describe('when on the package policy create page', () => {
-  const createPageUrlPath = pagePathGetters.add_integration_to_policy({ pkgkey: 'nginx-0.3.7' });
+  const createPageUrlPath = pagePathGetters.add_integration_to_policy({ pkgkey: 'nginx-0.3.7' })[1];
   let testRenderer: TestRenderer;
   let renderResult: ReturnType<typeof testRenderer.render>;
   const render = () =>
     (renderResult = testRenderer.render(
-      <Route path={PAGE_ROUTING_PATHS.add_integration_to_policy}>
+      <Route path={INTEGRATION_ROUTING_PATHS.add_integration_to_policy}>
         <CreatePackagePolicyPage />
       </Route>
     ));

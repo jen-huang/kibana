@@ -29,13 +29,13 @@ import {
 } from '../../../../../types';
 import {
   useLink,
-  useBreadcrumbs,
   sendCreatePackagePolicy,
   useStartServices,
   useConfig,
   sendGetAgentStatus,
 } from '../../../../../hooks';
 import { Loading } from '../../../components';
+import { useBreadcrumbs } from '../../../hooks';
 import { ConfirmDeployAgentPolicyModal } from '../components';
 import { CreatePackagePolicyPageLayout } from './components';
 import { CreatePackagePolicyFrom, PackagePolicyFormState } from './types';
@@ -256,7 +256,7 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
             : routeState.onSaveNavigateTo
         );
       } else {
-        history.push(getPath('policy_details', { policyId: agentPolicy?.id || policyId }));
+        history.push(getPath('policy_details', { policyId: agentPolicy?.id || policyId })[1]);
       }
 
       notifications.toasts.addSuccess({

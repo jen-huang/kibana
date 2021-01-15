@@ -5,16 +5,13 @@
  * 2.0.
  */
 
-import {
-  FLEET_BASE_PATH,
-  StaticPage,
-  DynamicPage,
-  DynamicPagePathValues,
-  pagePathGetters,
-} from '../constants';
+import { StaticPage, DynamicPage, DynamicPagePathValues, pagePathGetters } from '../constants';
 import { useStartServices } from '.';
 
-const getPath = (page: StaticPage | DynamicPage, values: DynamicPagePathValues = {}): string => {
+const getPath = (
+  page: StaticPage | DynamicPage,
+  values: DynamicPagePathValues = {}
+): [string, string] => {
   return values ? pagePathGetters[page](values) : pagePathGetters[page as StaticPage]();
 };
 
@@ -23,8 +20,8 @@ export const useLink = () => {
   return {
     getPath,
     getHref: (page: StaticPage | DynamicPage, values?: DynamicPagePathValues) => {
-      const path = getPath(page, values);
-      return core.http.basePath.prepend(`${FLEET_BASE_PATH}#${path}`);
+      const [basePath, path] = getPath(page, values);
+      return core.http.basePath.prepend(`${basePath}#${path}`);
     },
   };
 };

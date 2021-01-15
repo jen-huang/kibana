@@ -88,7 +88,7 @@ export const ContentPanel = memo<ContentPanelProps>(({ panel, packageInfo }) => 
           <CustomView pkgkey={pkgkey} packageInfo={packageInfo} />
         </ExtensionWrapper>
       ) : (
-        <Redirect to={getPath('integration_details', { pkgkey })} />
+        <Redirect to={getPath('integration_details', { pkgkey })[1]} />
       );
     case 'overview':
     default:

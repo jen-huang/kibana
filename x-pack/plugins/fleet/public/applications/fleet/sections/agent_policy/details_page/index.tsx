@@ -23,18 +23,18 @@ import {
 import { Props as EuiTabProps } from '@elastic/eui/src/components/tabs/tab';
 import styled from 'styled-components';
 import { AgentPolicy, AgentPolicyDetailsDeployAgentAction } from '../../../../../types';
-import { PAGE_ROUTING_PATHS } from '../../../../../constants';
+import { FLEET_ROUTING_PATHS } from '../../../../../constants';
 import {
   useGetOneAgentPolicy,
   useLink,
-  useBreadcrumbs,
   useStartServices,
   useFleetStatus,
 } from '../../../../../hooks';
-import { Loading, Error } from '../../../components';
+import { useBreadcrumbs } from '../../../hooks';
+import { Loading, Error, LinkedAgentCount } from '../../../components';
 import { WithHeaderLayout } from '../../../layouts';
 import { AgentPolicyRefreshContext, useGetAgentStatus, AgentStatusRefreshContext } from './hooks';
-import { LinkedAgentCount, AgentPolicyActionMenu } from '../components';
+import { AgentPolicyActionMenu } from '../components';
 import { PackagePoliciesView, SettingsView } from './components';
 import { useIntraAppState } from '../../../../../hooks/use_intra_app_state';
 
@@ -176,7 +176,7 @@ export const AgentPolicyDetailsPage: React.FunctionComponent = () => {
                   agentPolicy={agentPolicy}
                   fullButton={true}
                   onCopySuccess={(newAgentPolicy: AgentPolicy) => {
-                    history.push(getPath('policy_details', { policyId: newAgentPolicy.id }));
+                    history.push(getPath('policy_details', { policyId: newAgentPolicy.id })[1]);
                   }}
                   enrollmentFlyoutOpenByDefault={openEnrollmentFlyoutOpenByDefault}
                   onCancelEnrollment={
@@ -303,13 +303,13 @@ const AgentPolicyDetailsContent: React.FunctionComponent<{ agentPolicy: AgentPol
   return (
     <Switch>
       <Route
-        path={PAGE_ROUTING_PATHS.policy_details_settings}
+        path={FLEET_ROUTING_PATHS.policy_details_settings}
         render={() => {
           return <SettingsView agentPolicy={agentPolicy} />;
         }}
       />
       <Route
-        path={PAGE_ROUTING_PATHS.policy_details}
+        path={FLEET_ROUTING_PATHS.policy_details}
         render={() => {
           return <PackagePoliciesView agentPolicy={agentPolicy} />;
         }}

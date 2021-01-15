@@ -21,12 +21,8 @@ import { i18n } from '@kbn/i18n';
 import { FormattedMessage, FormattedDate } from '@kbn/i18n/react';
 import { DataStream } from '../../../../../types';
 import { WithHeaderLayout } from '../../../layouts';
-import {
-  useGetDataStreams,
-  useStartServices,
-  usePagination,
-  useBreadcrumbs,
-} from '../../../../../hooks';
+import { useGetDataStreams, useStartServices, usePagination } from '../../../../../hooks';
+import { useBreadcrumbs } from '../../../hooks';
 import { PackageIcon } from '../../../components';
 import { DataStreamRowActions } from './components/data_stream_row_actions';
 

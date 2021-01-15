@@ -4,9 +4,7 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
-
-export { IngestManagerOverview } from './overview';
 export { AgentPolicyApp } from './agent_policy';
 export { FleetApp } from './agents';
 
-export type Section = 'overview' | 'agent_policy' | 'fleet';
+export type Section = 'agent_policy' | 'fleet';

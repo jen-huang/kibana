@@ -8,4 +8,3 @@ export * from '../../../components';
 export { AlphaMessaging } from './alpha_messaging';
 export { SearchBar } from './search_bar';
 export * from './settings_flyout';
-export * from './link_and_revision';

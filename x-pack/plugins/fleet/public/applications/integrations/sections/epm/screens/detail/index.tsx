@@ -30,12 +30,8 @@ import {
   PackageInfo,
 } from '../../../../../../types';
 import { Loading, Error } from '../../../../components';
-import {
-  useGetPackageInfoByKey,
-  useBreadcrumbs,
-  useLink,
-  useCapabilities,
-} from '../../../../../../hooks';
+import { useGetPackageInfoByKey, useLink, useCapabilities } from '../../../../../../hooks';
+import { useBreadcrumbs } from '../../../../hooks';
 import { WithHeaderLayout, WithHeaderLayoutProps } from '../../../../layouts';
 import { useSetPackageInstallStatus } from '../../hooks';
 import { IconPanel, LoadingIconPanel } from '../../components/icon_panel';
@@ -213,7 +209,7 @@ export function Detail() {
       history.push({
         pathname: getPath('add_integration_to_policy', {
           pkgkey,
-        }),
+        })[1],
         state: redirectBackRouteState,
       });
     },

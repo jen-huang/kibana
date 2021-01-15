@@ -69,18 +69,6 @@ export const DefaultLayout: React.FunctionComponent<Props> = ({
             <EuiFlexGroup gutterSize="l" alignItems="center">
               <EuiFlexItem>
                 <EuiTabs display="condensed">
-                  <EuiTab isSelected={section === 'overview'} href={getHref('overview')}>
-                    <FormattedMessage
-                      id="xpack.fleet.appNavigation.overviewLinkText"
-                      defaultMessage="Overview"
-                    />
-                  </EuiTab>
-                  {/* <EuiTab isSelected={section === 'epm'} href={getHref('integrations_all')}>
-                    <FormattedMessage
-                      id="xpack.fleet.appNavigation.epmLinkText"
-                      defaultMessage="Integrations"
-                    />
-                  </EuiTab> */}
                   <EuiTab isSelected={section === 'agent_policy'} href={getHref('policies_list')}>
                     <FormattedMessage
                       id="xpack.fleet.appNavigation.policiesLinkText"
@@ -97,12 +85,6 @@ export const DefaultLayout: React.FunctionComponent<Props> = ({
                       defaultMessage="Agents"
                     />
                   </EuiTab>
-                  {/* <EuiTab isSelected={section === 'data_stream'} href={getHref('data_streams')}>
-                    <FormattedMessage
-                      id="xpack.fleet.appNavigation.dataStreamsLinkText"
-                      defaultMessage="Data streams"
-                    />
-                  </EuiTab> */}
                 </EuiTabs>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>

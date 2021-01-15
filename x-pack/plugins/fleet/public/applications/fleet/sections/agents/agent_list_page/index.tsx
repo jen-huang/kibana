@@ -31,11 +31,11 @@ import {
   sendGetAgentStatus,
   useUrlParams,
   useLink,
-  useBreadcrumbs,
   useLicense,
   useKibanaVersion,
   useStartServices,
 } from '../../../../../hooks';
+import { useBreadcrumbs } from '../../../hooks';
 import { ContextMenuActions } from '../../../components';
 import { AgentStatusKueryHelper, isAgentUpgradeable } from '../../../../../services';
 import { AGENT_SAVED_OBJECT_TYPE } from '../../../../../constants';

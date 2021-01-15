@@ -15,21 +15,17 @@ import {
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { FormattedRelative, FormattedMessage } from '@kbn/i18n/react';
-import { useGetPackageInstallStatus } from '../../hooks';
+import { RedirectAppLinks } from '../../../../../../../../../../src/plugins/kibana_react/public';
 import { InstallStatus } from '../../../../../../types';
-import { useLink } from '../../../../../../hooks';
-import { PACKAGE_POLICY_SAVED_OBJECT_TYPE } from '../../../../../../../common/constants';
-import { useUrlPagination } from '../../../../../../hooks';
+import { useLink, useStartServices, useUrlPagination } from '../../../../../../hooks';
+import { PACKAGE_POLICY_SAVED_OBJECT_TYPE } from '../../../../../../constants';
+import { LinkAndRevision, LinkAndRevisionProps, LinkedAgentCount } from '../../../../components';
+import { useGetPackageInstallStatus } from '../../hooks';
 import {
   PackagePolicyAndAgentPolicy,
   usePackagePoliciesWithAgentPolicy,
 } from './use_package_policies_with_agent_policy';
-import {
-  LinkAndRevision,
-  LinkAndRevisionProps,
-} from '../../../../../../applications/fleet/components';
 import { Persona } from './persona';
-import { LinkedAgentCount } from '../../../../../../applications/fleet/components/linked_agent_count';
 
 const IntegrationDetailsLink = memo<{
   packagePolicy: PackagePolicyAndAgentPolicy['packagePolicy'];
@@ -55,16 +51,20 @@ const AgentPolicyDetailLink = memo<{
   children: ReactNode;
 }>(({ agentPolicyId, revision, children }) => {
   const { getHref } = useLink();
+  const { application } = useStartServices();
+
   return (
-    <LinkAndRevision
-      className="eui-textTruncate"
-      revision={revision}
-      href={getHref('policy_details', {
-        policyId: agentPolicyId,
-      })}
-    >
-      {children}
-    </LinkAndRevision>
+    <RedirectAppLinks application={application}>
+      <LinkAndRevision
+        className="eui-textTruncate"
+        revision={revision}
+        href={getHref('policy_details', {
+          policyId: agentPolicyId,
+        })}
+      >
+        {children}
+      </LinkAndRevision>
+    </RedirectAppLinks>
   );
 });
 
@@ -74,6 +74,7 @@ interface PackagePoliciesPanelProps {
 }
 export const PackagePoliciesPanel = ({ name, version }: PackagePoliciesPanelProps) => {
   const { getPath } = useLink();
+  const { application } = useStartServices();
   const getPackageInstallStatus = useGetPackageInstallStatus();
   const packageInstallStatus = getPackageInstallStatus(name);
   const { pagination, pageSizeOptions, setPagination } = useUrlPagination();
@@ -142,12 +143,14 @@ export const PackagePoliciesPanel = ({ name, version }: PackagePoliciesPanelProp
         width: '8ch',
         render({ packagePolicy, agentPolicy }: PackagePolicyAndAgentPolicy) {
           return (
-            <LinkedAgentCount
-              count={agentPolicy?.agents ?? 0}
-              agentPolicyId={packagePolicy.policy_id}
-              className="eui-textTruncate"
-              data-test-subj="rowAgentCount"
-            />
+            <RedirectAppLinks application={application}>
+              <LinkedAgentCount
+                count={agentPolicy?.agents ?? 0}
+                agentPolicyId={packagePolicy.policy_id}
+                className="eui-textTruncate"
+                data-test-subj="rowAgentCount"
+              />
+            </RedirectAppLinks>
           );
         },
       },
@@ -176,7 +179,7 @@ export const PackagePoliciesPanel = ({ name, version }: PackagePoliciesPanelProp
         },
       },
     ],
-    []
+    [application]
   );
 
   const noItemsMessage = useMemo(() => {
@@ -200,7 +203,7 @@ export const PackagePoliciesPanel = ({ name, version }: PackagePoliciesPanelProp
   // if they arrive at this page and the package is not installed, send them to overview
   // this happens if they arrive with a direct url or they uninstall while on this tab
   if (packageInstallStatus.status !== InstallStatus.installed) {
-    return <Redirect to={getPath('integration_details', { pkgkey: `${name}-${version}` })} />;
+    return <Redirect to={getPath('integration_details', { pkgkey: `${name}-${version}` })[1]} />;
   }
 
   return (

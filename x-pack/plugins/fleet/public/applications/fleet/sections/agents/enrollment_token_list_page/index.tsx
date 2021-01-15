@@ -22,7 +22,6 @@ import {
 import { FormattedMessage, FormattedDate } from '@kbn/i18n/react';
 import { ENROLLMENT_API_KEYS_SAVED_OBJECT_TYPE } from '../../../../../constants';
 import {
-  useBreadcrumbs,
   usePagination,
   useGetEnrollmentAPIKeys,
   useGetAgentPolicies,
@@ -30,6 +29,7 @@ import {
   useStartServices,
   sendDeleteOneEnrollmentAPIKey,
 } from '../../../../../hooks';
+import { useBreadcrumbs } from '../../../hooks';
 import { EnrollmentAPIKey } from '../../../../../types';
 import { SearchBar } from '../../../components/search_bar';
 import { NewEnrollmentTokenFlyout } from './components/new_enrollment_key_flyout';

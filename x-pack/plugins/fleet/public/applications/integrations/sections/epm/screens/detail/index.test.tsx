@@ -12,7 +12,7 @@ import {
 } from '../../../../../../mock';
 import { Detail } from './index';
 import React, { lazy, memo } from 'react';
-import { PAGE_ROUTING_PATHS, pagePathGetters } from '../../../../../../constants';
+import { INTEGRATION_ROUTING_PATHS, pagePathGetters } from '../../../../../../constants';
 import { Route } from 'react-router-dom';
 import {
   GetAgentPoliciesResponse,
@@ -32,13 +32,13 @@ import { act, cleanup } from '@testing-library/react';
 
 describe('when on integration detail', () => {
   const pkgkey = 'nginx-0.3.7';
-  const detailPageUrlPath = pagePathGetters.integration_details({ pkgkey });
+  const detailPageUrlPath = pagePathGetters.integration_details({ pkgkey })[1];
   let testRenderer: TestRenderer;
   let renderResult: ReturnType<typeof testRenderer.render>;
   let mockedApi: MockedApi<EpmPackageDetailsResponseProvidersMock>;
   const render = () =>
     (renderResult = testRenderer.render(
-      <Route path={PAGE_ROUTING_PATHS.integration_details}>
+      <Route path={INTEGRATION_ROUTING_PATHS.integration_details}>
         <Detail />
       </Route>
     ));
@@ -104,7 +104,7 @@ describe('when on integration detail', () => {
     it('should redirect if custom url is accessed', () => {
       act(() => {
         testRenderer.history.push(
-          pagePathGetters.integration_details({ pkgkey: 'nginx-0.3.7', panel: 'custom' })
+          pagePathGetters.integration_details({ pkgkey: 'nginx-0.3.7', panel: 'custom' })[1]
         );
       });
       expect(testRenderer.history.location.pathname).toEqual(detailPageUrlPath);
@@ -152,7 +152,7 @@ describe('when on integration detail', () => {
     it('should display custom content when tab is clicked', async () => {
       act(() => {
         testRenderer.history.push(
-          pagePathGetters.integration_details({ pkgkey: 'nginx-0.3.7', panel: 'custom' })
+          pagePathGetters.integration_details({ pkgkey: 'nginx-0.3.7', panel: 'custom' })[1]
         );
       });
       await lazyComponentWasRendered;
@@ -192,7 +192,10 @@ describe('when on integration detail', () => {
   });
 
   describe('and on the Policies Tab', () => {
-    const policiesTabURLPath = pagePathGetters.integration_details({ pkgkey, panel: 'policies' });
+    const policiesTabURLPath = pagePathGetters.integration_details({
+      pkgkey,
+      panel: 'policies',
+    })[1];
     beforeEach(() => {
       testRenderer.history.push(policiesTabURLPath);
       render();

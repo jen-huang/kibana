@@ -34,10 +34,10 @@ import {
   useLink,
   useConfig,
   useUrlParams,
-  useBreadcrumbs,
 } from '../../../../../hooks';
-import { LinkAndRevision, SearchBar } from '../../../components';
-import { LinkedAgentCount, AgentPolicyActionMenu } from '../components';
+import { useBreadcrumbs } from '../../../hooks';
+import { LinkAndRevision, SearchBar, LinkedAgentCount } from '../../../components';
+import { AgentPolicyActionMenu } from '../components';
 import { CreateAgentPolicyFlyout } from './components';
 
 const AgentPolicyListPageLayout: React.FunctionComponent = ({ children }) => (

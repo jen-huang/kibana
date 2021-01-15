@@ -20,7 +20,6 @@ import {
 import { AgentPolicy, PackageInfo, UpdatePackagePolicy } from '../../../../../types';
 import {
   useLink,
-  useBreadcrumbs,
   useStartServices,
   useConfig,
   sendUpdatePackagePolicy,
@@ -29,6 +28,7 @@ import {
   sendGetOnePackagePolicy,
   sendGetPackageInfoByKey,
 } from '../../../../../hooks';
+import { useBreadcrumbs } from '../../../hooks';
 import { Loading, Error } from '../../../components';
 import { ConfirmDeployAgentPolicyModal } from '../components';
 import { CreatePackagePolicyPageLayout } from '../create_package_policy_page/components';
@@ -66,7 +66,7 @@ export const EditPackagePolicyForm = memo<{
     agents: { enabled: isFleetEnabled },
   } = useConfig();
   const history = useHistory();
-  const { getHref, getPath } = useLink();
+  const { getHref } = useLink();
 
   // Agent policy, package info, and package policy states
   const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
@@ -258,14 +258,14 @@ export const EditPackagePolicyForm = memo<{
   const successRedirectPath = useMemo(() => {
     if (packageInfo && policyId) {
       return from === 'package-edit'
-        ? getPath('integration_details', {
+        ? getHref('integration_details', {
             pkgkey: pkgKeyFromPackageInfo(packageInfo!),
             panel: 'policies',
           })
-        : getPath('policy_details', { policyId });
+        : getHref('policy_details', { policyId });
     }
     return '/';
-  }, [from, getPath, packageInfo, policyId]);
+  }, [from, getHref, packageInfo, policyId]);
 
   // Save package policy
   const [formState, setFormState] = useState<PackagePolicyFormState>('INVALID');

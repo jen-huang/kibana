@@ -138,7 +138,7 @@ export const SettingsView = memo<{ agentPolicy: AgentPolicy }>(
           validation={validation}
           isEditing={true}
           onDelete={() => {
-            history.push(getPath('policies_list'));
+            history.push(getPath('policies_list')[1]);
           }}
         />
 

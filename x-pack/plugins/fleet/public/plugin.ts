@@ -37,7 +37,7 @@ import {
   TutorialDirectoryNotice,
   TutorialDirectoryHeaderLink,
   TutorialModuleNotice,
-} from './applications/fleet/components/home_integration';
+} from './components/home_integration';
 import { createExtensionRegistrationCallback } from './services/ui_extensions';
 import { UIExtensionRegistrationCallback, UIExtensionsStorage } from './types';
 
@@ -96,7 +96,7 @@ export class FleetPlugin implements Plugin<FleetSetup, FleetStart, FleetSetupDep
     core.application.register({
       id: INTEGRATIONS_PLUGIN_ID,
       category: DEFAULT_APP_CATEGORIES.management,
-      title: i18n.translate('xpack.fleet.integrations.appTitle', {
+      title: i18n.translate('xpack.fleet.integrationsAppTitle', {
         defaultMessage: 'Integrations',
       }),
       order: 9019,

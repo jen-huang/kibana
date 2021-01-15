@@ -7,3 +7,5 @@ export { Loading } from './loading';
 export { Error } from './error';
 export { PackageIcon } from './package_icon';
 export { ContextMenuActions } from './context_menu_actions';
+export { LinkAndRevision, LinkAndRevisionProps } from './link_and_revision';
+export { LinkedAgentCount } from './linked_agent_count';

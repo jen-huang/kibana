@@ -9,11 +9,13 @@ import React, { memo } from 'react';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { EuiText, EuiLink, EuiSpacer } from '@elastic/eui';
 import { TutorialModuleNoticeComponent } from 'src/plugins/home/public';
-import { useGetPackages, useLink, useCapabilities } from '../../../../hooks';
-import { pkgKeyFromPackageInfo } from '../../../../services/pkg_key_from_package_info';
+import { RedirectAppLinks } from '../../../../../../src/plugins/kibana_react/public';
+import { useGetPackages, useLink, useCapabilities, useStartServices } from '../../hooks';
+import { pkgKeyFromPackageInfo } from '../../services/pkg_key_from_package_info';
 
 const TutorialModuleNotice: TutorialModuleNoticeComponent = memo(({ moduleName }) => {
   const { getHref } = useLink();
+  const { application } = useStartServices();
   const { show: hasIngestManager } = useCapabilities();
   const { data: packagesData, isLoading } = useGetPackages();
 
@@ -42,16 +44,18 @@ const TutorialModuleNotice: TutorialModuleNoticeComponent = memo(({ moduleName }
                   </strong>
                 ),
                 availableAsIntegrationLink: (
-                  <EuiLink
-                    href={getHref('integration_details', {
-                      pkgkey: pkgKeyFromPackageInfo(pkgInfo),
-                    })}
-                  >
-                    <FormattedMessage
-                      id="xpack.fleet.homeIntegration.tutorialModule.noticeText.integrationLink"
-                      defaultMessage="available as an Integration"
-                    />
-                  </EuiLink>
+                  <RedirectAppLinks application={application} className="eui-displayInline">
+                    <EuiLink
+                      href={getHref('integration_details', {
+                        pkgkey: pkgKeyFromPackageInfo(pkgInfo),
+                      })}
+                    >
+                      <FormattedMessage
+                        id="xpack.fleet.homeIntegration.tutorialModule.noticeText.integrationLink"
+                        defaultMessage="available as an Integration"
+                      />
+                    </EuiLink>
+                  </RedirectAppLinks>
                 ),
                 blogPostLink: (
                   <EuiLink

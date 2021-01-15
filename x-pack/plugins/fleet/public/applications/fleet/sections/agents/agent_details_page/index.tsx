@@ -22,16 +22,16 @@ import { FormattedMessage, FormattedRelative } from '@kbn/i18n/react';
 import { i18n } from '@kbn/i18n';
 import { EuiIconTip } from '@elastic/eui';
 import { Agent, AgentPolicy, AgentDetailsReassignPolicyAction } from '../../../../../types';
-import { PAGE_ROUTING_PATHS } from '../../../../../constants';
+import { FLEET_ROUTING_PATHS } from '../../../../../constants';
 import { Loading, Error } from '../../../components';
 import {
   useGetOneAgent,
   useGetOneAgentPolicy,
   useLink,
-  useBreadcrumbs,
   useStartServices,
   useKibanaVersion,
 } from '../../../../../hooks';
+import { useBreadcrumbs } from '../../../hooks';
 import { WithHeaderLayout } from '../../../layouts';
 import { AgentHealth } from '../components';
 import { AgentRefreshContext } from './hooks';
@@ -306,13 +306,13 @@ const AgentDetailsPageContent: React.FunctionComponent<{
   return (
     <Switch>
       <Route
-        path={PAGE_ROUTING_PATHS.fleet_agent_details_logs}
+        path={FLEET_ROUTING_PATHS.fleet_agent_details_logs}
         render={() => {
           return <AgentLogs agent={agent} />;
         }}
       />
       <Route
-        path={PAGE_ROUTING_PATHS.fleet_agent_details}
+        path={FLEET_ROUTING_PATHS.fleet_agent_details}
         render={() => {
           return <AgentDetailsContent agent={agent} agentPolicy={agentPolicy} />;
         }}

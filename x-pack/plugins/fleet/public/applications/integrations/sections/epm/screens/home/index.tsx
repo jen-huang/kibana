@@ -10,8 +10,9 @@ import { useRouteMatch, Switch, Route, useLocation, useHistory } from 'react-rou
 import { Props as EuiTabProps } from '@elastic/eui/src/components/tabs/tab';
 import { i18n } from '@kbn/i18n';
 import { installationStatuses } from '../../../../../../../common/constants';
-import { PAGE_ROUTING_PATHS } from '../../../../../../constants';
-import { useLink, useGetCategories, useGetPackages, useBreadcrumbs } from '../../../../../../hooks';
+import { INTEGRATION_ROUTING_PATHS } from '../../../../../../constants';
+import { useLink, useGetCategories, useGetPackages } from '../../../../../../hooks';
+import { useBreadcrumbs } from '../../../../hooks';
 import { WithHeaderLayout } from '../../../../layouts';
 import { CategorySummaryItem } from '../../../../../../types';
 import { PackageListGrid } from '../../components/package_list_grid';
@@ -50,10 +51,10 @@ export function EPMHomePage() {
       }
     >
       <Switch>
-        <Route path={PAGE_ROUTING_PATHS.integrations_installed}>
+        <Route path={INTEGRATION_ROUTING_PATHS.integrations_installed}>
           <InstalledPackages />
         </Route>
-        <Route path={PAGE_ROUTING_PATHS.integrations_all}>
+        <Route path={INTEGRATION_ROUTING_PATHS.integrations_all}>
           <AvailablePackages />
         </Route>
       </Switch>

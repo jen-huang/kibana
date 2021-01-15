@@ -10,7 +10,7 @@ import { FormattedMessage } from '@kbn/i18n/react';
 import { EuiText, EuiFlexGroup, EuiFlexItem, EuiButton, EuiPortal } from '@elastic/eui';
 import { Props as EuiTabProps } from '@elastic/eui/src/components/tabs/tab';
 import { useRouteMatch } from 'react-router-dom';
-import { PAGE_ROUTING_PATHS } from '../../../../../constants';
+import { FLEET_ROUTING_PATHS } from '../../../../../constants';
 import { WithHeaderLayout } from '../../../layouts';
 import { useCapabilities, useLink, useGetAgentPolicies } from '../../../../../hooks';
 import { AgentEnrollmentFlyout } from '../components';
@@ -70,7 +70,7 @@ export const ListLayout: React.FunctionComponent<{}> = ({ children }) => {
         ([
           {
             name: <FormattedMessage id="xpack.fleet.listTabs.agentTitle" defaultMessage="Agents" />,
-            isSelected: routeMatch.path === PAGE_ROUTING_PATHS.fleet_agent_list,
+            isSelected: routeMatch.path === FLEET_ROUTING_PATHS.fleet_agent_list,
             href: getHref('fleet_agent_list'),
           },
           {
@@ -80,7 +80,7 @@ export const ListLayout: React.FunctionComponent<{}> = ({ children }) => {
                 defaultMessage="Enrollment tokens"
               />
             ),
-            isSelected: routeMatch.path === PAGE_ROUTING_PATHS.fleet_enrollment_tokens,
+            isSelected: routeMatch.path === FLEET_ROUTING_PATHS.fleet_enrollment_tokens,
             href: getHref('fleet_enrollment_tokens'),
           },
         ] as unknown) as EuiTabProps[]

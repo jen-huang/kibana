@@ -20,17 +20,16 @@ import {
   KibanaVersionContext,
   sendGetPermissionsCheck,
   sendSetup,
-  useBreadcrumbs,
   useConfig,
 } from '../../hooks';
+import { useBreadcrumbs } from './hooks';
 import { Error, Loading } from './components';
 import { IntraAppStateProvider } from '../../hooks/use_intra_app_state';
 // import { PackageInstallProvider } from './sections/epm/hooks';
-import { PAGE_ROUTING_PATHS } from '../../constants';
+import { FLEET_ROUTING_PATHS } from '../../constants';
 import { DefaultLayout, WithoutHeaderLayout } from './layouts';
 import { AgentPolicyApp } from './sections/agent_policy';
 import { FleetApp } from './sections/agents';
-import { IngestManagerOverview } from './sections/overview';
 import { ProtectedRoute } from './index';
 import { FleetConfigType, FleetStartServices } from '../../plugin';
 import { UIExtensionsStorage } from '../../types';
@@ -53,7 +52,7 @@ const Panel = styled(EuiPanel)`
 `;
 
 export const WithPermissionsAndSetup: React.FC = memo(({ children }) => {
-  useBreadcrumbs('base');
+  useBreadcrumbs('fleet_base');
 
   const [isPermissionsLoading, setIsPermissionsLoading] = useState<boolean>(false);
   const [permissionsError, setPermissionsError] = useState<string>();
@@ -222,32 +221,17 @@ export const AppRoutes = memo(() => {
 
   return (
     <Switch>
-      {/* <Route path={PAGE_ROUTING_PATHS.integrations}>
-        <DefaultLayout section="epm">
-          <EPMApp />
-        </DefaultLayout>
-      </Route> */}
-      <Route path={PAGE_ROUTING_PATHS.policies}>
+      <Route path={FLEET_ROUTING_PATHS.policies}>
         <DefaultLayout section="agent_policy">
           <AgentPolicyApp />
         </DefaultLayout>
       </Route>
-      {/* <Route path={PAGE_ROUTING_PATHS.data_streams}>
-        <DefaultLayout section="data_stream">
-          <DataStreamApp />
-        </DefaultLayout>
-      </Route> */}
-      <ProtectedRoute path={PAGE_ROUTING_PATHS.fleet} isAllowed={agents.enabled}>
+      <ProtectedRoute path={FLEET_ROUTING_PATHS.fleet} isAllowed={agents.enabled}>
         <DefaultLayout section="fleet">
           <FleetApp />
         </DefaultLayout>
       </ProtectedRoute>
-      <Route exact path={PAGE_ROUTING_PATHS.overview}>
-        <DefaultLayout section="overview">
-          <IngestManagerOverview />
-        </DefaultLayout>
-      </Route>
-      <Redirect to="/" />
+      <Redirect to={FLEET_ROUTING_PATHS.policies} />
     </Switch>
   );
 });

@@ -37,7 +37,7 @@ export function PackageCard({
   if ('savedObject' in restProps) {
     urlVersion = restProps.savedObject.attributes.version || version;
   }
-
+  console.log(getHref('integration_details', { pkgkey: `${name}-${urlVersion}` }));
   return (
     <Card
       title={title || ''}

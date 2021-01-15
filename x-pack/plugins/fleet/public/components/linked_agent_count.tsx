@@ -7,8 +7,8 @@
 
 import React, { memo } from 'react';
 import { EuiLink, EuiLinkAnchorProps } from '@elastic/eui';
-import { useLink } from '../../../hooks';
-import { AGENT_SAVED_OBJECT_TYPE } from '../../../constants';
+import { useLink } from '../hooks';
+import { AGENT_SAVED_OBJECT_TYPE } from '../constants';
 
 /**
  * Displays the provided `count` number as a link to the Agents list if it is greater than zero

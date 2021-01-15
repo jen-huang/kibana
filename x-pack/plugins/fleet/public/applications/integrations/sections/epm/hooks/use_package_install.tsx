@@ -93,7 +93,7 @@ function usePackageInstall({ notifications }: { notifications: NotificationsStar
           const settingsPath = getPath('integration_details', {
             pkgkey: `${name}-${version}`,
             panel: 'settings',
-          });
+          })[1];
           history.push(settingsPath);
         }
         notifications.toasts.addSuccess({

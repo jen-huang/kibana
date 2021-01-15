@@ -19,12 +19,12 @@ import {
   KibanaVersionContext,
   sendGetPermissionsCheck,
   sendSetup,
-  useBreadcrumbs,
 } from '../../hooks';
+import { useBreadcrumbs } from './hooks';
 import { Error, Loading } from './components';
 import { IntraAppStateProvider } from '../../hooks/use_intra_app_state';
 import { PackageInstallProvider } from './sections/epm/hooks';
-import { PAGE_ROUTING_PATHS } from '../../constants';
+import { INTEGRATION_ROUTING_PATHS } from '../../constants';
 import { DefaultLayout, WithoutHeaderLayout } from './layouts';
 import { EPMApp } from './sections/epm';
 import { DataStreamApp } from './sections/data_stream';
@@ -49,7 +49,7 @@ const Panel = styled(EuiPanel)`
 `;
 
 export const WithPermissionsAndSetup: React.FC = memo(({ children }) => {
-  useBreadcrumbs('base');
+  useBreadcrumbs('integrations_base');
 
   const [isPermissionsLoading, setIsPermissionsLoading] = useState<boolean>(false);
   const [permissionsError, setPermissionsError] = useState<string>();
@@ -216,12 +216,12 @@ export const IntegrationsAppContext: React.FC<{
 export const AppRoutes = memo(() => {
   return (
     <Switch>
-      <Route path={PAGE_ROUTING_PATHS.data_streams}>
+      <Route path={INTEGRATION_ROUTING_PATHS.data_streams}>
         <DefaultLayout section="data_stream">
           <DataStreamApp />
         </DefaultLayout>
       </Route>
-      <Route exact path={PAGE_ROUTING_PATHS.integrations}>
+      <Route path={INTEGRATION_ROUTING_PATHS.integrations}>
         <DefaultLayout section="epm">
           <EPMApp />
         </DefaultLayout>
