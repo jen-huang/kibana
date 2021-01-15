@@ -36,6 +36,7 @@ import {
 } from '../../../../../hooks';
 import { Loading } from '../../../components';
 import { useBreadcrumbs } from '../../../hooks';
+import { useBreadcrumbs as useIntegrationsBreadcrumbs } from '../../../../integrations/hooks';
 import { ConfirmDeployAgentPolicyModal } from '../components';
 import { CreatePackagePolicyPageLayout } from './components';
 import { CreatePackagePolicyFrom, PackagePolicyFormState } from './types';
@@ -477,7 +478,7 @@ const IntegrationBreadcrumb: React.FunctionComponent<{
   pkgTitle: string;
   pkgkey: string;
 }> = ({ pkgTitle, pkgkey }) => {
-  useBreadcrumbs('add_integration_to_policy', { pkgTitle, pkgkey });
+  useIntegrationsBreadcrumbs('add_integration_to_policy', { pkgTitle, pkgkey });
   return null;
 };
 

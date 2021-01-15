@@ -98,11 +98,11 @@ export const AgentPolicyListPage: React.FunctionComponent<{}> = () => {
       if (isOpen !== isCreateAgentPolicyFlyoutOpen) {
         if (isOpen) {
           history.push(
-            `${getPath('policies_list')}?${toUrlParams({ ...urlParams, create: null })}`
+            `${getPath('policies_list')[1]}?${toUrlParams({ ...urlParams, create: null })}`
           );
         } else {
           const { create, ...params } = urlParams;
-          history.push(`${getPath('policies_list')}?${toUrlParams(params)}`);
+          history.push(`${getPath('policies_list')[1]}?${toUrlParams(params)}`);
         }
       }
     },
