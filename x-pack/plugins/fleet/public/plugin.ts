@@ -21,7 +21,12 @@ import {
 } from '../../../../src/plugins/home/public';
 import { Storage } from '../../../../src/plugins/kibana_utils/public';
 import { LicensingPluginSetup } from '../../licensing/public';
-import { PLUGIN_ID, CheckPermissionsResponse, PostIngestSetupResponse } from '../common';
+import {
+  PLUGIN_ID,
+  INTEGRATIONS_PLUGIN_ID,
+  CheckPermissionsResponse,
+  PostIngestSetupResponse,
+} from '../common';
 import { FLEET_BASE_PATH } from './constants';
 
 import { FleetConfigType } from '../common/types';
@@ -87,7 +92,37 @@ export class FleetPlugin implements Plugin<FleetSetup, FleetStart, FleetSetupDep
     // Set up license service
     licenseService.start(deps.licensing.license$);
 
-    // Register main Fleet app
+    // Register Integrations app
+    core.application.register({
+      id: INTEGRATIONS_PLUGIN_ID,
+      category: DEFAULT_APP_CATEGORIES.management,
+      title: i18n.translate('xpack.fleet.integrations.appTitle', {
+        defaultMessage: 'Integrations',
+      }),
+      order: 9019,
+      euiIconType: 'logoElastic',
+      mount: async (params: AppMountParameters) => {
+        const [coreStartServices, startDepsServices] = (await core.getStartServices()) as [
+          CoreStart,
+          FleetStartDeps,
+          FleetStart
+        ];
+        const startServices: FleetStartServices = {
+          ...coreStartServices,
+          ...startDepsServices,
+          storage: this.storage,
+        };
+        const { renderApp, teardownIntegrations } = await import('./applications/integrations');
+        const unmount = renderApp(startServices, params, config, kibanaVersion, extensions);
+
+        return () => {
+          unmount();
+          teardownIntegrations(startServices);
+        };
+      },
+    });
+
+    // Register Fleet app
     core.application.register({
       id: PLUGIN_ID,
       category: DEFAULT_APP_CATEGORIES.management,

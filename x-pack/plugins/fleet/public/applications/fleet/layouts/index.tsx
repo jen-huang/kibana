@@ -6,5 +6,4 @@
  */
 
 export { DefaultLayout } from './default';
-export { WithHeaderLayout, WithHeaderLayoutProps } from './with_header';
-export { WithoutHeaderLayout } from './without_header';
+export * from '../../../layouts';

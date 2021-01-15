@@ -24,9 +24,12 @@ import {
   PackagePolicyAndAgentPolicy,
   usePackagePoliciesWithAgentPolicy,
 } from './use_package_policies_with_agent_policy';
-import { LinkAndRevision, LinkAndRevisionProps } from '../../../../components';
+import {
+  LinkAndRevision,
+  LinkAndRevisionProps,
+} from '../../../../../../applications/fleet/components';
 import { Persona } from './persona';
-import { LinkedAgentCount } from '../../../../components/linked_agent_count';
+import { LinkedAgentCount } from '../../../../../../applications/fleet/components/linked_agent_count';
 
 const IntegrationDetailsLink = memo<{
   packagePolicy: PackagePolicyAndAgentPolicy['packagePolicy'];

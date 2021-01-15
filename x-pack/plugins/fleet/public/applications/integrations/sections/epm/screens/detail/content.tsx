@@ -17,7 +17,7 @@ import { OverviewPanel } from './overview_panel';
 import { PackagePoliciesPanel } from './package_policies_panel';
 import { SettingsPanel } from './settings_panel';
 import { useUIExtension } from '../../../../../../hooks/use_ui_extension';
-import { ExtensionWrapper } from '../../../../components/extension_wrapper';
+import { ExtensionWrapper } from '../../../../../../applications/fleet/components/extension_wrapper';
 import { useLink } from '../../../../../../hooks';
 import { pkgKeyFromPackageInfo } from '../../../../../../services/pkg_key_from_package_info';
 
