@@ -25,7 +25,6 @@ import { FormattedMessage, FormattedDate } from '@kbn/i18n/react';
 import { useHistory } from 'react-router-dom';
 import { AgentPolicy } from '../../../../../types';
 import { AGENT_POLICY_SAVED_OBJECT_TYPE } from '../../../../../constants';
-import { WithHeaderLayout } from '../../../layouts';
 import {
   useCapabilities,
   useGetAgentPolicies,
@@ -39,37 +38,6 @@ import { useBreadcrumbs } from '../../../hooks';
 import { LinkAndRevision, SearchBar, LinkedAgentCount } from '../../../components';
 import { AgentPolicyActionMenu } from '../components';
 import { CreateAgentPolicyFlyout } from './components';
-
-const AgentPolicyListPageLayout: React.FunctionComponent = ({ children }) => (
-  <WithHeaderLayout
-    leftColumn={
-      <EuiFlexGroup direction="column" gutterSize="m">
-        <EuiFlexItem>
-          <EuiText>
-            <h1>
-              <FormattedMessage
-                id="xpack.fleet.agentPolicyList.pageTitle"
-                defaultMessage="Agent policies"
-              />
-            </h1>
-          </EuiText>
-        </EuiFlexItem>
-        <EuiFlexItem>
-          <EuiText color="subdued">
-            <p>
-              <FormattedMessage
-                id="xpack.fleet.agentPolicyList.pageSubtitle"
-                defaultMessage="Use agent policies to manage your agents and the data they collect."
-              />
-            </p>
-          </EuiText>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-    }
-  >
-    {children}
-  </WithHeaderLayout>
-);
 
 export const AgentPolicyListPage: React.FunctionComponent<{}> = () => {
   useBreadcrumbs('policies_list');
@@ -251,7 +219,7 @@ export const AgentPolicyListPage: React.FunctionComponent<{}> = () => {
   };
 
   return (
-    <AgentPolicyListPageLayout>
+    <>
       {isCreateAgentPolicyFlyoutOpen ? (
         <CreateAgentPolicyFlyout
           onClose={() => {
@@ -327,6 +295,6 @@ export const AgentPolicyListPage: React.FunctionComponent<{}> = () => {
         sorting={{ sort: sorting }}
         onChange={onTableChange}
       />
-    </AgentPolicyListPageLayout>
+    </>
   );
 };

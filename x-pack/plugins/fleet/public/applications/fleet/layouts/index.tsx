@@ -6,4 +6,5 @@
  */
 
 export { DefaultLayout } from './default';
+export { MainLayout } from './main';
 export * from '../../../layouts';

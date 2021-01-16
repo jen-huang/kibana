@@ -16,8 +16,6 @@ import { AgentListPage } from './agent_list_page';
 import { SetupPage } from './setup_page';
 import { AgentDetailsPage } from './agent_details_page';
 import { NoAccessPage } from './error_pages/no_access';
-import { EnrollmentTokenListPage } from './enrollment_token_list_page';
-import { ListLayout } from './components/list_layout';
 import { WithoutHeaderLayout } from '../../layouts';
 
 export const FleetApp: React.FunctionComponent = () => {
@@ -63,24 +61,13 @@ export const FleetApp: React.FunctionComponent = () => {
   return (
     <Router>
       <Switch>
-        <Route
-          path={FLEET_ROUTING_PATHS.fleet}
-          exact={true}
-          render={() => <Redirect to={FLEET_ROUTING_PATHS.fleet_agent_list} />}
-        />
         <Route path={FLEET_ROUTING_PATHS.fleet_agent_details}>
           <AgentDetailsPage />
         </Route>
         <Route path={FLEET_ROUTING_PATHS.fleet_agent_list}>
-          <ListLayout>
-            <AgentListPage />
-          </ListLayout>
+          <AgentListPage />
         </Route>
-        <Route path={FLEET_ROUTING_PATHS.fleet_enrollment_tokens}>
-          <ListLayout>
-            <EnrollmentTokenListPage />
-          </ListLayout>
-        </Route>
+        <Redirect to={FLEET_ROUTING_PATHS.fleet_agent_list} />
       </Switch>
     </Router>
   );

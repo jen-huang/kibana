@@ -7,15 +7,9 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { EuiTabs, EuiTab, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } from '@elastic/eui';
-import { FormattedMessage } from '@kbn/i18n/react';
-import { Section } from '../sections';
-import { AlphaMessaging, SettingFlyout } from '../components';
-import { useLink, useConfig } from '../../../hooks';
+import { AlphaMessaging } from '../components';
 
 interface Props {
-  showSettings?: boolean;
-  section?: Section;
   children?: React.ReactNode;
 }
 
@@ -34,89 +28,11 @@ const Wrapper = styled.div`
   flex: 1;
 `;
 
-const Nav = styled.nav`
-  background: ${(props) => props.theme.eui.euiColorEmptyShade};
-  border-bottom: ${(props) => props.theme.eui.euiBorderThin};
-  padding: ${(props) =>
-    `${props.theme.eui.euiSize} ${props.theme.eui.euiSizeL} ${props.theme.eui.euiSize} ${props.theme.eui.euiSizeL}`};
-  .euiTabs {
-    padding-left: 3px;
-    margin-left: -3px;
-  }
-`;
-
-export const DefaultLayout: React.FunctionComponent<Props> = ({
-  showSettings = true,
-  section,
-  children,
-}) => {
-  const { getHref } = useLink();
-  const { agents } = useConfig();
-  const [isSettingsFlyoutOpen, setIsSettingsFlyoutOpen] = React.useState(false);
-
+export const DefaultLayout: React.FunctionComponent<Props> = ({ children }) => {
   return (
     <>
-      {isSettingsFlyoutOpen && (
-        <SettingFlyout
-          onClose={() => {
-            setIsSettingsFlyoutOpen(false);
-          }}
-        />
-      )}
       <Container>
-        <Wrapper>
-          <Nav>
-            <EuiFlexGroup gutterSize="l" alignItems="center">
-              <EuiFlexItem>
-                <EuiTabs display="condensed">
-                  <EuiTab isSelected={section === 'agent_policy'} href={getHref('policies_list')}>
-                    <FormattedMessage
-                      id="xpack.fleet.appNavigation.policiesLinkText"
-                      defaultMessage="Policies"
-                    />
-                  </EuiTab>
-                  <EuiTab
-                    isSelected={section === 'fleet'}
-                    href={getHref('fleet')}
-                    disabled={!agents?.enabled}
-                  >
-                    <FormattedMessage
-                      id="xpack.fleet.appNavigation.agentsLinkText"
-                      defaultMessage="Agents"
-                    />
-                  </EuiTab>
-                </EuiTabs>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiFlexGroup gutterSize="s" direction="row">
-                  <EuiFlexItem>
-                    <EuiButtonEmpty
-                      iconType="popout"
-                      href="https://ela.st/ingest-manager-feedback"
-                      target="_blank"
-                    >
-                      <FormattedMessage
-                        id="xpack.fleet.appNavigation.sendFeedbackButton"
-                        defaultMessage="Send feedback"
-                      />
-                    </EuiButtonEmpty>
-                  </EuiFlexItem>
-                  {showSettings ? (
-                    <EuiFlexItem>
-                      <EuiButtonEmpty iconType="gear" onClick={() => setIsSettingsFlyoutOpen(true)}>
-                        <FormattedMessage
-                          id="xpack.fleet.appNavigation.settingsButton"
-                          defaultMessage="Settings"
-                        />
-                      </EuiButtonEmpty>
-                    </EuiFlexItem>
-                  ) : null}
-                </EuiFlexGroup>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-          </Nav>
-          {children}
-        </Wrapper>
+        <Wrapper>{children}</Wrapper>
         <AlphaMessaging />
       </Container>
     </>

@@ -25,11 +25,11 @@ import {
 import { useBreadcrumbs } from './hooks';
 import { Error, Loading } from './components';
 import { IntraAppStateProvider } from '../../hooks/use_intra_app_state';
-// import { PackageInstallProvider } from './sections/epm/hooks';
 import { FLEET_ROUTING_PATHS } from '../../constants';
-import { DefaultLayout, WithoutHeaderLayout } from './layouts';
-import { AgentPolicyApp } from './sections/agent_policy';
+import { DefaultLayout, MainLayout, WithoutHeaderLayout } from './layouts';
+import { AgentPolicyListPage } from './sections/agent_policy';
 import { FleetApp } from './sections/agents';
+import { EnrollmentTokenListPage } from './sections/enrollment_tokens';
 import { ProtectedRoute } from './index';
 import { FleetConfigType, FleetStartServices } from '../../plugin';
 import { UIExtensionsStorage } from '../../types';
@@ -39,7 +39,7 @@ import { UIExtensionsContext } from '../../hooks/use_ui_extension';
 
 const ErrorLayout = ({ children }: { children: JSX.Element }) => (
   <EuiErrorBoundary>
-    <DefaultLayout showSettings={false}>
+    <DefaultLayout>
       <WithoutHeaderLayout>{children}</WithoutHeaderLayout>
     </DefaultLayout>
   </EuiErrorBoundary>
@@ -198,11 +198,7 @@ export const FleetAppContext: React.FC<{
                   <UIExtensionsContext.Provider value={extensions}>
                     <FleetStatusProvider>
                       <IntraAppStateProvider kibanaScopedHistory={history}>
-                        <Router history={routerHistoryInstance}>
-                          {/* <PackageInstallProvider notifications={startServices.notifications}> */}
-                          {children}
-                          {/* </PackageInstallProvider> */}
-                        </Router>
+                        <Router history={routerHistoryInstance}>{children}</Router>
                       </IntraAppStateProvider>
                     </FleetStatusProvider>
                   </UIExtensionsContext.Provider>
@@ -220,18 +216,25 @@ export const AppRoutes = memo(() => {
   const { agents } = useConfig();
 
   return (
-    <Switch>
-      <Route path={FLEET_ROUTING_PATHS.policies}>
-        <DefaultLayout section="agent_policy">
-          <AgentPolicyApp />
-        </DefaultLayout>
-      </Route>
-      <ProtectedRoute path={FLEET_ROUTING_PATHS.fleet} isAllowed={agents.enabled}>
-        <DefaultLayout section="fleet">
-          <FleetApp />
-        </DefaultLayout>
-      </ProtectedRoute>
-      <Redirect to={FLEET_ROUTING_PATHS.policies} />
-    </Switch>
+    <DefaultLayout>
+      <Switch>
+        <Route path={FLEET_ROUTING_PATHS.policies_list}>
+          <MainLayout section="agent_policy">
+            <AgentPolicyListPage />
+          </MainLayout>
+        </Route>
+        <Route path={FLEET_ROUTING_PATHS.fleet_enrollment_tokens}>
+          <MainLayout section="enrollment_token">
+            <EnrollmentTokenListPage />
+          </MainLayout>
+        </Route>
+        <ProtectedRoute path={FLEET_ROUTING_PATHS.fleet} isAllowed={agents.enabled}>
+          <MainLayout section="fleet">
+            <FleetApp />
+          </MainLayout>
+        </ProtectedRoute>
+        <Redirect to={FLEET_ROUTING_PATHS.policies} />
+      </Switch>
+    </DefaultLayout>
   );
 });

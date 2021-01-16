@@ -13,6 +13,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiPopover,
+  EuiButton,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { FormattedMessage } from '@kbn/i18n/react';
@@ -64,6 +65,7 @@ export const SearchAndFilterBar: React.FunctionComponent<{
   onSelectedStatusChange: (selectedStatus: string[]) => void;
   showUpgradeable: boolean;
   onShowUpgradeableChange: (showUpgradeable: boolean) => void;
+  setIsEnrollmentFlyoutOpen: (isOpen: boolean) => void;
 }> = ({
   agentPolicies,
   draftKuery,
@@ -75,6 +77,7 @@ export const SearchAndFilterBar: React.FunctionComponent<{
   onSelectedStatusChange,
   showUpgradeable,
   onShowUpgradeableChange,
+  setIsEnrollmentFlyoutOpen,
 }) => {
   // Policies state for filtering
   const [isAgentPoliciesFilterOpen, setIsAgentPoliciesFilterOpen] = useState<boolean>(false);
@@ -97,116 +100,117 @@ export const SearchAndFilterBar: React.FunctionComponent<{
   return (
     <>
       {/* Search and filter bar */}
-      <EuiFlexGroup alignItems="center">
-        <EuiFlexItem grow={4}>
-          <EuiFlexGroup gutterSize="s">
-            <EuiFlexItem grow={6}>
-              <SearchBar
-                value={draftKuery}
-                onChange={(newSearch, submit) => {
-                  onDraftKueryChange(newSearch);
-                  if (submit) {
-                    onSubmitSearch(newSearch);
-                  }
-                }}
-                fieldPrefix={AGENT_SAVED_OBJECT_TYPE}
-              />
-            </EuiFlexItem>
-            <EuiFlexItem grow={2}>
-              <EuiFilterGroup>
-                <EuiPopover
-                  ownFocus
-                  button={
-                    <EuiFilterButton
-                      iconType="arrowDown"
-                      onClick={() => setIsStatutsFilterOpen(!isStatusFilterOpen)}
-                      isSelected={isStatusFilterOpen}
-                      hasActiveFilters={selectedStatus.length > 0}
-                      numActiveFilters={selectedStatus.length}
-                      disabled={agentPolicies.length === 0}
-                    >
-                      <FormattedMessage
-                        id="xpack.fleet.agentList.statusFilterText"
-                        defaultMessage="Status"
-                      />
-                    </EuiFilterButton>
-                  }
-                  isOpen={isStatusFilterOpen}
-                  closePopover={() => setIsStatutsFilterOpen(false)}
-                  panelPaddingSize="none"
-                >
-                  <div className="euiFilterSelect__items">
-                    {statusFilters.map(({ label, status }, idx) => (
-                      <EuiFilterSelectItem
-                        key={idx}
-                        checked={selectedStatus.includes(status) ? 'on' : undefined}
-                        onClick={() => {
-                          if (selectedStatus.includes(status)) {
-                            onSelectedStatusChange([...selectedStatus.filter((s) => s !== status)]);
-                          } else {
-                            onSelectedStatusChange([...selectedStatus, status]);
-                          }
-                        }}
-                      >
-                        {label}
-                      </EuiFilterSelectItem>
-                    ))}
-                  </div>
-                </EuiPopover>
-                <EuiPopover
-                  ownFocus
-                  button={
-                    <EuiFilterButton
-                      iconType="arrowDown"
-                      onClick={() => setIsAgentPoliciesFilterOpen(!isAgentPoliciesFilterOpen)}
-                      isSelected={isAgentPoliciesFilterOpen}
-                      hasActiveFilters={selectedAgentPolicies.length > 0}
-                      numActiveFilters={selectedAgentPolicies.length}
-                      numFilters={agentPolicies.length}
-                      disabled={agentPolicies.length === 0}
-                    >
-                      <FormattedMessage
-                        id="xpack.fleet.agentList.policyFilterText"
-                        defaultMessage="Agent policy"
-                      />
-                    </EuiFilterButton>
-                  }
-                  isOpen={isAgentPoliciesFilterOpen}
-                  closePopover={() => setIsAgentPoliciesFilterOpen(false)}
-                  panelPaddingSize="none"
-                >
-                  <div className="euiFilterSelect__items">
-                    {agentPolicies.map((agentPolicy, index) => (
-                      <EuiFilterSelectItem
-                        checked={selectedAgentPolicies.includes(agentPolicy.id) ? 'on' : undefined}
-                        key={index}
-                        onClick={() => {
-                          if (selectedAgentPolicies.includes(agentPolicy.id)) {
-                            removeAgentPolicyFilter(agentPolicy.id);
-                          } else {
-                            addAgentPolicyFilter(agentPolicy.id);
-                          }
-                        }}
-                      >
-                        {agentPolicy.name}
-                      </EuiFilterSelectItem>
-                    ))}
-                  </div>
-                </EuiPopover>
+      <EuiFlexGroup alignItems="center" gutterSize="s">
+        <EuiFlexItem grow={6}>
+          <SearchBar
+            value={draftKuery}
+            onChange={(newSearch, submit) => {
+              onDraftKueryChange(newSearch);
+              if (submit) {
+                onSubmitSearch(newSearch);
+              }
+            }}
+            fieldPrefix={AGENT_SAVED_OBJECT_TYPE}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem grow={2}>
+          <EuiFilterGroup>
+            <EuiPopover
+              ownFocus
+              button={
                 <EuiFilterButton
-                  hasActiveFilters={showUpgradeable}
-                  onClick={() => {
-                    onShowUpgradeableChange(!showUpgradeable);
-                  }}
+                  iconType="arrowDown"
+                  onClick={() => setIsStatutsFilterOpen(!isStatusFilterOpen)}
+                  isSelected={isStatusFilterOpen}
+                  hasActiveFilters={selectedStatus.length > 0}
+                  numActiveFilters={selectedStatus.length}
+                  disabled={agentPolicies.length === 0}
                 >
                   <FormattedMessage
-                    id="xpack.fleet.agentList.showUpgradeableFilterLabel"
-                    defaultMessage="Upgrade available"
+                    id="xpack.fleet.agentList.statusFilterText"
+                    defaultMessage="Status"
                   />
                 </EuiFilterButton>
-              </EuiFilterGroup>
-            </EuiFlexItem>
-          </EuiFlexGroup>
+              }
+              isOpen={isStatusFilterOpen}
+              closePopover={() => setIsStatutsFilterOpen(false)}
+              panelPaddingSize="none"
+            >
+              <div className="euiFilterSelect__items">
+                {statusFilters.map(({ label, status }, idx) => (
+                  <EuiFilterSelectItem
+                    key={idx}
+                    checked={selectedStatus.includes(status) ? 'on' : undefined}
+                    onClick={() => {
+                      if (selectedStatus.includes(status)) {
+                        onSelectedStatusChange([...selectedStatus.filter((s) => s !== status)]);
+                      } else {
+                        onSelectedStatusChange([...selectedStatus, status]);
+                      }
+                    }}
+                  >
+                    {label}
+                  </EuiFilterSelectItem>
+                ))}
+              </div>
+            </EuiPopover>
+            <EuiPopover
+              ownFocus
+              button={
+                <EuiFilterButton
+                  iconType="arrowDown"
+                  onClick={() => setIsAgentPoliciesFilterOpen(!isAgentPoliciesFilterOpen)}
+                  isSelected={isAgentPoliciesFilterOpen}
+                  hasActiveFilters={selectedAgentPolicies.length > 0}
+                  numActiveFilters={selectedAgentPolicies.length}
+                  numFilters={agentPolicies.length}
+                  disabled={agentPolicies.length === 0}
+                >
+                  <FormattedMessage
+                    id="xpack.fleet.agentList.policyFilterText"
+                    defaultMessage="Agent policy"
+                  />
+                </EuiFilterButton>
+              }
+              isOpen={isAgentPoliciesFilterOpen}
+              closePopover={() => setIsAgentPoliciesFilterOpen(false)}
+              panelPaddingSize="none"
+            >
+              <div className="euiFilterSelect__items">
+                {agentPolicies.map((agentPolicy, index) => (
+                  <EuiFilterSelectItem
+                    checked={selectedAgentPolicies.includes(agentPolicy.id) ? 'on' : undefined}
+                    key={index}
+                    onClick={() => {
+                      if (selectedAgentPolicies.includes(agentPolicy.id)) {
+                        removeAgentPolicyFilter(agentPolicy.id);
+                      } else {
+                        addAgentPolicyFilter(agentPolicy.id);
+                      }
+                    }}
+                  >
+                    {agentPolicy.name}
+                  </EuiFilterSelectItem>
+                ))}
+              </div>
+            </EuiPopover>
+            <EuiFilterButton
+              hasActiveFilters={showUpgradeable}
+              onClick={() => {
+                onShowUpgradeableChange(!showUpgradeable);
+              }}
+            >
+              <FormattedMessage
+                id="xpack.fleet.agentList.showUpgradeableFilterLabel"
+                defaultMessage="Upgrade available"
+              />
+            </EuiFilterButton>
+          </EuiFilterGroup>
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiButton fill iconType="plusInCircle" onClick={() => setIsEnrollmentFlyoutOpen(true)}>
+            <FormattedMessage id="xpack.fleet.agentList.enrollButton" defaultMessage="Add agent" />
+          </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </>

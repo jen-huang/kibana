@@ -6,5 +6,6 @@
  */
 export { AgentPolicyApp } from './agent_policy';
 export { FleetApp } from './agents';
+export { EnrollmentTokenListPage } from './enrollment_tokens';
 
-export type Section = 'agent_policy' | 'fleet';
+export type Section = 'agent_policy' | 'fleet' | 'enrollment_token';

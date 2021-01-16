@@ -9,10 +9,11 @@ import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { FLEET_ROUTING_PATHS } from '../../../../constants';
 import { useBreadcrumbs } from '../../hooks';
-import { AgentPolicyListPage } from './list_page';
 import { AgentPolicyDetailsPage } from './details_page';
 import { CreatePackagePolicyPage } from './create_package_policy_page';
 import { EditPackagePolicyPage } from './edit_package_policy_page';
+
+export { AgentPolicyListPage } from './list_page';
 
 export const AgentPolicyApp: React.FunctionComponent = () => {
   useBreadcrumbs('policies');
@@ -28,9 +29,6 @@ export const AgentPolicyApp: React.FunctionComponent = () => {
         </Route>
         <Route path={FLEET_ROUTING_PATHS.policy_details}>
           <AgentPolicyDetailsPage />
-        </Route>
-        <Route path={FLEET_ROUTING_PATHS.policies_list}>
-          <AgentPolicyListPage />
         </Route>
       </Switch>
     </Router>

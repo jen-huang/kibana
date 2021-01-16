@@ -538,6 +538,7 @@ export const AgentListPage: React.FunctionComponent<{}> = () => {
         onSelectedStatusChange={setSelectedStatus}
         showUpgradeable={showUpgradeable}
         onShowUpgradeableChange={setShowUpgradeable}
+        setIsEnrollmentFlyoutOpen={setIsEnrollmentFlyoutOpen}
       />
       <EuiSpacer size="m" />
 

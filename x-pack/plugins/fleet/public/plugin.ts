@@ -140,6 +140,13 @@ export class FleetPlugin implements Plugin<FleetSetup, FleetStart, FleetSetupDep
           ...startDepsServices,
           storage: this.storage,
         };
+        // Render Fleet app-wide action menu (Feedback link and Settings)
+        const { renderActionMenu } = await import('./applications/fleet/app_menu');
+        params.setHeaderActionMenu((element) => {
+          return renderActionMenu(startServices, element);
+        });
+
+        // Render Fleet app
         const { renderApp, teardownFleet } = await import('./applications/fleet');
         const unmount = renderApp(startServices, params, config, kibanaVersion, extensions);
 

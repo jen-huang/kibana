@@ -45,11 +45,11 @@ export const FLEET_ROUTING_PATHS = {
   policy_details_settings: '/policies/:policyId/settings',
   add_integration_from_policy: '/policies/:policyId/add-integration',
   edit_integration: '/policies/:policyId/edit-integration/:packagePolicyId',
-  fleet: '/fleet',
-  fleet_agent_list: '/fleet/agents',
-  fleet_agent_details: '/fleet/agents/:agentId/:tabId?',
-  fleet_agent_details_logs: '/fleet/agents/:agentId/logs',
-  fleet_enrollment_tokens: '/fleet/enrollment-tokens',
+  fleet: '/agents',
+  fleet_agent_list: '/agents',
+  fleet_agent_details: '/agents/:agentId/:tabId?',
+  fleet_agent_details_logs: '/agents/:agentId/logs',
+  fleet_enrollment_tokens: '/enrollment-tokens',
 };
 
 // If routing paths are changed here, please also check to see if
@@ -98,15 +98,12 @@ export const pagePathGetters: {
     FLEET_BASE_PATH,
     `/policies/${policyId}/edit-integration/${packagePolicyId}`,
   ],
-  fleet: () => [FLEET_BASE_PATH, '/fleet'],
-  fleet_agent_list: ({ kuery }) => [
-    FLEET_BASE_PATH,
-    `/fleet/agents${kuery ? `?kuery=${kuery}` : ''}`,
-  ],
+  fleet: () => [FLEET_BASE_PATH, '/agents'],
+  fleet_agent_list: ({ kuery }) => [FLEET_BASE_PATH, `/agents${kuery ? `?kuery=${kuery}` : ''}`],
   fleet_agent_details: ({ agentId, tabId, logQuery }) => [
     FLEET_BASE_PATH,
-    `/fleet/agents/${agentId}${tabId ? `/${tabId}` : ''}${logQuery ? `?_q=${logQuery}` : ''}`,
+    `/agents/${agentId}${tabId ? `/${tabId}` : ''}${logQuery ? `?_q=${logQuery}` : ''}`,
   ],
-  fleet_enrollment_tokens: () => [FLEET_BASE_PATH, '/fleet/enrollment-tokens'],
+  fleet_enrollment_tokens: () => [FLEET_BASE_PATH, '/enrollment-tokens'],
   data_streams: () => [INTEGRATIONS_BASE_PATH, '/data-streams'],
 };
