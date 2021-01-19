@@ -32,30 +32,38 @@ export const FleetApp: React.FunctionComponent = () => {
 
   if (fleetStatus.error) {
     return (
-      <WithoutHeaderLayout>
-        <Error
-          title={
-            <FormattedMessage
-              id="xpack.fleet.agentsInitializationErrorMessageTitle"
-              defaultMessage="Unable to initialize central management for Elastic Agents"
-            />
-          }
-          error={fleetStatus.error}
-        />
-      </WithoutHeaderLayout>
+      <MainLayout section="fleet">
+        <WithoutHeaderLayout>
+          <Error
+            title={
+              <FormattedMessage
+                id="xpack.fleet.agentsInitializationErrorMessageTitle"
+                defaultMessage="Unable to initialize central management for Elastic Agents"
+              />
+            }
+            error={fleetStatus.error}
+          />
+        </WithoutHeaderLayout>
+      </MainLayout>
     );
   }
 
   if (fleetStatus.isReady === false) {
     return (
-      <SetupPage
-        missingRequirements={fleetStatus.missingRequirements || []}
-        refresh={fleetStatus.refresh}
-      />
+      <MainLayout section="fleet">
+        <SetupPage
+          missingRequirements={fleetStatus.missingRequirements || []}
+          refresh={fleetStatus.refresh}
+        />
+      </MainLayout>
     );
   }
   if (!capabilities.read) {
-    return <NoAccessPage />;
+    return (
+      <MainLayout section="fleet">
+        <NoAccessPage />
+      </MainLayout>
+    );
   }
 
   return (
