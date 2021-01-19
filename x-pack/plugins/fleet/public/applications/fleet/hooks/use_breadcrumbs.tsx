@@ -92,12 +92,6 @@ const breadcrumbGetters: {
   fleet_enrollment_tokens: () => [
     BASE_BREADCRUMB,
     {
-      href: pagePathGetters.fleet()[1],
-      text: i18n.translate('xpack.fleet.breadcrumbs.agentsPageTitle', {
-        defaultMessage: 'Agents',
-      }),
-    },
-    {
       text: i18n.translate('xpack.fleet.breadcrumbs.enrollmentTokensPageTitle', {
         defaultMessage: 'Enrollment tokens',
       }),

@@ -16,7 +16,7 @@ import { AgentListPage } from './agent_list_page';
 import { SetupPage } from './setup_page';
 import { AgentDetailsPage } from './agent_details_page';
 import { NoAccessPage } from './error_pages/no_access';
-import { WithoutHeaderLayout } from '../../layouts';
+import { WithoutHeaderLayout, MainLayout } from '../../layouts';
 
 export const FleetApp: React.FunctionComponent = () => {
   useBreadcrumbs('fleet');
@@ -65,7 +65,9 @@ export const FleetApp: React.FunctionComponent = () => {
           <AgentDetailsPage />
         </Route>
         <Route path={FLEET_ROUTING_PATHS.fleet_agent_list}>
-          <AgentListPage />
+          <MainLayout section="fleet">
+            <AgentListPage />
+          </MainLayout>
         </Route>
         <Redirect to={FLEET_ROUTING_PATHS.fleet_agent_list} />
       </Switch>

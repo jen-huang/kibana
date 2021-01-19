@@ -29,9 +29,10 @@ import {
   useStartServices,
   sendDeleteOneEnrollmentAPIKey,
 } from '../../../../hooks';
-import { useBreadcrumbs } from '../../hooks';
 import { EnrollmentAPIKey } from '../../../../types';
+import { useBreadcrumbs } from '../../hooks';
 import { SearchBar } from '../../components';
+import { MainLayout } from '../../layouts';
 import { NewEnrollmentTokenFlyout } from './components/new_enrollment_key_flyout';
 import { ConfirmEnrollmentTokenDelete } from './components/confirm_delete_modal';
 
@@ -152,7 +153,7 @@ const DeleteButton: React.FunctionComponent<{ apiKey: EnrollmentAPIKey; refresh:
   );
 };
 
-export const EnrollmentTokenListPage: React.FunctionComponent<{}> = () => {
+export const EnrollmentTokenApp: React.FunctionComponent<{}> = () => {
   useBreadcrumbs('fleet_enrollment_tokens');
   const [flyoutOpen, setFlyoutOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -253,7 +254,7 @@ export const EnrollmentTokenListPage: React.FunctionComponent<{}> = () => {
   ];
 
   return (
-    <>
+    <MainLayout section="enrollment_token">
       {flyoutOpen && (
         <NewEnrollmentTokenFlyout
           agentPolicies={agentPolicies}
@@ -328,6 +329,6 @@ export const EnrollmentTokenListPage: React.FunctionComponent<{}> = () => {
           setPagination(newPagination);
         }}
       />
-    </>
+    </MainLayout>
   );
 };

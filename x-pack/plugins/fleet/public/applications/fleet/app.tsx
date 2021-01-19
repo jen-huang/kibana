@@ -26,10 +26,10 @@ import { useBreadcrumbs } from './hooks';
 import { Error, Loading } from './components';
 import { IntraAppStateProvider } from '../../hooks/use_intra_app_state';
 import { FLEET_ROUTING_PATHS } from '../../constants';
-import { DefaultLayout, MainLayout, WithoutHeaderLayout } from './layouts';
-import { AgentPolicyListPage } from './sections/agent_policy';
+import { DefaultLayout, WithoutHeaderLayout } from './layouts';
+import { AgentPolicyApp } from './sections/agent_policy';
 import { FleetApp } from './sections/agents';
-import { EnrollmentTokenListPage } from './sections/enrollment_tokens';
+import { EnrollmentTokenApp } from './sections/enrollment_tokens';
 import { ProtectedRoute } from './index';
 import { FleetConfigType, FleetStartServices } from '../../plugin';
 import { UIExtensionsStorage } from '../../types';
@@ -218,22 +218,23 @@ export const AppRoutes = memo(() => {
   return (
     <DefaultLayout>
       <Switch>
-        <Route path={FLEET_ROUTING_PATHS.policies_list}>
-          <MainLayout section="agent_policy">
-            <AgentPolicyListPage />
-          </MainLayout>
+        <Route path={FLEET_ROUTING_PATHS.policies}>
+          <AgentPolicyApp />
         </Route>
-        <Route path={FLEET_ROUTING_PATHS.fleet_enrollment_tokens}>
-          <MainLayout section="enrollment_token">
-            <EnrollmentTokenListPage />
-          </MainLayout>
-        </Route>
-        <ProtectedRoute path={FLEET_ROUTING_PATHS.fleet} isAllowed={agents.enabled}>
-          <MainLayout section="fleet">
-            <FleetApp />
-          </MainLayout>
+        <ProtectedRoute path={FLEET_ROUTING_PATHS.fleet_agent_list} isAllowed={agents.enabled}>
+          <FleetApp />
         </ProtectedRoute>
-        <Redirect to={FLEET_ROUTING_PATHS.policies} />
+        <ProtectedRoute
+          path={FLEET_ROUTING_PATHS.fleet_enrollment_tokens}
+          isAllowed={agents.enabled}
+        >
+          <EnrollmentTokenApp />
+        </ProtectedRoute>
+        {agents.enabled ? (
+          <Redirect to={FLEET_ROUTING_PATHS.fleet_agent_list} />
+        ) : (
+          <Redirect to={FLEET_ROUTING_PATHS.policies_list} />
+        )}
       </Switch>
     </DefaultLayout>
   );

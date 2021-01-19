@@ -4,7 +4,7 @@
  * you may not use this file except in compliance with the Elastic License.
  */
 import React, { memo } from 'react';
-import { EuiText, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { EuiText, EuiFlexGroup, EuiFlexItem, EuiBetaBadge } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { useLink } from '../../../hooks';
 import { Section } from '../sections';
@@ -25,7 +25,16 @@ export const MainLayout: React.FunctionComponent<Props> = memo(({ section, child
           <EuiFlexItem>
             <EuiText>
               <h1>
-                <FormattedMessage id="xpack.fleet.appTitle" defaultMessage="Fleet" />
+                <FormattedMessage id="xpack.fleet.appTitle" defaultMessage="Fleet" />{' '}
+                <EuiBetaBadge
+                  label={<FormattedMessage id="xpack.fleet.betaLabel" defaultMessage="Beta" />}
+                  tooltipContent={
+                    <FormattedMessage
+                      id="xpack.fleet.alphaMessageDescription"
+                      defaultMessage="Fleet is not recommended for production environments."
+                    />
+                  }
+                />
               </h1>
             </EuiText>
           </EuiFlexItem>
@@ -45,22 +54,22 @@ export const MainLayout: React.FunctionComponent<Props> = memo(({ section, child
         {
           name: (
             <FormattedMessage
-              id="xpack.fleet.appNavigation.policiesLinkText"
-              defaultMessage="Agent policies"
-            />
-          ),
-          isSelected: section === 'agent_policy',
-          href: getHref('policies_list'),
-        },
-        {
-          name: (
-            <FormattedMessage
               id="xpack.fleet.appNavigation.agentsLinkText"
               defaultMessage="Agents"
             />
           ),
           isSelected: section === 'fleet',
           href: getHref('fleet_agent_list'),
+        },
+        {
+          name: (
+            <FormattedMessage
+              id="xpack.fleet.appNavigation.policiesLinkText"
+              defaultMessage="Agent policies"
+            />
+          ),
+          isSelected: section === 'agent_policy',
+          href: getHref('policies_list'),
         },
         {
           name: (
