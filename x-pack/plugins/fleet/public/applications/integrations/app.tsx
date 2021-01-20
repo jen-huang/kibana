@@ -36,7 +36,7 @@ import { UIExtensionsContext } from '../../hooks/use_ui_extension';
 
 const ErrorLayout = ({ children }: { children: JSX.Element }) => (
   <EuiErrorBoundary>
-    <DefaultLayout showSettings={false}>
+    <DefaultLayout>
       <WithoutHeaderLayout>{children}</WithoutHeaderLayout>
     </DefaultLayout>
   </EuiErrorBoundary>
@@ -215,18 +215,16 @@ export const IntegrationsAppContext: React.FC<{
 
 export const AppRoutes = memo(() => {
   return (
-    <Switch>
-      <Route path={INTEGRATION_ROUTING_PATHS.data_streams}>
-        <DefaultLayout section="data_stream">
+    <DefaultLayout>
+      <Switch>
+        <Route path={INTEGRATION_ROUTING_PATHS.data_streams}>
           <DataStreamApp />
-        </DefaultLayout>
-      </Route>
-      <Route path={INTEGRATION_ROUTING_PATHS.integrations}>
-        <DefaultLayout section="epm">
+        </Route>
+        <Route path={INTEGRATION_ROUTING_PATHS.integrations}>
           <EPMApp />
-        </DefaultLayout>
-      </Route>
-      <Redirect to="/" />
-    </Switch>
+        </Route>
+        <Redirect to={INTEGRATION_ROUTING_PATHS.integrations_all} />
+      </Switch>
+    </DefaultLayout>
   );
 });

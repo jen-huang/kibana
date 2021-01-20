@@ -3,7 +3,7 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-import React, { Fragment } from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { EuiPage, EuiPageBody, EuiSpacer } from '@elastic/eui';
 
@@ -25,15 +25,13 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export const WithoutHeaderLayout: React.FC<Props> = ({ restrictWidth, children }) => (
-  <Fragment>
-    <Page restrictWidth={restrictWidth || 1200}>
-      <EuiPageBody>
-        <ContentWrapper>
-          <EuiSpacer size="m" />
-          {children}
-        </ContentWrapper>
-      </EuiPageBody>
-    </Page>
-  </Fragment>
-);
+export const WithoutHeaderLayout: React.FC<Props> = memo(({ restrictWidth, children }) => (
+  <Page restrictWidth={restrictWidth || 1200}>
+    <EuiPageBody>
+      <ContentWrapper>
+        <EuiSpacer size="m" />
+        {children}
+      </ContentWrapper>
+    </EuiPageBody>
+  </Page>
+));

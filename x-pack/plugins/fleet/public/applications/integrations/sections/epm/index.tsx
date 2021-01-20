@@ -9,8 +9,9 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { INTEGRATION_ROUTING_PATHS } from '../../../../constants';
 import { useBreadcrumbs } from '../../hooks';
+import { MainLayout } from '../../layouts';
 import { CreatePackagePolicyPage } from '../../../../applications/fleet/sections/agent_policy/create_package_policy_page';
-import { EPMHomePage } from './screens/home';
+import { InstalledPackages, AvailablePackages } from './screens/home';
 import { Detail } from './screens/detail';
 import { Policy } from './screens/policy';
 
@@ -28,8 +29,15 @@ export const EPMApp: React.FunctionComponent = () => {
       <Route path={INTEGRATION_ROUTING_PATHS.integration_details}>
         <Detail />
       </Route>
-      <Route path={INTEGRATION_ROUTING_PATHS.integrations}>
-        <EPMHomePage />
+      <Route path={INTEGRATION_ROUTING_PATHS.integrations_installed}>
+        <MainLayout section="manage">
+          <InstalledPackages />
+        </MainLayout>
+      </Route>
+      <Route path={INTEGRATION_ROUTING_PATHS.integrations_all}>
+        <MainLayout section="browse">
+          <AvailablePackages />
+        </MainLayout>
       </Route>
     </Switch>
   );

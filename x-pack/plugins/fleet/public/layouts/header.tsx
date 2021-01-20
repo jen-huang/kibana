@@ -49,40 +49,42 @@ const HeaderColumns: React.FC<Omit<HeaderProps, 'tabs'>> = memo(
   )
 );
 
-export const Header: React.FC<HeaderProps> = ({
-  leftColumn,
-  rightColumn,
-  rightColumnGrow,
-  tabs,
-  maxWidth,
-  tabsClassName,
-  'data-test-subj': dataTestSubj,
-}) => (
-  <Container data-test-subj={dataTestSubj}>
-    <Wrapper maxWidth={maxWidth}>
-      <HeaderColumns
-        leftColumn={leftColumn}
-        rightColumn={rightColumn}
-        rightColumnGrow={rightColumnGrow}
-      />
-      <EuiFlexGroup>
-        {tabs ? (
-          <EuiFlexItem>
-            <EuiSpacer size="s" />
-            <Tabs className={tabsClassName}>
-              {tabs.map((props, index) => (
-                <EuiTab {...(props as EuiTabProps)} key={props.id || index}>
-                  {props.name}
-                </EuiTab>
-              ))}
-            </Tabs>
-          </EuiFlexItem>
-        ) : (
-          <EuiFlexItem>
-            <EuiSpacer size="l" />
-          </EuiFlexItem>
-        )}
-      </EuiFlexGroup>
-    </Wrapper>
-  </Container>
+export const Header: React.FC<HeaderProps> = memo(
+  ({
+    leftColumn,
+    rightColumn,
+    rightColumnGrow,
+    tabs,
+    maxWidth,
+    tabsClassName,
+    'data-test-subj': dataTestSubj,
+  }) => (
+    <Container data-test-subj={dataTestSubj}>
+      <Wrapper maxWidth={maxWidth}>
+        <HeaderColumns
+          leftColumn={leftColumn}
+          rightColumn={rightColumn}
+          rightColumnGrow={rightColumnGrow}
+        />
+        <EuiFlexGroup>
+          {tabs ? (
+            <EuiFlexItem>
+              <EuiSpacer size="s" />
+              <Tabs className={tabsClassName}>
+                {tabs.map((props, index) => (
+                  <EuiTab {...(props as EuiTabProps)} key={props.id || index}>
+                    {props.name}
+                  </EuiTab>
+                ))}
+              </Tabs>
+            </EuiFlexItem>
+          ) : (
+            <EuiFlexItem>
+              <EuiSpacer size="l" />
+            </EuiFlexItem>
+          )}
+        </EuiFlexGroup>
+      </Wrapper>
+    </Container>
+  )
 );

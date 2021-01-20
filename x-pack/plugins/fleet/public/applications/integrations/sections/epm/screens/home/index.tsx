@@ -6,63 +6,16 @@
  */
 
 import React, { useState } from 'react';
-import { useRouteMatch, Switch, Route, useLocation, useHistory } from 'react-router-dom';
-import { Props as EuiTabProps } from '@elastic/eui/src/components/tabs/tab';
+import { useLocation, useHistory } from 'react-router-dom';
 import { i18n } from '@kbn/i18n';
 import { installationStatuses } from '../../../../../../../common/constants';
-import { INTEGRATION_ROUTING_PATHS } from '../../../../../../constants';
-import { useLink, useGetCategories, useGetPackages } from '../../../../../../hooks';
+import { useGetCategories, useGetPackages } from '../../../../../../hooks';
 import { useBreadcrumbs } from '../../../../hooks';
-import { WithHeaderLayout } from '../../../../layouts';
 import { CategorySummaryItem } from '../../../../../../types';
 import { PackageListGrid } from '../../components/package_list_grid';
 import { CategoryFacets } from './category_facets';
-import { HeroCopy, HeroImage } from './header';
 
-export function EPMHomePage() {
-  const {
-    params: { tabId },
-  } = useRouteMatch<{ tabId?: string }>();
-  const { getHref } = useLink();
-
-  return (
-    <WithHeaderLayout
-      leftColumn={<HeroCopy />}
-      rightColumn={<HeroImage />}
-      tabs={
-        ([
-          {
-            id: 'all_packages',
-            name: i18n.translate('xpack.fleet.epmList.allTabText', {
-              defaultMessage: 'All integrations',
-            }),
-            href: getHref('integrations_all'),
-            isSelected: tabId !== 'installed',
-          },
-          {
-            id: 'installed_packages',
-            name: i18n.translate('xpack.fleet.epmList.installedTabText', {
-              defaultMessage: 'Installed integrations',
-            }),
-            href: getHref('integrations_installed'),
-            isSelected: tabId === 'installed',
-          },
-        ] as unknown) as EuiTabProps[]
-      }
-    >
-      <Switch>
-        <Route path={INTEGRATION_ROUTING_PATHS.integrations_installed}>
-          <InstalledPackages />
-        </Route>
-        <Route path={INTEGRATION_ROUTING_PATHS.integrations_all}>
-          <AvailablePackages />
-        </Route>
-      </Switch>
-    </WithHeaderLayout>
-  );
-}
-
-function InstalledPackages() {
+export function InstalledPackages() {
   useBreadcrumbs('integrations_installed');
   const { data: allPackages, isLoading: isLoadingPackages } = useGetPackages({
     experimental: true,
@@ -117,7 +70,7 @@ function InstalledPackages() {
   );
 }
 
-function AvailablePackages() {
+export function AvailablePackages() {
   useBreadcrumbs('integrations_all');
   const history = useHistory();
   const queryParams = new URLSearchParams(useLocation().search);

@@ -4,10 +4,8 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
-
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
-import { AlphaMessaging } from '../components';
 
 interface Props {
   children?: React.ReactNode;
@@ -28,13 +26,10 @@ const Wrapper = styled.div`
   flex: 1;
 `;
 
-export const DefaultLayout: React.FunctionComponent<Props> = ({ children }) => {
+export const DefaultLayout: React.FunctionComponent<Props> = memo(({ children }) => {
   return (
-    <>
-      <Container>
-        <Wrapper>{children}</Wrapper>
-        <AlphaMessaging />
-      </Container>
-    </>
+    <Container>
+      <Wrapper>{children}</Wrapper>
+    </Container>
   );
-};
+});

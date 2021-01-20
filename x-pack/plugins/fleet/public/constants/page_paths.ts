@@ -55,9 +55,9 @@ export const FLEET_ROUTING_PATHS = {
 // If routing paths are changed here, please also check to see if
 // `pagePathGetters()`, below, needs any modifications
 export const INTEGRATION_ROUTING_PATHS = {
-  integrations: '/:tabId?',
-  integrations_all: '/',
-  integrations_installed: '/installed',
+  integrations: '/(browse|manage)',
+  integrations_all: '/browse',
+  integrations_installed: '/manage',
   integration_details: '/detail/:pkgkey/:panel?',
   integration_policy_edit: '/edit/:packagePolicyId',
   add_integration_to_policy: '/:pkgkey/add-integration',
@@ -73,8 +73,8 @@ export const pagePathGetters: {
   fleet_base: () => [FLEET_BASE_PATH, '/'],
   integrations_base: () => [INTEGRATIONS_BASE_PATH, '/'],
   integrations: () => [INTEGRATIONS_BASE_PATH, '/'],
-  integrations_all: () => [INTEGRATIONS_BASE_PATH, '/'],
-  integrations_installed: () => [INTEGRATIONS_BASE_PATH, '/installed'],
+  integrations_all: () => [INTEGRATIONS_BASE_PATH, '/browse'],
+  integrations_installed: () => [INTEGRATIONS_BASE_PATH, '/manage'],
   integration_details: ({ pkgkey, panel }) => [
     INTEGRATIONS_BASE_PATH,
     `/detail/${pkgkey}${panel ? `/${panel}` : ''}`,

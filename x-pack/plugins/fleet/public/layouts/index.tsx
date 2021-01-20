@@ -3,5 +3,6 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
+export { DefaultLayout } from './default';
 export { WithHeaderLayout, WithHeaderLayoutProps } from './with_header';
 export { WithoutHeaderLayout } from './without_header';

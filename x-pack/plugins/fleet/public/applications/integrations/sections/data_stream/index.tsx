@@ -4,20 +4,14 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
-
-import React from 'react';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import { INTEGRATION_ROUTING_PATHS } from '../../../../constants';
+import React, { memo } from 'react';
+import { MainLayout } from '../../layouts';
 import { DataStreamListPage } from './list_page';
 
-export const DataStreamApp: React.FunctionComponent = () => {
+export const DataStreamApp: React.FunctionComponent = memo(() => {
   return (
-    <Router>
-      <Switch>
-        <Route path={INTEGRATION_ROUTING_PATHS.data_streams}>
-          <DataStreamListPage />
-        </Route>
-      </Switch>
-    </Router>
+    <MainLayout section="data_streams">
+      <DataStreamListPage />
+    </MainLayout>
   );
-};
+});
