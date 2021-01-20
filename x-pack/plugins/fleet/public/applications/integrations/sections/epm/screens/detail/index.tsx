@@ -40,7 +40,7 @@ import { UpdateIcon } from '../../components/icons';
 import { Content } from './content';
 import './index.scss';
 import { useUIExtension } from '../../../../../../hooks/use_ui_extension';
-import { PLUGIN_ID } from '../../../../../../../common/constants';
+import { INTEGRATIONS_PLUGIN_ID } from '../../../../../../../common/constants';
 import { pkgKeyFromPackageInfo } from '../../../../../../services/pkg_key_from_package_info';
 import { IntegrationAgentPolicyCount } from './integration_agent_policy_count';
 
@@ -195,7 +195,7 @@ export function Detail() {
       });
       const redirectToPath: CreatePackagePolicyRouteState['onSaveNavigateTo'] &
         CreatePackagePolicyRouteState['onCancelNavigateTo'] = [
-        PLUGIN_ID,
+        INTEGRATIONS_PLUGIN_ID,
         {
           path: currentPath,
         },

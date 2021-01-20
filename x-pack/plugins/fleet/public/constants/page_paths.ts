@@ -55,7 +55,7 @@ export const FLEET_ROUTING_PATHS = {
 // If routing paths are changed here, please also check to see if
 // `pagePathGetters()`, below, needs any modifications
 export const INTEGRATION_ROUTING_PATHS = {
-  integrations: '/(browse|manage)',
+  integrations: '/:tabId',
   integrations_all: '/browse',
   integrations_installed: '/manage',
   integration_details: '/detail/:pkgkey/:panel?',
