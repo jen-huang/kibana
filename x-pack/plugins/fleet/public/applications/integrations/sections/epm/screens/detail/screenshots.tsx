@@ -7,14 +7,7 @@
 import React, { useState, useMemo, memo } from 'react';
 import { i18n } from '@kbn/i18n';
 import { FormattedMessage } from '@kbn/i18n/react';
-import {
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiImage,
-  EuiText,
-  EuiTextColor,
-  EuiButtonIcon,
-} from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiImage, EuiText, EuiPagination } from '@elastic/eui';
 import { ScreenshotItem } from '../../../../../../types';
 import { useLinks } from '../../hooks';
 
@@ -37,8 +30,13 @@ export const Screenshots: React.FC<ScreenshotProps> = memo(({ images, packageNam
     <EuiFlexGroup direction="column" gutterSize="s">
       {/* Title with carousel navigation */}
       <EuiFlexItem>
-        <EuiFlexGroup direction="row" alignItems="center">
-          <EuiFlexItem>
+        <EuiFlexGroup
+          direction="row"
+          alignItems="center"
+          gutterSize="xs"
+          justifyContent="spaceBetween"
+        >
+          <EuiFlexItem grow={false}>
             <EuiText>
               <h4>
                 <FormattedMessage
@@ -49,44 +47,18 @@ export const Screenshots: React.FC<ScreenshotProps> = memo(({ images, packageNam
             </EuiText>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiFlexGroup gutterSize="xs" alignItems="center">
-              <EuiFlexItem grow={false}>
-                <EuiButtonIcon
-                  iconType="arrowLeft"
-                  color="text"
-                  isDisabled={currentImageIndex === 0}
-                  onClick={() => setCurrentImageIndex(Math.max(currentImageIndex - 1, 0))}
-                />
-              </EuiFlexItem>
-              <EuiFlexItem>
-                <EuiText className="eui-textNoWrap" size="s">
-                  <FormattedMessage
-                    id="xpack.fleet.epm.screenshotsNavigationLinkText"
-                    defaultMessage="{currentImage} of {totalImages}"
-                    values={{
-                      currentImage: (
-                        <EuiTextColor color="secondary">
-                          <strong>
-                            <u>{currentImageIndex + 1}</u>
-                          </strong>
-                        </EuiTextColor>
-                      ),
-                      totalImages: maxImageIndex + 1,
-                    }}
-                  />
-                </EuiText>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiButtonIcon
-                  iconType="arrowRight"
-                  color="text"
-                  isDisabled={currentImageIndex === maxImageIndex}
-                  onClick={() =>
-                    setCurrentImageIndex(Math.min(currentImageIndex + 1, maxImageIndex))
-                  }
-                />
-              </EuiFlexItem>
-            </EuiFlexGroup>
+            <EuiPagination
+              aria-label={i18n.translate('xpack.fleet.epm.screenshotPaginationAriaLabel', {
+                defaultMessage: '{packageName} screenshot pagination',
+                values: {
+                  packageName,
+                },
+              })}
+              pageCount={maxImageIndex + 1}
+              activePage={currentImageIndex}
+              onPageClick={(activePage) => setCurrentImageIndex(activePage)}
+              compressed
+            />
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>
@@ -107,6 +79,7 @@ export const Screenshots: React.FC<ScreenshotProps> = memo(({ images, packageNam
                 },
               })
             }
+            title={images[currentImageIndex].title}
             url={currentImageUrl}
           />
         ) : (
