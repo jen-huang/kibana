@@ -11,7 +11,7 @@ import { EuiText, EuiLink, EuiSpacer } from '@elastic/eui';
 import { TutorialModuleNoticeComponent } from 'src/plugins/home/public';
 import { RedirectAppLinks } from '../../../../../../src/plugins/kibana_react/public';
 import { useGetPackages, useLink, useCapabilities, useStartServices } from '../../hooks';
-import { pkgKeyFromPackageInfo } from '../../services/pkg_key_from_package_info';
+import { pkgKeyFromPackageInfo } from '../../services';
 
 const TutorialModuleNotice: TutorialModuleNoticeComponent = memo(({ moduleName }) => {
   const { getHref } = useLink();

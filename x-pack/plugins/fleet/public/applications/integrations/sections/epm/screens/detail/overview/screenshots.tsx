@@ -8,8 +8,8 @@ import React, { useState, useMemo, memo } from 'react';
 import { i18n } from '@kbn/i18n';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { EuiFlexGroup, EuiFlexItem, EuiImage, EuiText, EuiPagination } from '@elastic/eui';
-import { ScreenshotItem } from '../../../../../../types';
-import { useLinks } from '../../hooks';
+import { ScreenshotItem } from '../../../../../../../types';
+import { useEPMLinks } from '../../../hooks';
 
 interface ScreenshotProps {
   images: ScreenshotItem[];
@@ -18,7 +18,7 @@ interface ScreenshotProps {
 }
 
 export const Screenshots: React.FC<ScreenshotProps> = memo(({ images, packageName, version }) => {
-  const { toPackageImage } = useLinks();
+  const { toPackageImage } = useEPMLinks();
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const maxImageIndex = useMemo(() => images.length - 1, [images.length]);
   const currentImageUrl = useMemo(

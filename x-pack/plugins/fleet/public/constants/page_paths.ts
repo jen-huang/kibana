@@ -19,6 +19,10 @@ export type StaticPage =
 
 export type DynamicPage =
   | 'integration_details'
+  | 'integration_details_overview'
+  | 'integration_details_policies'
+  | 'integration_details_settings'
+  | 'integration_details_custom'
   | 'integration_policy_edit'
   | 'policy_details'
   | 'add_integration_from_policy'
@@ -59,6 +63,10 @@ export const INTEGRATION_ROUTING_PATHS = {
   integrations_all: '/browse',
   integrations_installed: '/manage',
   integration_details: '/detail/:pkgkey/:panel?',
+  integration_details_overview: '/detail/:pkgkey/overview',
+  integration_details_policies: '/detail/:pkgkey/policies',
+  integration_details_settings: '/detail/:pkgkey/settings',
+  integration_details_custom: '/detail/:pkgkey/custom',
   integration_policy_edit: '/edit/:packagePolicyId',
   add_integration_to_policy: '/:pkgkey/add-integration',
   data_streams: '/data-streams',
@@ -75,10 +83,20 @@ export const pagePathGetters: {
   integrations: () => [INTEGRATIONS_BASE_PATH, '/'],
   integrations_all: () => [INTEGRATIONS_BASE_PATH, '/browse'],
   integrations_installed: () => [INTEGRATIONS_BASE_PATH, '/manage'],
-  integration_details: ({ pkgkey, panel }) => [
+  integration_details: ({ pkgkey }) => [INTEGRATIONS_BASE_PATH, `/detail/${pkgkey}`],
+  integration_details_overview: ({ pkgkey }) => [
     INTEGRATIONS_BASE_PATH,
-    `/detail/${pkgkey}${panel ? `/${panel}` : ''}`,
+    `/detail/${pkgkey}/overview`,
   ],
+  integration_details_policies: ({ pkgkey }) => [
+    INTEGRATIONS_BASE_PATH,
+    `/detail/${pkgkey}/policies`,
+  ],
+  integration_details_settings: ({ pkgkey }) => [
+    INTEGRATIONS_BASE_PATH,
+    `/detail/${pkgkey}/settings`,
+  ],
+  integration_details_custom: ({ pkgkey }) => [INTEGRATIONS_BASE_PATH, `/detail/${pkgkey}/custom`],
   integration_policy_edit: ({ packagePolicyId }) => [
     INTEGRATIONS_BASE_PATH,
     `/edit/${packagePolicyId}`,

@@ -4,7 +4,7 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
-export { useLinks } from '../../../hooks/use_links';
+export { useEPMLinks } from '../../../hooks/use_epm_links';
 export { useLocalSearch, searchIdField } from './use_local_search';
 export {
   PackageInstallProvider,

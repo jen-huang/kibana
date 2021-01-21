@@ -11,7 +11,7 @@ import { i18n } from '@kbn/i18n';
 import { EuiFlexGroup, EuiFlexItem, EuiImage, EuiText } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { useStartServices } from '../../../hooks';
-import { useLinks } from '../hooks';
+import { useEPMLinks } from '../hooks';
 
 export const HeroCopy = memo(() => {
   return (
@@ -43,7 +43,7 @@ const Illustration = styled(EuiImage)`
 `;
 
 export const HeroImage = memo(() => {
-  const { toAssets } = useLinks();
+  const { toAssets } = useEPMLinks();
   const { uiSettings } = useStartServices();
   const IS_DARK_THEME = uiSettings.get('theme:darkMode');
 

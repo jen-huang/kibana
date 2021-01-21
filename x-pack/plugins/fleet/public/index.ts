@@ -19,4 +19,4 @@ export * from './types/intra_app_route_state';
 export * from './types/ui_extensions';
 
 export { pagePathGetters } from './constants';
-export { pkgKeyFromPackageInfo } from './services/pkg_key_from_package_info';
+export { pkgKeyFromPackageInfo } from './services';

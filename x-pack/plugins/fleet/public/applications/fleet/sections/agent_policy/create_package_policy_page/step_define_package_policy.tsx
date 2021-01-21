@@ -19,10 +19,9 @@ import {
   EuiFlexItem,
 } from '@elastic/eui';
 import { AgentPolicy, PackageInfo, PackagePolicy, NewPackagePolicy } from '../../../../../types';
-import { packageToPackagePolicyInputs } from '../../../../../services';
+import { packageToPackagePolicyInputs, pkgKeyFromPackageInfo } from '../../../../../services';
 import { Loading } from '../../../components';
 import { PackagePolicyValidationResults } from './services';
-import { pkgKeyFromPackageInfo } from '../../../../../services/pkg_key_from_package_info';
 
 export const StepDefinePackagePolicy: React.FunctionComponent<{
   agentPolicy: AgentPolicy;

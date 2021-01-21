@@ -3,5 +3,6 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-export { useBreadcrumbs } from './use_breadcrumbs';
-export { useEPMLinks } from './use_epm_links';
+export { UpdateIcon } from './update_icon';
+export { IntegrationAgentPolicyCount } from './integration_agent_policy_count';
+export { IconPanel, LoadingIconPanel } from './icon_panel';

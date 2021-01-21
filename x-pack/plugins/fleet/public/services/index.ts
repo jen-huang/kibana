@@ -6,7 +6,7 @@
  */
 
 export { getFlattenedObject } from '@kbn/std';
-
+export { pkgKeyFromPackageInfo } from './pkg_key_from_package_info';
 export {
   AgentStatusKueryHelper,
   agentPolicyRouteService,

@@ -23,14 +23,14 @@ import {
   AssetTypeToParts,
   KibanaAssetType,
   entries,
-} from '../../../../../types';
+} from '../../../../../../../types';
 import {
   AssetIcons,
   AssetTitleMap,
   DisplayedAssets,
   ServiceIcons,
   ServiceTitleMap,
-} from '../constants';
+} from '../../../constants';
 
 const FirstHeaderRow = styled(EuiFlexGroup)`
   padding: 0 0 ${(props) => props.theme.eui.paddingSizes.s} 0;

@@ -12,15 +12,17 @@ import {
   EuiBasicTable,
   EuiLink,
   EuiTableFieldDataColumnType,
+  EuiFlexGroup,
+  EuiFlexItem,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { FormattedRelative, FormattedMessage } from '@kbn/i18n/react';
-import { RedirectAppLinks } from '../../../../../../../../../../src/plugins/kibana_react/public';
-import { InstallStatus } from '../../../../../../types';
-import { useLink, useStartServices, useUrlPagination } from '../../../../../../hooks';
-import { PACKAGE_POLICY_SAVED_OBJECT_TYPE } from '../../../../../../constants';
-import { LinkAndRevision, LinkAndRevisionProps, LinkedAgentCount } from '../../../../components';
-import { useGetPackageInstallStatus } from '../../hooks';
+import { RedirectAppLinks } from '../../../../../../../../../../../src/plugins/kibana_react/public';
+import { InstallStatus } from '../../../../../../../types';
+import { useLink, useStartServices, useUrlPagination } from '../../../../../../../hooks';
+import { PACKAGE_POLICY_SAVED_OBJECT_TYPE } from '../../../../../../../constants';
+import { LinkAndRevision, LinkAndRevisionProps, LinkedAgentCount } from '../../../../../components';
+import { useGetPackageInstallStatus } from '../../../hooks';
 import {
   PackagePolicyAndAgentPolicy,
   usePackagePoliciesWithAgentPolicy,
@@ -72,7 +74,7 @@ interface PackagePoliciesPanelProps {
   name: string;
   version: string;
 }
-export const PackagePoliciesPanel = ({ name, version }: PackagePoliciesPanelProps) => {
+export const PackagePoliciesPage = ({ name, version }: PackagePoliciesPanelProps) => {
   const { getPath } = useLink();
   const { application } = useStartServices();
   const getPackageInstallStatus = useGetPackageInstallStatus();
@@ -207,14 +209,19 @@ export const PackagePoliciesPanel = ({ name, version }: PackagePoliciesPanelProp
   }
 
   return (
-    <EuiBasicTable
-      items={data?.items || []}
-      columns={columns}
-      loading={isLoading}
-      data-test-subj="integrationPolicyTable"
-      pagination={tablePagination}
-      onChange={handleTableOnChange}
-      noItemsMessage={noItemsMessage}
-    />
+    <EuiFlexGroup alignItems="flexStart">
+      <EuiFlexItem grow={1} />
+      <EuiFlexItem grow={6}>
+        <EuiBasicTable
+          items={data?.items || []}
+          columns={columns}
+          loading={isLoading}
+          data-test-subj="integrationPolicyTable"
+          pagination={tablePagination}
+          onChange={handleTableOnChange}
+          noItemsMessage={noItemsMessage}
+        />
+      </EuiFlexItem>
+    </EuiFlexGroup>
   );
 };

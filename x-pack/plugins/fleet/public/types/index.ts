@@ -106,7 +106,6 @@ export {
   PackageListItem,
   PackagesGroupedByStatus,
   RequirementsByServiceName,
-  RequirementVersion,
   ScreenshotItem,
   ServiceName,
   GetCategoriesRequest,

@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react';
 import { ICON_TYPES } from '@elastic/eui';
 import { PackageInfo, PackageListItem } from '../types';
-import { useLinks } from '../applications/integrations/sections/epm/hooks';
+import { useEPMLinks } from '../applications/integrations/sections/epm/hooks';
 import { sendGetPackageInfoByKey } from './index';
 
 type Package = PackageInfo | PackageListItem;
@@ -28,7 +28,7 @@ export const usePackageIconType = ({
   icons: paramIcons,
   tryApi = false,
 }: UsePackageIconType) => {
-  const { toPackageImage } = useLinks();
+  const { toPackageImage } = useEPMLinks();
   const [iconList, setIconList] = useState<UsePackageIconType['icons']>();
   const [iconType, setIconType] = useState<string>(''); // FIXME: use `empty` icon during initialization - see: https://github.com/elastic/kibana/issues/60622
   const pkgKey = `${packageName}-${version}`;

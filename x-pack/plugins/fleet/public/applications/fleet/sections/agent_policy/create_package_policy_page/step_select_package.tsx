@@ -9,16 +9,15 @@ import React, { useEffect, useState, Fragment } from 'react';
 import { i18n } from '@kbn/i18n';
 import { FormattedMessage } from '@kbn/i18n/react';
 import { EuiFlexGroup, EuiFlexItem, EuiSelectable, EuiSpacer } from '@elastic/eui';
-import { Error } from '../../../components';
 import { AgentPolicy, PackageInfo, PackagePolicy, GetPackagesResponse } from '../../../../../types';
+import { pkgKeyFromPackageInfo } from '../../../../../services';
 import {
   useGetOneAgentPolicy,
   useGetPackages,
   useGetLimitedPackages,
   sendGetPackageInfoByKey,
 } from '../../../../../hooks';
-import { PackageIcon } from '../../../components';
-import { pkgKeyFromPackageInfo } from '../../../../../services/pkg_key_from_package_info';
+import { PackageIcon, Error } from '../../../components';
 
 export const StepSelectPackage: React.FunctionComponent<{
   agentPolicyId: string;

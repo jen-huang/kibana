@@ -12,7 +12,7 @@ import { PackageSpecIcon, PackageSpecScreenshot, RegistryImage } from '../../../
 const removeRelativePath = (relativePath: string): string =>
   new URL(relativePath, 'http://example.com').pathname;
 
-export function useLinks() {
+export function useEPMLinks() {
   const { http } = useStartServices();
   return {
     toAssets: (path: string) => http.basePath.prepend(`/plugins/${PLUGIN_ID}/assets/${path}`),

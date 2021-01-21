@@ -139,7 +139,6 @@ export interface RegistryStream {
   template_path: string;
 }
 
-export type RequirementVersion = string;
 export type RequirementVersionRange = string;
 export interface ServiceRequirements {
   versions: RequirementVersionRange;

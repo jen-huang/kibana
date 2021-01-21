@@ -8,9 +8,9 @@
 import { EuiLoadingContent, EuiText } from '@elastic/eui';
 import React, { Fragment, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { useLinks } from '../../hooks';
+import { useEPMLinks } from '../../../hooks';
+import { sendGetFileByPath } from '../../../../../../../hooks';
 import { markdownRenderers } from './markdown_renderers';
-import { sendGetFileByPath } from '../../../../../../hooks';
 
 export function Readme({
   readmePath,
@@ -22,7 +22,7 @@ export function Readme({
   version: string;
 }) {
   const [markdown, setMarkdown] = useState<string | undefined>(undefined);
-  const { toRelativeImage } = useLinks();
+  const { toRelativeImage } = useEPMLinks();
   const handleImageUri = React.useCallback(
     (uri: string) => {
       const isRelative =

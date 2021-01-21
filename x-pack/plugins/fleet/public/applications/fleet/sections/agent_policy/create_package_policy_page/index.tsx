@@ -34,7 +34,7 @@ import {
   useConfig,
   sendGetAgentStatus,
 } from '../../../../../hooks';
-import { Loading } from '../../../components';
+import { Loading, ExtensionWrapper } from '../../../components';
 import { useBreadcrumbs } from '../../../hooks';
 import { useBreadcrumbs as useIntegrationsBreadcrumbs } from '../../../../integrations/hooks';
 import { ConfirmDeployAgentPolicyModal } from '../components';
@@ -51,10 +51,9 @@ import { StepConfigurePackagePolicy } from './step_configure_package';
 import { StepDefinePackagePolicy } from './step_define_package_policy';
 import { useIntraAppState } from '../../../../../hooks/use_intra_app_state';
 import { useUIExtension } from '../../../../../hooks/use_ui_extension';
-import { ExtensionWrapper } from '../../../components/extension_wrapper';
 import { PackagePolicyEditExtensionComponentProps } from '../../../../../types';
-import { PLUGIN_ID } from '../../../../../../common/constants';
-import { pkgKeyFromPackageInfo } from '../../../../../services/pkg_key_from_package_info';
+import { PLUGIN_ID, INTEGRATIONS_PLUGIN_ID } from '../../../../../constants';
+import { pkgKeyFromPackageInfo } from '../../../../../services';
 
 const StepsWithLessPadding = styled(EuiSteps)`
   .euiStep__content {
@@ -494,7 +493,7 @@ const useNavigateToCallback = () => {
       // uses BrowserHistory but within fleet, we are using HashHistory.
       // This temporary workaround hook can be removed once this issue is addressed:
       // https://github.com/elastic/kibana/issues/70358
-      if (navigateToProps[0] === PLUGIN_ID) {
+      if (navigateToProps[0] === PLUGIN_ID || navigateToProps[0] === INTEGRATIONS_PLUGIN_ID) {
         const { path = '', state } = navigateToProps[1] || {};
         history.push({
           pathname: path.charAt(0) === '#' ? path.substr(1) : path,
