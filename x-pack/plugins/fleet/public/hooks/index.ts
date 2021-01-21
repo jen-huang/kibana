@@ -21,3 +21,4 @@ export * from './use_request';
 export * from './use_input';
 export * from './use_url_params';
 export * from './use_fleet_status';
+export * from './use_ui_extension';

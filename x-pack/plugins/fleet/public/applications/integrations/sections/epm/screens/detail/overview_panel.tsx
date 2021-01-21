@@ -4,20 +4,11 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
-
-import { EuiSpacer } from '@elastic/eui';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { PackageInfo } from '../../../../../../types';
 import { Readme } from './readme';
-import { Screenshots } from './screenshots';
 
 export function OverviewPanel(props: PackageInfo) {
-  const { screenshots, readme, name, version } = props;
-  return (
-    <Fragment>
-      {readme && <Readme readmePath={readme} packageName={name} version={version} />}
-      <EuiSpacer size="xl" />
-      {screenshots && <Screenshots images={screenshots} packageName={name} version={version} />}
-    </Fragment>
-  );
+  const { readme, name, version } = props;
+  return readme ? <Readme readmePath={readme} packageName={name} version={version} /> : null;
 }

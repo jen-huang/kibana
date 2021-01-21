@@ -4,11 +4,17 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
-
-import React, { Fragment } from 'react';
-import styled from 'styled-components';
+import React, { useState, useMemo, memo } from 'react';
+import { i18n } from '@kbn/i18n';
 import { FormattedMessage } from '@kbn/i18n/react';
-import { EuiFlexGroup, EuiFlexItem, EuiImage, EuiSpacer, EuiText, EuiTitle } from '@elastic/eui';
+import {
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiImage,
+  EuiText,
+  EuiTextColor,
+  EuiButtonIcon,
+} from '@elastic/eui';
 import { ScreenshotItem } from '../../../../../../types';
 import { useLinks } from '../../hooks';
 
@@ -18,75 +24,98 @@ interface ScreenshotProps {
   version: string;
 }
 
-const getHorizontalPadding = (styledProps: any): number =>
-  parseInt(styledProps.theme.eui.paddingSizes.xl, 10) * 2;
-const getVerticalPadding = (styledProps: any): number =>
-  parseInt(styledProps.theme.eui.paddingSizes.xl, 10) * 1.75;
-const getPadding = (styledProps: any) =>
-  styledProps.hascaption
-    ? `${styledProps.theme.eui.paddingSizes.xl} ${getHorizontalPadding(
-        styledProps
-      )}px ${getVerticalPadding(styledProps)}px`
-    : `${getHorizontalPadding(styledProps)}px ${getVerticalPadding(styledProps)}px`;
-const ScreenshotsContainer = styled(EuiFlexGroup)`
-  background: linear-gradient(360deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%),
-    ${(styledProps) => styledProps.theme.eui.euiColorPrimary};
-  padding: ${(styledProps) => getPadding(styledProps)};
-  flex: 0 0 auto;
-  border-radius: ${(styledProps) => styledProps.theme.eui.euiBorderRadius};
-`;
-
-// fixes ie11 problems with nested flex items
-const NestedEuiFlexItem = styled(EuiFlexItem)`
-  flex: 0 0 auto !important;
-`;
-
-export function Screenshots(props: ScreenshotProps) {
+export const Screenshots: React.FC<ScreenshotProps> = memo(({ images, packageName, version }) => {
   const { toPackageImage } = useLinks();
-  const { images, packageName, version } = props;
-
-  // for now, just get first image
-  const image = images[0];
-  const hasCaption = image.title ? true : false;
-  const screenshotUrl = toPackageImage(image, packageName, version);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const maxImageIndex = useMemo(() => images.length - 1, [images.length]);
+  const currentImageUrl = useMemo(
+    () => toPackageImage(images[currentImageIndex], packageName, version),
+    [currentImageIndex, images, packageName, toPackageImage, version]
+  );
 
   return (
-    <Fragment>
-      <EuiTitle size="s">
-        <h3>
-          <FormattedMessage id="xpack.fleet.epm.screenshotsTitle" defaultMessage="Screenshots" />
-        </h3>
-      </EuiTitle>
-      <EuiSpacer size="m" />
-      <ScreenshotsContainer
-        gutterSize="none"
-        direction="column"
-        alignItems="center"
-        {...(hasCaption ? { hascaption: 'true' } : {})}
-      >
-        {hasCaption && (
-          <NestedEuiFlexItem>
-            <EuiText color="ghost" aria-label="screenshot image caption">
-              {image.title}
+    <EuiFlexGroup direction="column" gutterSize="s">
+      {/* Title with carousel navigation */}
+      <EuiFlexItem>
+        <EuiFlexGroup direction="row" alignItems="center">
+          <EuiFlexItem>
+            <EuiText>
+              <h4>
+                <FormattedMessage
+                  id="xpack.fleet.epm.screenshotsTitle"
+                  defaultMessage="Screenshots"
+                />
+              </h4>
             </EuiText>
-            <EuiSpacer />
-          </NestedEuiFlexItem>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiFlexGroup gutterSize="xs" alignItems="center">
+              <EuiFlexItem grow={false}>
+                <EuiButtonIcon
+                  iconType="arrowLeft"
+                  color="text"
+                  isDisabled={currentImageIndex === 0}
+                  onClick={() => setCurrentImageIndex(Math.max(currentImageIndex - 1, 0))}
+                />
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiText className="eui-textNoWrap" size="s">
+                  <FormattedMessage
+                    id="xpack.fleet.epm.screenshotsNavigationLinkText"
+                    defaultMessage="{currentImage} of {totalImages}"
+                    values={{
+                      currentImage: (
+                        <EuiTextColor color="secondary">
+                          <strong>
+                            <u>{currentImageIndex + 1}</u>
+                          </strong>
+                        </EuiTextColor>
+                      ),
+                      totalImages: maxImageIndex + 1,
+                    }}
+                  />
+                </EuiText>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiButtonIcon
+                  iconType="arrowRight"
+                  color="text"
+                  isDisabled={currentImageIndex === maxImageIndex}
+                  onClick={() =>
+                    setCurrentImageIndex(Math.min(currentImageIndex + 1, maxImageIndex))
+                  }
+                />
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      </EuiFlexItem>
+
+      {/* Current screenshot */}
+      <EuiFlexItem>
+        {currentImageUrl ? (
+          <EuiImage
+            allowFullScreen
+            hasShadow
+            alt={
+              images[currentImageIndex].title ||
+              i18n.translate('xpack.fleet.epm.screenshotAltText', {
+                defaultMessage: '{packageName} screenshot #{imageNumber}',
+                values: {
+                  packageName,
+                  imageNumber: currentImageIndex + 1,
+                },
+              })
+            }
+            url={currentImageUrl}
+          />
+        ) : (
+          <FormattedMessage
+            id="xpack.fleet.epm.screenshotErrorText"
+            defaultMessage="Unable to load this screenshot"
+          />
         )}
-        {screenshotUrl && (
-          <NestedEuiFlexItem>
-            {/* By default EuiImage sets width to 100% and Figure to 22.5rem for size=l images,
-              set image to same width.  Will need to update if size changes.
-            */}
-            <EuiImage
-              url={screenshotUrl}
-              alt="screenshot image preview"
-              size="l"
-              allowFullScreen
-              style={{ width: '22.5rem', maxWidth: '100%' }}
-            />
-          </NestedEuiFlexItem>
-        )}
-      </ScreenshotsContainer>
-    </Fragment>
+      </EuiFlexItem>
+    </EuiFlexGroup>
   );
-}
+});

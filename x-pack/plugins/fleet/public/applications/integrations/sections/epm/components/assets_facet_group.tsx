@@ -33,11 +33,12 @@ import {
 } from '../constants';
 
 const FirstHeaderRow = styled(EuiFlexGroup)`
-  padding: 0 0 ${(props) => props.theme.eui.paddingSizes.m} 0;
+  padding: 0 0 ${(props) => props.theme.eui.paddingSizes.s} 0;
 `;
 
 const HeaderRow = styled(EuiFlexGroup)`
-  padding: ${(props) => props.theme.eui.paddingSizes.m} 0;
+  padding: ${(props) => props.theme.eui.paddingSizes.m} 0
+    ${(props) => props.theme.eui.paddingSizes.s} 0;
 `;
 
 const FacetGroup = styled(EuiFacetGroup)`

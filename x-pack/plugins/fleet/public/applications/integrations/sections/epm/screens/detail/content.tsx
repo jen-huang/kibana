@@ -11,15 +11,15 @@ import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 import { DetailParams } from '.';
 import { DetailViewPanelName, PackageInfo } from '../../../../../../types';
+import { ExtensionWrapper } from '../../../../../../applications/fleet/components/extension_wrapper';
+import { useLink, useUIExtension } from '../../../../../../hooks';
+import { pkgKeyFromPackageInfo } from '../../../../../../services/pkg_key_from_package_info';
 import { AssetsFacetGroup } from '../../components/assets_facet_group';
 import { CenterColumn, LeftColumn, RightColumn } from './layout';
 import { OverviewPanel } from './overview_panel';
 import { PackagePoliciesPanel } from './package_policies_panel';
 import { SettingsPanel } from './settings_panel';
-import { useUIExtension } from '../../../../../../hooks/use_ui_extension';
-import { ExtensionWrapper } from '../../../../../../applications/fleet/components/extension_wrapper';
-import { useLink } from '../../../../../../hooks';
-import { pkgKeyFromPackageInfo } from '../../../../../../services/pkg_key_from_package_info';
+import { Screenshots } from './screenshots';
 
 type ContentProps = PackageInfo & Pick<DetailParams, 'panel'>;
 
@@ -43,7 +43,7 @@ export function Content(props: ContentProps) {
   }, [panel]);
 
   return (
-    <ContentFlexGroup>
+    <ContentFlexGroup alignItems="flexStart">
       <LeftSideColumn {...(!showRightColumn ? { columnGrow: 1 } : undefined)} />
       <CenterColumn {...(!showRightColumn ? { columnGrow: 6 } : undefined)}>
         <ContentPanel panel={panel!} packageInfo={props} />
@@ -98,12 +98,17 @@ export const ContentPanel = memo<ContentPanelProps>(({ panel, packageInfo }) => 
 
 type RightColumnContentProps = PackageInfo & Pick<DetailParams, 'panel'>;
 function RightColumnContent(props: RightColumnContentProps) {
-  const { assets, panel } = props;
+  const { assets, panel, screenshots, name, version } = props;
   switch (panel) {
     case 'overview':
       return assets ? (
-        <EuiFlexGroup direction="column" gutterSize="none">
-          <EuiFlexItem grow={false}>
+        <EuiFlexGroup direction="column" gutterSize="l">
+          {screenshots && screenshots.length ? (
+            <EuiFlexItem>
+              <Screenshots images={screenshots} packageName={name} version={version} />
+            </EuiFlexItem>
+          ) : null}
+          <EuiFlexItem>
             <AssetsFacetGroup assets={assets} />
           </EuiFlexItem>
         </EuiFlexGroup>
