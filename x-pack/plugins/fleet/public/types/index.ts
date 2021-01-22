@@ -95,6 +95,7 @@ export {
   CategoryId,
   CategorySummaryItem,
   CategorySummaryList,
+  PackageSpecCategory,
   ElasticsearchAssetType,
   KibanaAssetType,
   PackageInfo,

@@ -5,11 +5,11 @@
  */
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 import { PackageInfo } from '../../../../../../../types';
-import { AssetsFacetGroup } from './assets_facet_group';
 import { Screenshots } from './screenshots';
 import { Readme } from './readme';
+import { Details } from './details';
 
 interface Props {
   packageInfo: PackageInfo;
@@ -36,7 +36,7 @@ export const OverviewPage: React.FC<Props> = memo(({ packageInfo }: Props) => {
         ) : null}
       </EuiFlexItem>
       <EuiFlexItem grow={3}>
-        <EuiFlexGroup direction="column" gutterSize="l">
+        <EuiFlexGroup direction="column" gutterSize="l" alignItems="flexStart">
           {packageInfo.screenshots && packageInfo.screenshots.length ? (
             <EuiFlexItem>
               <Screenshots
@@ -47,7 +47,7 @@ export const OverviewPage: React.FC<Props> = memo(({ packageInfo }: Props) => {
             </EuiFlexItem>
           ) : null}
           <EuiFlexItem>
-            <AssetsFacetGroup assets={packageInfo.assets} />
+            <Details packageInfo={packageInfo} />
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>
