@@ -28,11 +28,10 @@ import { PackageInstallProvider } from './sections/epm/hooks';
 import { INTEGRATION_ROUTING_PATHS } from '../../constants';
 import { DefaultLayout, WithoutHeaderLayout } from './layouts';
 import { EPMApp } from './sections/epm';
-import { DataStreamApp } from './sections/data_stream';
 import { FleetConfigType, FleetStartServices } from '../../plugin';
 import { UIExtensionsStorage } from '../../types';
 import { KibanaContextProvider } from '../../../../../../src/plugins/kibana_react/public';
-import { EuiThemeProvider } from '../../../../xpack_legacy/common';
+import { EuiThemeProvider } from '../../../../../../src/plugins/kibana_react/common';
 import { UIExtensionsContext } from '../../hooks/use_ui_extension';
 
 const ErrorLayout = ({ children }: { children: JSX.Element }) => (
@@ -218,9 +217,6 @@ export const AppRoutes = memo(() => {
   return (
     <DefaultLayout>
       <Switch>
-        <Route path={INTEGRATION_ROUTING_PATHS.data_streams}>
-          <DataStreamApp />
-        </Route>
         <Route path={INTEGRATION_ROUTING_PATHS.integrations}>
           <EPMApp />
         </Route>

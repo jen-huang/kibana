@@ -58,8 +58,6 @@ const breadcrumbGetters: {
   ],
   add_integration_to_policy: ({ pkgTitle, pkgkey }) => [
     BASE_BREADCRUMB,
-
-    BASE_BREADCRUMB,
     {
       href: pagePathGetters.integration_details({ pkgkey })[1],
       text: pkgTitle,

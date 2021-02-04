@@ -82,6 +82,16 @@ export const MainLayout: React.FunctionComponent<Props> = memo(({ section, child
           isSelected: section === 'enrollment_token',
           href: getHref('fleet_enrollment_tokens'),
         },
+        {
+          name: (
+            <FormattedMessage
+              id="xpack.fleet.appNavigation.dataStreamsLinkText"
+              defaultMessage="Data streams"
+            />
+          ),
+          isSelected: section === 'data_streams',
+          href: getHref('data_streams'),
+        },
       ]}
     >
       {children}

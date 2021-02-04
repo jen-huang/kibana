@@ -7,5 +7,6 @@
 export { AgentPolicyApp } from './agent_policy';
 export { FleetApp } from './agents';
 export { EnrollmentTokenApp } from './enrollment_tokens';
+export { DataStreamApp } from './data_stream';
 
-export type Section = 'agent_policy' | 'fleet' | 'enrollment_token';
+export type Section = 'agent_policy' | 'fleet' | 'enrollment_token' | 'data_streams';

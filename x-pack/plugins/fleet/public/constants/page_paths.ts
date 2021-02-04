@@ -54,6 +54,7 @@ export const FLEET_ROUTING_PATHS = {
   fleet_agent_details: '/agents/:agentId/:tabId?',
   fleet_agent_details_logs: '/agents/:agentId/logs',
   fleet_enrollment_tokens: '/enrollment-tokens',
+  data_streams: '/data-streams',
 };
 
 // If routing paths are changed here, please also check to see if
@@ -69,7 +70,6 @@ export const INTEGRATION_ROUTING_PATHS = {
   integration_details_custom: '/detail/:pkgkey/custom',
   integration_policy_edit: '/edit/:packagePolicyId',
   add_integration_to_policy: '/:pkgkey/add-integration',
-  data_streams: '/data-streams',
 };
 
 export const pagePathGetters: {
@@ -123,5 +123,5 @@ export const pagePathGetters: {
     `/agents/${agentId}${tabId ? `/${tabId}` : ''}${logQuery ? `?_q=${logQuery}` : ''}`,
   ],
   fleet_enrollment_tokens: () => [FLEET_BASE_PATH, '/enrollment-tokens'],
-  data_streams: () => [INTEGRATIONS_BASE_PATH, '/data-streams'],
+  data_streams: () => [FLEET_BASE_PATH, '/data-streams'],
 };

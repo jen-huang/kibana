@@ -60,16 +60,6 @@ export const MainLayout: React.FunctionComponent<Props> = memo(({ section, child
           isSelected: section === 'manage',
           href: getHref('integrations_installed'),
         },
-        {
-          name: (
-            <FormattedMessage
-              id="xpack.fleet.appNavigation.dataStreamsLinkText"
-              defaultMessage="Data streams"
-            />
-          ),
-          isSelected: section === 'data_streams',
-          href: getHref('data_streams'),
-        },
       ]}
     >
       {children}

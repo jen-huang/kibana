@@ -30,6 +30,7 @@ import { DefaultLayout, WithoutHeaderLayout } from './layouts';
 import { AgentPolicyApp } from './sections/agent_policy';
 import { FleetApp } from './sections/agents';
 import { EnrollmentTokenApp } from './sections/enrollment_tokens';
+import { DataStreamApp } from './sections/data_stream';
 import { ProtectedRoute } from './index';
 import { FleetConfigType, FleetStartServices } from '../../plugin';
 import { UIExtensionsStorage } from '../../types';
@@ -230,6 +231,9 @@ export const AppRoutes = memo(() => {
         >
           <EnrollmentTokenApp />
         </ProtectedRoute>
+        <Route path={FLEET_ROUTING_PATHS.data_streams}>
+          <DataStreamApp />
+        </Route>
         {agents.enabled ? (
           <Redirect to={FLEET_ROUTING_PATHS.fleet_agent_list} />
         ) : (

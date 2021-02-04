@@ -5,6 +5,5 @@
  * 2.0.
  */
 export { EPMApp } from './epm';
-export { DataStreamApp } from './data_stream';
 
-export type Section = 'browse' | 'manage' | 'data_streams';
+export type Section = 'browse' | 'manage';
