@@ -34,18 +34,13 @@ export function PackageCard({
   ...restProps
 }: PackageCardProps) {
   const { getHref } = useLink();
-  let urlVersion = version;
-  // if this is an installed package, link to the version installed
-  if ('savedObject' in restProps) {
-    urlVersion = restProps.savedObject.attributes.version || version;
-  }
 
   return (
     <Card
       title={title || ''}
       description={description}
       icon={<PackageIcon icons={icons} packageName={name} version={version} size="xl" />}
-      href={getHref('integration_details_overview', { pkgkey: `${name}-${urlVersion}` })}
+      href={getHref('integration_details_overview', { pkgkey: name })}
       betaBadgeLabel={release && release !== 'ga' ? RELEASE_BADGE_LABEL[release] : undefined}
       betaBadgeTooltipContent={
         release && release !== 'ga' ? RELEASE_BADGE_DESCRIPTION[release] : undefined

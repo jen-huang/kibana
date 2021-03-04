@@ -11,7 +11,6 @@ import { EuiText, EuiLink, EuiSpacer } from '@elastic/eui';
 import { TutorialModuleNoticeComponent } from 'src/plugins/home/public';
 
 import { useGetPackages, useLink, useCapabilities } from '../../hooks';
-import { pkgKeyFromPackageInfo } from '../../services/pkg_key_from_package_info';
 
 const TutorialModuleNotice: TutorialModuleNoticeComponent = memo(({ moduleName }) => {
   const { getHref } = useLink();
@@ -45,7 +44,7 @@ const TutorialModuleNotice: TutorialModuleNoticeComponent = memo(({ moduleName }
                 availableAsIntegrationLink: (
                   <EuiLink
                     href={getHref('integration_details_overview', {
-                      pkgkey: pkgKeyFromPackageInfo(pkgInfo),
+                      pkgkey: pkgInfo.name,
                     })}
                   >
                     <FormattedMessage

@@ -26,7 +26,6 @@ import semverLt from 'semver/functions/lt';
 import { useUIExtension } from '../../../../hooks/use_ui_extension';
 import { PAGE_ROUTING_PATHS, PLUGIN_ID } from '../../../../constants';
 import { useCapabilities, useGetPackageInfoByKey, useLink } from '../../../../hooks';
-import { pkgKeyFromPackageInfo } from '../../../../services/pkg_key_from_package_info';
 import {
   CreatePackagePolicyRouteState,
   DetailViewPanelName,
@@ -299,7 +298,6 @@ export function Detail() {
     if (!packageInfo) {
       return [];
     }
-    const packageInfoKey = pkgKeyFromPackageInfo(packageInfo);
 
     const tabs: WithHeaderLayoutProps['tabs'] = [
       {
@@ -313,7 +311,7 @@ export function Detail() {
         isSelected: panel === 'overview',
         'data-test-subj': `tab-overview`,
         href: getHref('integration_details_overview', {
-          pkgkey: packageInfoKey,
+          pkgkey: packageInfo.name,
         }),
       },
     ];
@@ -330,7 +328,7 @@ export function Detail() {
         isSelected: panel === 'policies',
         'data-test-subj': `tab-policies`,
         href: getHref('integration_details_policies', {
-          pkgkey: packageInfoKey,
+          pkgkey: packageInfo.name,
         }),
       });
     }
@@ -346,7 +344,7 @@ export function Detail() {
       isSelected: panel === 'settings',
       'data-test-subj': `tab-settings`,
       href: getHref('integration_details_settings', {
-        pkgkey: packageInfoKey,
+        pkgkey: packageInfo.name,
       }),
     });
 
@@ -362,7 +360,7 @@ export function Detail() {
         isSelected: panel === 'custom',
         'data-test-subj': `tab-custom`,
         href: getHref('integration_details_custom', {
-          pkgkey: packageInfoKey,
+          pkgkey: packageInfo.name,
         }),
       });
     }

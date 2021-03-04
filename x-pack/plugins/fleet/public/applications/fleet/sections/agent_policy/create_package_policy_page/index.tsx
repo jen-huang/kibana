@@ -43,7 +43,6 @@ import { useUIExtension } from '../../../hooks/use_ui_extension';
 import { ExtensionWrapper } from '../../../components/extension_wrapper';
 import { PackagePolicyEditExtensionComponentProps } from '../../../types';
 import { PLUGIN_ID } from '../../../../../../common/constants';
-import { pkgKeyFromPackageInfo } from '../../../services/pkg_key_from_package_info';
 
 import { CreatePackagePolicyPageLayout } from './components';
 import { CreatePackagePolicyFrom, PackagePolicyFormState } from './types';
@@ -406,12 +405,7 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
         />
       )}
       {from === 'package'
-        ? packageInfo && (
-            <IntegrationBreadcrumb
-              pkgTitle={packageInfo.title}
-              pkgkey={pkgKeyFromPackageInfo(packageInfo)}
-            />
-          )
+        ? packageInfo && <IntegrationBreadcrumb pkgTitle={packageInfo.title} pkgkey={pkgkey} />
         : agentPolicy && (
             <PolicyBreadcrumb policyName={agentPolicy.name} policyId={agentPolicy.id} />
           )}

@@ -23,7 +23,6 @@ import { FormattedMessage } from '@kbn/i18n/react';
 import { Loading } from '../../../components';
 import { PackageList } from '../../../types';
 import { useLocalSearch, searchIdField } from '../hooks';
-import { pkgKeyFromPackageInfo } from '../../../services/pkg_key_from_package_info';
 
 import { PackageCard } from './package_card';
 
@@ -123,7 +122,7 @@ function GridColumn({ list }: GridColumnProps) {
     <EuiFlexGrid gutterSize="l" columns={3}>
       {list.length ? (
         list.map((item) => (
-          <EuiFlexItem key={pkgKeyFromPackageInfo(item)}>
+          <EuiFlexItem key={item.name}>
             <PackageCard {...item} />
           </EuiFlexItem>
         ))
