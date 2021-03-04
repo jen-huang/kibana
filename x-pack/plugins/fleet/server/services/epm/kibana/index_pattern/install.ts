@@ -17,7 +17,8 @@ import type {
   InstallSource,
   ValueOf,
 } from '../../../../../common/types';
-import type { RegistryPackage, DataType } from '../../../../types';
+import type { RegistryPackage, DataType, CallESAsCurrentUser } from '../../../../types';
+import { appContextService } from '../../../../services';
 import { getInstallation, getPackageFromSource, getPackageSavedObjects } from '../../packages/get';
 
 interface FieldFormatMap {
@@ -78,10 +79,15 @@ export interface IndexPatternField {
 export const indexPatternTypes = Object.values(dataTypes);
 export async function installIndexPatterns(
   savedObjectsClient: SavedObjectsClientContract,
+  callCluster: CallESAsCurrentUser,
   pkgName?: string,
   pkgVersion?: string,
   installSource?: InstallSource
 ) {
+  const indexPatternService = appContextService
+    .getData()
+    .indexPatterns.indexPatternsServiceFactory(savedObjectsClient, callCluster); // Needs new ES client
+
   // get all user installed packages
   const installedPackagesRes = await getPackageSavedObjects(savedObjectsClient);
   const installedPackagesSavedObjects = installedPackagesRes.saved_objects.filter(
@@ -130,6 +136,7 @@ export async function installIndexPatterns(
     // if this is an update because a package is being uninstalled (no pkgkey argument passed) and no other packages are installed, remove the index pattern
     if (!pkgName && installedPackagesSavedObjects.length === 0) {
       try {
+        // data.indexPatterns.indexPatternsServiceFactory
         await savedObjectsClient.delete(INDEX_PATTERN_SAVED_OBJECT_TYPE, `${indexPatternType}-*`);
       } catch (err) {
         // index pattern was probably deleted by the user already

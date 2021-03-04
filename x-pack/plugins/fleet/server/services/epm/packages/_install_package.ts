@@ -104,6 +104,7 @@ export async function _installPackage({
     let installIndexPatternError;
     const installIndexPatternPromise = installIndexPatterns(
       savedObjectsClient,
+      callCluster,
       pkgName,
       pkgVersion,
       installSource
