@@ -30,7 +30,12 @@ import {
 } from '../archive';
 import { streamToBuffer } from '../streams';
 import { appContextService } from '../..';
-import { PackageNotFoundError, PackageCacheError } from '../../../errors';
+import {
+  PackageNotFoundError,
+  PackageCacheError,
+  PackageKeyNoVersionError,
+  PackageKeySemVarError,
+} from '../../../errors';
 
 import { fetchUrl, getResponse, getResponseStream } from './requests';
 import { getRegistryUrl } from './registry_url';
@@ -53,13 +58,15 @@ export function splitPkgKey(pkgkey: string): { pkgName: string; pkgVersion: stri
   // this will return an empty string if `indexOf` returns -1
   const pkgName = pkgkey.substr(0, pkgkey.indexOf('-'));
   if (pkgName === '') {
-    throw new Error('Package key parsing failed: package name was empty');
+    throw new PackageKeyNoVersionError('Package key parsing failed: package name was empty');
   }
 
   // this will return the entire string if `indexOf` return -1
   const pkgVersion = pkgkey.substr(pkgkey.indexOf('-') + 1);
   if (!semverValid(pkgVersion)) {
-    throw new Error('Package key parsing failed: package version was not a valid semver');
+    throw new PackageKeySemVarError(
+      'Package key parsing failed: package version was not a valid semver'
+    );
   }
   return { pkgName, pkgVersion };
 }

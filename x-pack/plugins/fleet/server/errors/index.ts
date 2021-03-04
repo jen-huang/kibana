@@ -30,6 +30,8 @@ export class PackageUnsupportedMediaTypeError extends IngestManagerError {}
 export class PackageInvalidArchiveError extends IngestManagerError {}
 export class PackageCacheError extends IngestManagerError {}
 export class PackageOperationNotSupportedError extends IngestManagerError {}
+export class PackageKeyNoVersionError extends IngestManagerError {}
+export class PackageKeySemVarError extends IngestManagerError {}
 export class FleetAdminUserInvalidError extends IngestManagerError {}
 export class ConcurrentInstallOperationError extends IngestManagerError {}
 export class AgentReassignmentError extends IngestManagerError {}

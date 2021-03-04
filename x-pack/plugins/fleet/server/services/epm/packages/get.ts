@@ -103,7 +103,7 @@ export async function getPackageSavedObjects(
 export async function getPackageInfo(options: {
   savedObjectsClient: SavedObjectsClientContract;
   pkgName: string;
-  pkgVersion: string;
+  pkgVersion?: string;
 }): Promise<PackageInfo> {
   const { savedObjectsClient, pkgName, pkgVersion } = options;
   const [savedObject, latestPackage] = await Promise.all([
@@ -113,7 +113,7 @@ export async function getPackageInfo(options: {
 
   const getPackageRes = await getPackageFromSource({
     pkgName,
-    pkgVersion,
+    pkgVersion: pkgVersion || latestPackage.version,
     savedObjectsClient,
     installedPkg: savedObject?.attributes,
   });

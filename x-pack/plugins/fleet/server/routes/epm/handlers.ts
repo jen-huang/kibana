@@ -49,7 +49,11 @@ import {
   getInstallation,
 } from '../../services/epm/packages';
 import type { BulkInstallResponse } from '../../services/epm/packages';
-import { defaultIngestErrorHandler, ingestErrorToResponseOptions } from '../../errors';
+import {
+  defaultIngestErrorHandler,
+  ingestErrorToResponseOptions,
+  PackageKeyNoVersionError,
+} from '../../errors';
 import { splitPkgKey } from '../../services/epm/registry';
 import { licenseService } from '../../services';
 import { getArchiveEntry } from '../../services/epm/archive/cache';
@@ -192,7 +196,19 @@ export const getInfoHandler: RequestHandler<TypeOf<typeof GetInfoRequestSchema.p
     const { pkgkey } = request.params;
     const savedObjectsClient = context.core.savedObjects.client;
     // TODO: change epm API to /packageName/version so we don't need to do this
-    const { pkgName, pkgVersion } = splitPkgKey(pkgkey);
+    let pkgName;
+    let pkgVersion;
+    try {
+      const parsedKey = splitPkgKey(pkgkey);
+      pkgName = parsedKey.pkgName;
+      pkgVersion = parsedKey.pkgVersion;
+    } catch (e) {
+      if (e instanceof PackageKeyNoVersionError) {
+        pkgName = pkgkey;
+      } else {
+        throw e;
+      }
+    }
     const res = await getPackageInfo({ savedObjectsClient, pkgName, pkgVersion });
     const body: GetInfoResponse = {
       response: res,
