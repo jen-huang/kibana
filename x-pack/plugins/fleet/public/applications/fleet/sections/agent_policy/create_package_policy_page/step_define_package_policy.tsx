@@ -31,25 +31,28 @@ import { packageToPackagePolicy } from '../../../services';
 import { Loading } from '../../../components';
 import { pkgKeyFromPackageInfo } from '../../../services/pkg_key_from_package_info';
 
-import { isAdvancedVar } from './services';
+import { isAdvancedVar, groupPackagePolicyInputs } from './services';
 import type { PackagePolicyValidationResults } from './services';
+import type { GroupedPackageInfoInput } from './types';
 import { PackagePolicyInputVarField } from './components';
 
 export const StepDefinePackagePolicy: React.FunctionComponent<{
   agentPolicy: AgentPolicy;
   packageInfo: PackageInfo;
-  packagePolicy: NewPackagePolicy;
+  groupedPackageInfoInputs: GroupedPackageInfoInput[];
+  groupedPackagePolicy: NewPackagePolicy;
   integration?: string;
-  updatePackagePolicy: (fields: Partial<NewPackagePolicy>) => void;
+  updateGroupedPackagePolicy: (fields: Partial<NewPackagePolicy>) => void;
   validationResults: PackagePolicyValidationResults;
   submitAttempted: boolean;
 }> = memo(
   ({
     agentPolicy,
     packageInfo,
-    packagePolicy,
+    groupedPackageInfoInputs,
+    groupedPackagePolicy,
     integration,
-    updatePackagePolicy,
+    updateGroupedPackagePolicy,
     validationResults,
     submitAttempted,
   }) => {
@@ -72,7 +75,7 @@ export const StepDefinePackagePolicy: React.FunctionComponent<{
 
     // Update package policy's package and agent policy info
     useEffect(() => {
-      const pkg = packagePolicy.package;
+      const pkg = groupedPackagePolicy.package;
       const currentPkgKey = pkg ? pkgKeyFromPackageInfo(pkg) : '';
       const pkgKey = pkgKeyFromPackageInfo(packageInfo);
 
@@ -84,31 +87,45 @@ export const StepDefinePackagePolicy: React.FunctionComponent<{
           .filter((ds) => Boolean(ds.name.match(pkgPoliciesNamePattern)))
           .map((ds) => parseInt(ds.name.match(pkgPoliciesNamePattern)![1], 10))
           .sort((a, b) => a - b);
-
-        updatePackagePolicy(
-          packageToPackagePolicy(
-            packageInfo,
-            agentPolicy.id,
-            packagePolicy.output_id,
-            packagePolicy.namespace,
-            `${packageInfo.name}-${
-              pkgPoliciesWithMatchingNames.length
-                ? pkgPoliciesWithMatchingNames[pkgPoliciesWithMatchingNames.length - 1] + 1
-                : 1
-            }`,
-            packagePolicy.description
-          )
+        const newPackagePolicy = packageToPackagePolicy(
+          packageInfo,
+          agentPolicy.id,
+          groupedPackagePolicy.output_id,
+          groupedPackagePolicy.namespace,
+          `${packageInfo.name}-${
+            pkgPoliciesWithMatchingNames.length
+              ? pkgPoliciesWithMatchingNames[pkgPoliciesWithMatchingNames.length - 1] + 1
+              : 1
+          }`,
+          groupedPackagePolicy.description
         );
+
+        console.log('newPackagePolicy', newPackagePolicy);
+        console.log('updateGroupedPackagePolicy', {
+          ...newPackagePolicy,
+          inputs: groupPackagePolicyInputs(groupedPackageInfoInputs, newPackagePolicy),
+        });
+        updateGroupedPackagePolicy({
+          ...newPackagePolicy,
+          inputs: groupPackagePolicyInputs(groupedPackageInfoInputs, newPackagePolicy),
+        });
       }
 
       // If agent policy has changed, update package policy's agent policy ID and namespace
-      if (packagePolicy.policy_id !== agentPolicy.id) {
-        updatePackagePolicy({
+      if (groupedPackagePolicy.policy_id !== agentPolicy.id) {
+        updateGroupedPackagePolicy({
           policy_id: agentPolicy.id,
           namespace: agentPolicy.namespace,
         });
       }
-    }, [packagePolicy, agentPolicy, packageInfo, updatePackagePolicy, integration]);
+    }, [
+      groupedPackagePolicy,
+      agentPolicy,
+      packageInfo,
+      updateGroupedPackagePolicy,
+      integration,
+      groupedPackageInfoInputs,
+    ]);
 
     return validationResults ? (
       <EuiDescribedFormGroup
@@ -141,9 +158,9 @@ export const StepDefinePackagePolicy: React.FunctionComponent<{
               }
             >
               <EuiFieldText
-                value={packagePolicy.name}
+                value={groupedPackagePolicy.name}
                 onChange={(e) =>
-                  updatePackagePolicy({
+                  updateGroupedPackagePolicy({
                     name: e.target.value,
                   })
                 }
@@ -192,9 +209,9 @@ export const StepDefinePackagePolicy: React.FunctionComponent<{
               error={validationResults.description}
             >
               <EuiFieldText
-                value={packagePolicy.description}
+                value={groupedPackagePolicy.description}
                 onChange={(e) =>
-                  updatePackagePolicy({
+                  updateGroupedPackagePolicy({
                     description: e.target.value,
                   })
                 }
@@ -206,17 +223,17 @@ export const StepDefinePackagePolicy: React.FunctionComponent<{
           {/* Required vars */}
           {requiredVars.map((varDef) => {
             const { name: varName, type: varType } = varDef;
-            if (!packagePolicy.vars || !packagePolicy.vars[varName]) return null;
-            const value = packagePolicy.vars[varName].value;
+            if (!groupedPackagePolicy.vars || !groupedPackagePolicy.vars[varName]) return null;
+            const value = groupedPackagePolicy.vars[varName].value;
             return (
               <EuiFlexItem key={varName}>
                 <PackagePolicyInputVarField
                   varDef={varDef}
                   value={value}
                   onChange={(newValue: any) => {
-                    updatePackagePolicy({
+                    updateGroupedPackagePolicy({
                       vars: {
-                        ...packagePolicy.vars,
+                        ...groupedPackagePolicy.vars,
                         [varName]: {
                           type: varType,
                           value: newValue,
@@ -281,15 +298,17 @@ export const StepDefinePackagePolicy: React.FunctionComponent<{
                       noSuggestions
                       singleSelection={true}
                       selectedOptions={
-                        packagePolicy.namespace ? [{ label: packagePolicy.namespace }] : []
+                        groupedPackagePolicy.namespace
+                          ? [{ label: groupedPackagePolicy.namespace }]
+                          : []
                       }
                       onCreateOption={(newNamespace: string) => {
-                        updatePackagePolicy({
+                        updateGroupedPackagePolicy({
                           namespace: newNamespace,
                         });
                       }}
                       onChange={(newNamespaces: Array<{ label: string }>) => {
-                        updatePackagePolicy({
+                        updateGroupedPackagePolicy({
                           namespace: newNamespaces.length ? newNamespaces[0].label : '',
                         });
                       }}
@@ -299,17 +318,18 @@ export const StepDefinePackagePolicy: React.FunctionComponent<{
                 {/* Advanced vars */}
                 {advancedVars.map((varDef) => {
                   const { name: varName, type: varType } = varDef;
-                  if (!packagePolicy.vars || !packagePolicy.vars[varName]) return null;
-                  const value = packagePolicy.vars![varName].value;
+                  if (!groupedPackagePolicy.vars || !groupedPackagePolicy.vars[varName])
+                    return null;
+                  const value = groupedPackagePolicy.vars![varName].value;
                   return (
                     <EuiFlexItem key={varName}>
                       <PackagePolicyInputVarField
                         varDef={varDef}
                         value={value}
                         onChange={(newValue: any) => {
-                          updatePackagePolicy({
+                          updateGroupedPackagePolicy({
                             vars: {
-                              ...packagePolicy.vars,
+                              ...groupedPackagePolicy.vars,
                               [varName]: {
                                 type: varType,
                                 value: newValue,

@@ -5,7 +5,8 @@
  * 2.0.
  */
 
-import React from 'react';
+import React, { memo, useMemo } from 'react';
+import { keyBy } from 'lodash';
 import {
   EuiHorizontalRule,
   EuiFlexGroup,
@@ -15,105 +16,87 @@ import {
 } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n/react';
 
-import type {
-  PackageInfo,
-  RegistryStream,
-  NewPackagePolicy,
-  NewPackagePolicyInput,
-} from '../../../types';
+import type { NewPackagePolicy } from '../../../types';
 import { Loading } from '../../../components';
 
 import type { PackagePolicyValidationResults } from './services';
+import type { GroupedPackageInfoInput, GroupedPackagePolicyInput } from './types';
 import { PackagePolicyInputPanel } from './components';
 
-const findStreamsForInputType = (
-  inputType: string,
-  packageInfo: PackageInfo
-): Array<RegistryStream & { data_stream: { dataset: string } }> => {
-  const streams: Array<RegistryStream & { data_stream: { dataset: string } }> = [];
-
-  (packageInfo.data_streams || []).forEach((dataStream) => {
-    (dataStream.streams || []).forEach((stream) => {
-      if (stream.input === inputType) {
-        streams.push({
-          ...stream,
-          data_stream: {
-            dataset: dataStream.dataset,
-          },
-        });
-      }
-    });
-  });
-
-  return streams;
-};
-
 export const StepConfigurePackagePolicy: React.FunctionComponent<{
-  packageInfo: PackageInfo;
-  packagePolicy: NewPackagePolicy;
-  updatePackagePolicy: (fields: Partial<NewPackagePolicy>) => void;
+  groupedPackageInfoInputs: GroupedPackageInfoInput[];
+  groupedPackagePolicy: NewPackagePolicy;
+  updateGroupedPackagePolicy: (fields: Partial<NewPackagePolicy>) => void;
   validationResults: PackagePolicyValidationResults;
   submitAttempted: boolean;
-}> = ({ packageInfo, packagePolicy, updatePackagePolicy, validationResults, submitAttempted }) => {
-  // Configure inputs (and their streams)
-  // Assume packages only export one config template for now
-  const renderConfigureInputs = () =>
-    packageInfo.policy_templates &&
-    packageInfo.policy_templates[0] &&
-    packageInfo.policy_templates[0].inputs &&
-    packageInfo.policy_templates[0].inputs.length ? (
-      <>
-        <EuiHorizontalRule margin="m" />
-        <EuiFlexGroup direction="column" gutterSize="none">
-          {packageInfo.policy_templates[0].inputs.map((packageInput) => {
-            const packagePolicyInput = packagePolicy.inputs.find(
-              (input) => input.type === packageInput.type
-            );
-            const packageInputStreams = findStreamsForInputType(packageInput.type, packageInfo);
-            return packagePolicyInput ? (
-              <EuiFlexItem key={packageInput.type}>
-                <PackagePolicyInputPanel
-                  packageInput={packageInput}
-                  packageInputStreams={packageInputStreams}
-                  packagePolicyInput={packagePolicyInput}
-                  updatePackagePolicyInput={(updatedInput: Partial<NewPackagePolicyInput>) => {
-                    const indexOfUpdatedInput = packagePolicy.inputs.findIndex(
-                      (input) => input.type === packageInput.type
-                    );
-                    const newInputs = [...packagePolicy.inputs];
-                    newInputs[indexOfUpdatedInput] = {
-                      ...newInputs[indexOfUpdatedInput],
-                      ...updatedInput,
-                    };
-                    updatePackagePolicy({
-                      inputs: newInputs,
-                    });
-                  }}
-                  inputValidationResults={validationResults!.inputs![packagePolicyInput.type]}
-                  forceShowErrors={submitAttempted}
-                />
-                <EuiHorizontalRule margin="m" />
-              </EuiFlexItem>
-            ) : null;
-          })}
-        </EuiFlexGroup>
-      </>
-    ) : (
-      <EuiEmptyPrompt
-        iconType="checkInCircleFilled"
-        iconColor="secondary"
-        body={
-          <EuiText>
-            <p>
-              <FormattedMessage
-                id="xpack.fleet.createPackagePolicy.stepConfigure.noPolicyOptionsMessage"
-                defaultMessage="Nothing to configure"
-              />
-            </p>
-          </EuiText>
-        }
-      />
+}> = memo(
+  ({
+    groupedPackageInfoInputs,
+    groupedPackagePolicy,
+    updateGroupedPackagePolicy,
+    validationResults,
+    submitAttempted,
+  }) => {
+    const groupedPackagePolicyInputsByType = useMemo(
+      () => keyBy(groupedPackagePolicy.inputs, 'type'),
+      [groupedPackagePolicy.inputs]
     );
+    console.log('groupedPackageInfoInputs', groupedPackageInfoInputs);
+    console.log('groupedPackagePolicyInputsByType', groupedPackagePolicyInputsByType);
+    const renderConfigureInputs = () =>
+      groupedPackageInfoInputs.length ? (
+        <>
+          <EuiHorizontalRule margin="m" />
+          <EuiFlexGroup direction="column" gutterSize="none">
+            {groupedPackageInfoInputs.map((inputGroup) => {
+              const packagePolicyInput = groupedPackagePolicyInputsByType[inputGroup.type];
+              return packagePolicyInput ? (
+                <EuiFlexItem key={inputGroup.type}>
+                  <PackagePolicyInputPanel
+                    packageInput={inputGroup}
+                    packageInputStreams={inputGroup.streams}
+                    packagePolicyInput={packagePolicyInput}
+                    updatePackagePolicyInput={(
+                      updatedInput: Partial<GroupedPackagePolicyInput>
+                    ) => {
+                      const indexOfUpdatedInput = groupedPackagePolicy.inputs.findIndex(
+                        (input) => input.type === inputGroup.type
+                      );
+                      const newInputs = [...groupedPackagePolicy.inputs];
+                      newInputs[indexOfUpdatedInput] = {
+                        ...newInputs[indexOfUpdatedInput],
+                        ...updatedInput,
+                      };
+                      updateGroupedPackagePolicy({
+                        inputs: newInputs,
+                      });
+                    }}
+                    inputValidationResults={validationResults!.inputs![packagePolicyInput.type]}
+                    forceShowErrors={submitAttempted}
+                  />
+                  <EuiHorizontalRule margin="m" />
+                </EuiFlexItem>
+              ) : null;
+            })}
+          </EuiFlexGroup>
+        </>
+      ) : (
+        <EuiEmptyPrompt
+          iconType="checkInCircleFilled"
+          iconColor="secondary"
+          body={
+            <EuiText>
+              <p>
+                <FormattedMessage
+                  id="xpack.fleet.createPackagePolicy.stepConfigure.noPolicyOptionsMessage"
+                  defaultMessage="Nothing to configure"
+                />
+              </p>
+            </EuiText>
+          }
+        />
+      );
 
-  return validationResults ? renderConfigureInputs() : <Loading />;
-};
+    return validationResults ? renderConfigureInputs() : <Loading />;
+  }
+);

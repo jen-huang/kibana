@@ -7,12 +7,13 @@
 
 export { isAdvancedVar } from './is_advanced_var';
 export { hasInvalidButRequiredVar } from './has_invalid_but_required_var';
+export { groupPackageInfoInputs, groupPackagePolicyInputs } from './group_inputs';
 export {
   PackagePolicyValidationResults,
   PackagePolicyConfigValidationResults,
   PackagePolicyInputValidationResults,
-  validatePackagePolicy,
+  validateGroupedPackagePolicy,
   validatePackagePolicyConfig,
   validationHasErrors,
   countValidationErrors,
-} from '../../../../services';
+} from './grouped_inputs_validation';

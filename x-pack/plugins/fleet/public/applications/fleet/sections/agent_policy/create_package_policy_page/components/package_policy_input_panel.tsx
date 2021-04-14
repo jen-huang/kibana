@@ -20,13 +20,14 @@ import {
 } from '@elastic/eui';
 
 import type {
-  NewPackagePolicyInput,
   PackagePolicyInputStream,
   RegistryInput,
+  RegistryInputKeys,
   RegistryStream,
 } from '../../../../types';
 import type { PackagePolicyInputValidationResults } from '../services';
 import { hasInvalidButRequiredVar, countValidationErrors } from '../services';
+import type { GroupedPackagePolicyInput, GroupedPackageInfoInput } from '../types';
 
 import { PackagePolicyInputConfig } from './package_policy_input_config';
 import { PackagePolicyInputStreamConfig } from './package_policy_input_stream';
@@ -39,9 +40,9 @@ const ShortenedHorizontalRule = styled(EuiHorizontalRule)`
 `;
 
 const shouldShowStreamsByDefault = (
-  packageInput: RegistryInput,
-  packageInputStreams: Array<RegistryStream & { data_stream: { dataset: string } }>,
-  packagePolicyInput: NewPackagePolicyInput
+  packageInput: Pick<RegistryInput, RegistryInputKeys.vars>,
+  packageInputStreams: GroupedPackageInfoInput['streams'],
+  packagePolicyInput: GroupedPackagePolicyInput
 ): boolean => {
   return (
     packagePolicyInput.enabled &&
@@ -53,7 +54,10 @@ const shouldShowStreamsByDefault = (
             hasInvalidButRequiredVar(
               stream.vars,
               packagePolicyInput.streams.find(
-                (pkgStream) => stream.data_stream.dataset === pkgStream.data_stream.dataset
+                (pkgStream) =>
+                  stream.data_stream.dataset === pkgStream.data_stream.dataset &&
+                  (!packagePolicyInput.policy_template ||
+                    stream.policy_template === packagePolicyInput.policy_template)
               )?.vars
             )
         )
@@ -62,10 +66,13 @@ const shouldShowStreamsByDefault = (
 };
 
 export const PackagePolicyInputPanel: React.FunctionComponent<{
-  packageInput: RegistryInput;
-  packageInputStreams: Array<RegistryStream & { data_stream: { dataset: string } }>;
-  packagePolicyInput: NewPackagePolicyInput;
-  updatePackagePolicyInput: (updatedInput: Partial<NewPackagePolicyInput>) => void;
+  packageInput: Pick<
+    RegistryInput,
+    RegistryInputKeys.vars | RegistryInputKeys.title | RegistryInputKeys.type
+  >;
+  packageInputStreams: GroupedPackageInfoInput['streams'];
+  packagePolicyInput: GroupedPackagePolicyInput;
+  updatePackagePolicyInput: (updatedInput: Partial<GroupedPackagePolicyInput>) => void;
   inputValidationResults: PackagePolicyInputValidationResults;
   forceShowErrors?: boolean;
 }> = memo(
@@ -95,13 +102,17 @@ export const PackagePolicyInputPanel: React.FunctionComponent<{
           .map((packageInputStream) => {
             return {
               packageInputStream,
-              packagePolicyInputStream: packagePolicyInput.streams.find(
-                (stream) => stream.data_stream.dataset === packageInputStream.data_stream.dataset
-              ),
+              packagePolicyInputStream: packagePolicyInput.streams.find((stream) => {
+                return (
+                  stream.data_stream.dataset === packageInputStream.data_stream.dataset &&
+                  (!packagePolicyInput.policy_template ||
+                    packageInputStream.policy_template === packagePolicyInput.policy_template)
+                );
+              }),
             };
           })
           .filter((stream) => Boolean(stream.packagePolicyInputStream)),
-      [packageInputStreams, packagePolicyInput.streams]
+      [packageInputStreams, packagePolicyInput.policy_template, packagePolicyInput.streams]
     );
 
     return (
@@ -212,7 +223,9 @@ export const PackagePolicyInputPanel: React.FunctionComponent<{
                   ) => {
                     const indexOfUpdatedStream = packagePolicyInput.streams.findIndex(
                       (stream) =>
-                        stream.data_stream.dataset === packageInputStream.data_stream.dataset
+                        stream.data_stream.dataset === packageInputStream.data_stream.dataset &&
+                        (!packagePolicyInput.policy_template ||
+                          packageInputStream.policy_template === packagePolicyInput.policy_template)
                     );
                     const newStreams = [...packagePolicyInput.streams];
                     newStreams[indexOfUpdatedStream] = {
@@ -220,7 +233,7 @@ export const PackagePolicyInputPanel: React.FunctionComponent<{
                       ...updatedStream,
                     };
 
-                    const updatedInput: Partial<NewPackagePolicyInput> = {
+                    const updatedInput: Partial<GroupedPackagePolicyInput> = {
                       streams: newStreams,
                     };
 

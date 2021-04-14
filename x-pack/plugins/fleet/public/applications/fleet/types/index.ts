@@ -122,6 +122,7 @@ export {
   Installable,
   RegistryRelease,
   PackageSpecCategory,
+  RegistryInputKeys,
 } from '../../../../common';
 
 export * from './intra_app_route_state';

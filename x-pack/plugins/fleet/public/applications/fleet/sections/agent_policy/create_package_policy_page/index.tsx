@@ -47,9 +47,17 @@ import { PLUGIN_ID } from '../../../../../../common/constants';
 import { pkgKeyFromPackageInfo } from '../../../services/pkg_key_from_package_info';
 
 import { CreatePackagePolicyPageLayout } from './components';
-import type { CreatePackagePolicyFrom, PackagePolicyFormState } from './types';
+import type {
+  CreatePackagePolicyFrom,
+  PackagePolicyFormState,
+  GroupedPackageInfoInput,
+} from './types';
 import type { PackagePolicyValidationResults } from './services';
-import { validatePackagePolicy, validationHasErrors } from './services';
+import {
+  validateGroupedPackagePolicy,
+  validationHasErrors,
+  groupPackageInfoInputs,
+} from './services';
 import { StepSelectPackage } from './step_select_package';
 import { StepSelectAgentPolicy } from './step_select_agent_policy';
 import { StepConfigurePackagePolicy } from './step_configure_package';
@@ -78,6 +86,9 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
   // Agent policy and package info states
   const [agentPolicy, setAgentPolicy] = useState<AgentPolicy>();
   const [packageInfo, setPackageInfo] = useState<PackageInfo>();
+  const [groupedPackageInfoInputs, setGroupedPackageInfoInputs] = useState<
+    GroupedPackageInfoInput[]
+  >([]);
   const [isLoadingSecondStep, setIsLoadingSecondStep] = useState<boolean>(false);
 
   // Retrieve agent count
@@ -97,7 +108,7 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
   const [agentCount, setAgentCount] = useState<number>(0);
 
   // New package policy state
-  const [packagePolicy, setPackagePolicy] = useState<NewPackagePolicy>({
+  const [groupedPackagePolicy, setGroupedPackagePolicy] = useState<NewPackagePolicy>({
     name: '',
     description: '',
     namespace: '',
@@ -118,12 +129,14 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
     (updatedPackageInfo: PackageInfo | undefined) => {
       if (updatedPackageInfo) {
         setPackageInfo(updatedPackageInfo);
+        setGroupedPackageInfoInputs(groupPackageInfoInputs(updatedPackageInfo));
         if (agentPolicy) {
           setFormState('VALID');
         }
       } else {
         setFormState('INVALID');
         setPackageInfo(undefined);
+        setGroupedPackageInfoInputs([]);
       }
 
       // eslint-disable-next-line no-console
@@ -155,11 +168,12 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
 
   // Update package policy validation
   const updatePackagePolicyValidation = useCallback(
-    (newPackagePolicy?: NewPackagePolicy) => {
+    (newGroupedPackagePolicy?: NewPackagePolicy) => {
       if (packageInfo) {
-        const newValidationResult = validatePackagePolicy(
-          newPackagePolicy || packagePolicy,
-          packageInfo
+        const newValidationResult = validateGroupedPackagePolicy(
+          newGroupedPackagePolicy || groupedPackagePolicy,
+          packageInfo,
+          groupedPackageInfoInputs
         );
         setValidationResults(newValidationResult);
         // eslint-disable-next-line no-console
@@ -168,38 +182,39 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
         return newValidationResult;
       }
     },
-    [packagePolicy, packageInfo]
+    [groupedPackageInfoInputs, groupedPackagePolicy, packageInfo]
   );
 
   // Update package policy method
-  const updatePackagePolicy = useCallback(
+  const updateGroupedPackagePolicy = useCallback(
     (updatedFields: Partial<NewPackagePolicy>) => {
-      const newPackagePolicy = {
-        ...packagePolicy,
+      const newGroupedPackagePolicy = {
+        ...groupedPackagePolicy,
         ...updatedFields,
       };
-      setPackagePolicy(newPackagePolicy);
+      setGroupedPackagePolicy(newGroupedPackagePolicy);
 
       // eslint-disable-next-line no-console
-      console.debug('Package policy updated', newPackagePolicy);
-      const newValidationResults = updatePackagePolicyValidation(newPackagePolicy);
-      const hasPackage = newPackagePolicy.package;
+      console.debug('Package policy updated', newGroupedPackagePolicy);
+      const newValidationResults = updatePackagePolicyValidation(newGroupedPackagePolicy);
+      const hasPackage = newGroupedPackagePolicy.package;
       const hasValidationErrors = newValidationResults
         ? validationHasErrors(newValidationResults)
         : false;
-      const hasAgentPolicy = newPackagePolicy.policy_id && newPackagePolicy.policy_id !== '';
+      const hasAgentPolicy =
+        newGroupedPackagePolicy.policy_id && newGroupedPackagePolicy.policy_id !== '';
       if (hasPackage && hasAgentPolicy && !hasValidationErrors) {
         setFormState('VALID');
       }
     },
-    [packagePolicy, updatePackagePolicyValidation]
+    [groupedPackagePolicy, updatePackagePolicyValidation]
   );
 
   const handleExtensionViewOnChange = useCallback<
     PackagePolicyEditExtensionComponentProps['onChange']
   >(
     ({ isValid, updatedPolicy }) => {
-      updatePackagePolicy(updatedPolicy);
+      updateGroupedPackagePolicy(updatedPolicy);
       setFormState((prevState) => {
         if (prevState === 'VALID' && !isValid) {
           return 'INVALID';
@@ -207,7 +222,7 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
         return prevState;
       });
     },
-    [updatePackagePolicy]
+    [updateGroupedPackagePolicy]
   );
 
   // Cancel path
@@ -233,7 +248,7 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
   // Save package policy
   const savePackagePolicy = async () => {
     setFormState('LOADING');
-    const result = await sendCreatePackagePolicy(packagePolicy);
+    const result = await sendCreatePackagePolicy(groupedPackagePolicy);
     setFormState('SUBMITTED');
     return result;
   };
@@ -263,7 +278,7 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
         title: i18n.translate('xpack.fleet.createPackagePolicy.addedNotificationTitle', {
           defaultMessage: `'{packagePolicyName}' integration added.`,
           values: {
-            packagePolicyName: packagePolicy.name,
+            packagePolicyName: groupedPackagePolicy.name,
           },
         }),
         text:
@@ -306,7 +321,10 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
     [pkgkey, updatePackageInfo, agentPolicy, updateAgentPolicy]
   );
 
-  const ExtensionView = useUIExtension(packagePolicy.package?.name ?? '', 'package-policy-create');
+  const ExtensionView = useUIExtension(
+    groupedPackagePolicy.package?.name ?? '',
+    'package-policy-create'
+  );
 
   const stepSelectPackage = useMemo(
     () => (
@@ -330,8 +348,9 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
           <StepDefinePackagePolicy
             agentPolicy={agentPolicy}
             packageInfo={packageInfo}
-            packagePolicy={packagePolicy}
-            updatePackagePolicy={updatePackagePolicy}
+            groupedPackageInfoInputs={groupedPackageInfoInputs}
+            groupedPackagePolicy={groupedPackagePolicy}
+            updateGroupedPackagePolicy={updateGroupedPackagePolicy}
             validationResults={validationResults!}
             submitAttempted={formState === 'INVALID'}
           />
@@ -339,18 +358,21 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
           {/* Only show the out-of-box configuration step if a UI extension is NOT registered */}
           {!ExtensionView && (
             <StepConfigurePackagePolicy
-              packageInfo={packageInfo}
-              packagePolicy={packagePolicy}
-              updatePackagePolicy={updatePackagePolicy}
+              groupedPackageInfoInputs={groupedPackageInfoInputs}
+              groupedPackagePolicy={groupedPackagePolicy}
+              updateGroupedPackagePolicy={updateGroupedPackagePolicy}
               validationResults={validationResults!}
               submitAttempted={formState === 'INVALID'}
             />
           )}
 
           {/* If an Agent Policy and a package has been selected, then show UI extension (if any) */}
-          {ExtensionView && packagePolicy.policy_id && packagePolicy.package?.name && (
+          {ExtensionView && groupedPackagePolicy.policy_id && groupedPackagePolicy.package?.name && (
             <ExtensionWrapper>
-              <ExtensionView newPolicy={packagePolicy} onChange={handleExtensionViewOnChange} />
+              <ExtensionView
+                newPolicy={groupedPackagePolicy}
+                onChange={handleExtensionViewOnChange}
+              />
             </ExtensionWrapper>
           )}
         </>
@@ -361,11 +383,12 @@ export const CreatePackagePolicyPage: React.FunctionComponent = () => {
       isLoadingSecondStep,
       agentPolicy,
       packageInfo,
-      packagePolicy,
-      updatePackagePolicy,
+      groupedPackagePolicy,
+      updateGroupedPackagePolicy,
       validationResults,
       formState,
       ExtensionView,
+      groupedPackageInfoInputs,
       handleExtensionViewOnChange,
     ]
   );
