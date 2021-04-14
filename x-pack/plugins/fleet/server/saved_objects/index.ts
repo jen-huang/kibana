@@ -233,6 +233,7 @@ const getSavedObjectTypes = (
           enabled: false,
           properties: {
             type: { type: 'keyword' },
+            policy_template: { type: 'keyword' },
             enabled: { type: 'boolean' },
             vars: { type: 'flattened' },
             config: { type: 'flattened' },
@@ -244,7 +245,6 @@ const getSavedObjectTypes = (
                 enabled: { type: 'boolean' },
                 data_stream: {
                   properties: {
-                    policy_template: { type: 'keyword' },
                     dataset: { type: 'keyword' },
                     type: { type: 'keyword' },
                   },
