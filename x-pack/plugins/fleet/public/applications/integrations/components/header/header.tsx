@@ -5,10 +5,17 @@
  * 2.0.
  */
 
-import React from 'react';
-import { EuiHeaderSectionItem, EuiHeaderSection, EuiHeaderLinks } from '@elastic/eui';
+import React, { useCallback } from 'react';
+import {
+  EuiHeaderSectionItem,
+  EuiHeaderSection,
+  EuiHeaderLinks,
+  EuiHeaderLink,
+} from '@elastic/eui';
 
 import type { AppMountParameters } from '@kbn/core/public';
+
+import { useAssistantContext } from '@kbn/elastic-assistant';
 
 import type { FleetStartServices } from '../../../../plugin';
 
@@ -22,12 +29,27 @@ export const IntegrationsHeader = ({
   setHeaderActionMenu: AppMountParameters['setHeaderActionMenu'];
   startServices: Pick<FleetStartServices, 'analytics' | 'i18n' | 'theme'>;
 }) => {
+  const { showAssistantOverlay, assistantAvailability } = useAssistantContext();
+  const showAssistant =
+    assistantAvailability.hasAssistantPrivilege && assistantAvailability.isAssistantEnabled;
+
+  const showOverlay = useCallback(
+    () => showAssistantOverlay({ showOverlay: true }),
+    [showAssistantOverlay]
+  );
+
+  // TODO: i18n
   return (
     <HeaderPortal {...{ setHeaderActionMenu, startServices }}>
       <EuiHeaderSection grow={false}>
         <EuiHeaderSectionItem>
           <EuiHeaderLinks>
             <DeploymentDetails />
+            {showAssistant && (
+              <EuiHeaderLink onClick={showOverlay} isActive={true}>
+                AI Assistant
+              </EuiHeaderLink>
+            )}
           </EuiHeaderLinks>
         </EuiHeaderSectionItem>
       </EuiHeaderSection>

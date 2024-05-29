@@ -23,7 +23,8 @@
       "taskManager",
       "files",
       "uiActions",
-      "dashboard"
+      "dashboard",
+      "triggersActionsUi",
     ],
     "optionalPlugins": [
       "features",
@@ -43,7 +44,9 @@
       "logsShared",
       "kibanaUtils",
       "usageCollection",
-      "unifiedSearch"
+      "unifiedSearch",
+      "actions",
+      "stackConnectors",
     ],
     "extraPublicDirs": [
       "common"

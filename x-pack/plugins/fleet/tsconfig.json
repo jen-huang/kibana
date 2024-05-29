@@ -30,6 +30,7 @@
     "@kbn/encrypted-saved-objects-plugin",
     "@kbn/guided-onboarding-plugin",
     "@kbn/files-plugin",
+    "@kbn/triggers-actions-ui-plugin",
 
     // optionalPlugins from ./kibana.json
     "@kbn/security-plugin",

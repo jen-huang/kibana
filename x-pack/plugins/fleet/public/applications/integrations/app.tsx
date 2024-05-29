@@ -20,6 +20,8 @@ import { KibanaRenderContextProvider } from '@kbn/react-kibana-context-render';
 import { RedirectAppLinks } from '@kbn/shared-ux-link-redirect-app';
 import { EuiThemeProvider } from '@kbn/kibana-react-plugin/common';
 
+import { AssistantProvider } from '../../assistant/provider';
+
 import type { FleetConfigType, FleetStartServices } from '../../plugin';
 
 import {
@@ -99,10 +101,12 @@ export const IntegrationsAppContext: React.FC<{
                               <AgentPolicyContextProvider>
                                 <PackageInstallProvider startServices={startServices}>
                                   <FlyoutContextProvider>
-                                    <IntegrationsHeader
-                                      {...{ setHeaderActionMenu, startServices }}
-                                    />
-                                    {children}
+                                    <AssistantProvider>
+                                      <IntegrationsHeader
+                                        {...{ setHeaderActionMenu, startServices }}
+                                      />
+                                      {children}
+                                    </AssistantProvider>
                                   </FlyoutContextProvider>
                                 </PackageInstallProvider>
                               </AgentPolicyContextProvider>

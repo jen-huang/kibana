@@ -48,8 +48,11 @@ import type { SendRequestResponse } from '@kbn/es-ui-shared-plugin/public';
 
 import type { UnifiedSearchPublicPluginStart } from '@kbn/unified-search-plugin/public';
 import type { GuidedOnboardingPluginStart } from '@kbn/guided-onboarding-plugin/public';
-
 import type { DashboardStart } from '@kbn/dashboard-plugin/public';
+import type {
+  TriggersAndActionsUIPublicPluginSetup as TriggersActionsSetup,
+  TriggersAndActionsUIPublicPluginStart as TriggersActionsStart,
+} from '@kbn/triggers-actions-ui-plugin/public';
 
 import { Subject } from 'rxjs';
 
@@ -119,6 +122,7 @@ export interface FleetSetupDeps {
   globalSearch?: GlobalSearchPluginSetup;
   customIntegrations: CustomIntegrationsSetup;
   usageCollection?: UsageCollectionSetup;
+  triggersActionsUi: TriggersActionsSetup;
 }
 
 export interface FleetStartDeps {
@@ -133,6 +137,7 @@ export interface FleetStartDeps {
   cloud?: CloudStart;
   usageCollection?: UsageCollectionStart;
   guidedOnboarding?: GuidedOnboardingPluginStart;
+  triggersActionsUi: TriggersActionsStart;
 }
 
 export interface FleetStartServices extends CoreStart, Exclude<FleetStartDeps, 'cloud'> {
