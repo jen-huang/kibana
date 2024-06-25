@@ -64,7 +64,7 @@ export const UI_OPTIONS_KEYS = {
   SHOW_BETA_INTEGRATIONS: 'fleet.showBetaIntegrations',
 };
 export type UiOptionsKey = keyof typeof UI_OPTIONS_KEYS;
-export const UI_OPTIONS_DEFAULTS: Record<UiOptionsKey, any> = {
+export const UI_OPTIONS_DEFAULTS = {
   SHOW_BETA_INTEGRATIONS: false,
 };
 export type UI_OPTIONS_VALUE<K extends UiOptionsKey> = typeof UI_OPTIONS_DEFAULTS[K];
