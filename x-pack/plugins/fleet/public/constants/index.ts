@@ -44,19 +44,30 @@ export const DURATION_APM_SETTINGS_VARS = {
   WRITE_TIMEOUT: 'write_timeout',
 };
 
+// Local storage typing for dismissable tours
 export const TOUR_STORAGE_KEYS = {
   AGENT_ACTIVITY: 'fleet.agentActivityTour',
   ADD_AGENT_POPOVER: 'fleet.addAgentPopoverTour',
   INACTIVE_AGENTS: 'fleet.inactiveAgentsTour',
   GRANULAR_PRIVILEGES: 'fleet.granularPrivileges',
 };
-
 export interface TourConfig {
   active: boolean;
 }
-
 export type TourKey = keyof typeof TOUR_STORAGE_KEYS;
-
 export type TOUR_STORAGE_CONFIG = {
   [k in TourKey]: TourConfig;
+};
+
+// Local storage typing for UI options
+export const UI_OPTIONS_KEYS = {
+  SHOW_BETA_INTEGRATIONS: 'fleet.showBetaIntegrations',
+};
+export type UiOptionsKey = keyof typeof UI_OPTIONS_KEYS;
+export const UI_OPTIONS_DEFAULTS: Record<UiOptionsKey, any> = {
+  SHOW_BETA_INTEGRATIONS: false,
+};
+export type UI_OPTIONS_VALUE<K extends UiOptionsKey> = typeof UI_OPTIONS_DEFAULTS[K];
+export type UI_OPTIONS_STORAGE_CONFIG = {
+  [k in UiOptionsKey]: UI_OPTIONS_VALUE<k>;
 };
