@@ -28,6 +28,10 @@ export {
   AUTO_UPGRADE_POLICIES_PACKAGES,
   LOCATORS_IDS,
   FLEET_ENROLLMENT_API_PREFIX,
+  INGEST_SAVED_OBJECT_INDEX,
+  AGENT_POLICY_MAPPINGS,
+  AGENT_MAPPINGS,
+  ENROLLMENT_API_KEY_MAPPINGS,
 } from '../../common/constants';
 
 export * from './page_paths';
@@ -43,6 +47,8 @@ export const DURATION_APM_SETTINGS_VARS = {
   TAIL_SAMPLING_INTERVAL: 'tail_sampling_interval',
   WRITE_TIMEOUT: 'write_timeout',
 };
+
+export const MAX_FLYOUT_WIDTH = 800;
 
 // Local storage typing for dismissable tours
 export const TOUR_STORAGE_KEYS = {
