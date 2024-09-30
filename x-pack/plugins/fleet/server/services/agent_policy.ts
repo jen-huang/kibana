@@ -88,6 +88,7 @@ import {
 
 import type { FullAgentConfigMap } from '../../common/types/models/agent_cm';
 
+import { isAgentlessEnabled } from '../../common/services/agentless_helper';
 import { fullAgentConfigMapToYaml } from '../../common/services/agent_cm_to_yaml';
 
 import { appContextService } from '.';
@@ -110,7 +111,6 @@ import { getFullAgentPolicy, validateOutputForPolicy } from './agent_policies';
 import { auditLoggingService } from './audit_logging';
 import { licenseService } from './license';
 import { createSoFindIterable } from './utils/create_so_find_iterable';
-import { isAgentlessEnabled } from './utils/agentless';
 import { validatePolicyNamespaceForSpace } from './spaces/policy_namespaces';
 import { isSpaceAwarenessEnabled } from './spaces/helpers';
 import { scheduleDeployAgentPoliciesTask } from './agent_policies/deploy_agent_policies_task';
@@ -1760,7 +1760,14 @@ class AgentPolicyService {
     }
   }
   private checkAgentless(agentPolicy: Partial<NewAgentPolicy>) {
-    if (!isAgentlessEnabled() && agentPolicy?.supports_agentless) {
+    if (
+      !isAgentlessEnabled({
+        cloudSetup: appContextService.getCloud(),
+        fleetConfig: appContextService.getConfig(),
+        fleetExperimentalFeatures: appContextService.getExperimentalFeatures(),
+      }) &&
+      agentPolicy?.supports_agentless
+    ) {
       throw new AgentPolicyInvalidError(
         'supports_agentless is only allowed in serverless and cloud environments that support the agentless feature'
       );

@@ -30,6 +30,7 @@ import {
   type SimplifiedPackagePolicy,
   simplifiedPackagePolicytoNewPackagePolicy,
 } from '../../common/services/simplified_package_policy_helper';
+import { isDefaultAgentlessPolicyEnabled } from '../../common/services/agentless_helper';
 
 import { FleetError } from '../errors';
 
@@ -43,7 +44,6 @@ import { type InputsOverride, packagePolicyService } from './package_policy';
 import { preconfigurePackageInputs } from './package_policy';
 import { appContextService } from './app_context';
 import type { UpgradeManagedPackagePoliciesResult } from './setup/managed_package_policies';
-import { isDefaultAgentlessPolicyEnabled } from './utils/agentless';
 
 interface PreconfigurationResult {
   policies: Array<{ id: string; updated_at: string }>;
@@ -164,7 +164,10 @@ export async function ensurePreconfiguredPackagesAndPolicies(
       }
 
       if (
-        !isDefaultAgentlessPolicyEnabled() &&
+        !isDefaultAgentlessPolicyEnabled({
+          cloudSetup: appContextService.getCloud(),
+          fleetExperimentalFeatures: appContextService.getExperimentalFeatures(),
+        }) &&
         preconfiguredAgentPolicy?.supports_agentless !== undefined
       ) {
         throw new FleetError(

@@ -20,20 +20,31 @@ import { SetupTechnology } from '../../../../../types';
 import { sendGetOneAgentPolicy, useStartServices } from '../../../../../hooks';
 import { SelectedPolicyTab } from '../../components';
 import { AGENTLESS_POLICY_ID } from '../../../../../../../../common/constants';
+import {
+  isAgentlessEnabled as isAgentlessEnabledFn,
+  isAgentlessApiEnabled as isAgentlessApiEnabledFn,
+  isDefaultAgentlessPolicyEnabled as isDefaultAgentlessPolicyEnabledFn,
+} from '../../../../../../../../common/services/agentless_helper';
 import { getAgentlessAgentPolicyNameFromPackagePolicyName } from '../../../../../../../../common/services/agentless_policy_helper';
 
 export const useAgentless = () => {
   const config = useConfig();
-  const { agentless: agentlessExperimentalFeatureEnabled } = ExperimentalFeaturesService.get();
   const { cloud } = useStartServices();
-  const isServerless = !!cloud?.isServerlessEnabled;
-  const isCloud = !!cloud?.isCloudEnabled;
 
-  const isAgentlessApiEnabled = (isCloud || isServerless) && config.agentless?.enabled;
-  const isDefaultAgentlessPolicyEnabled =
-    !isAgentlessApiEnabled && isServerless && agentlessExperimentalFeatureEnabled;
+  const isAgentlessApiEnabled = isAgentlessApiEnabledFn({
+    cloudSetup: cloud,
+    fleetConfig: config,
+  });
+  const isDefaultAgentlessPolicyEnabled = isDefaultAgentlessPolicyEnabledFn({
+    cloudSetup: cloud,
+    fleetExperimentalFeatures: ExperimentalFeaturesService.get(),
+  });
 
-  const isAgentlessEnabled = isAgentlessApiEnabled || isDefaultAgentlessPolicyEnabled;
+  const isAgentlessEnabled = isAgentlessEnabledFn({
+    cloudSetup: cloud,
+    fleetConfig: config,
+    fleetExperimentalFeatures: ExperimentalFeaturesService.get(),
+  });
 
   const isAgentlessAgentPolicy = (agentPolicy: AgentPolicy | undefined) => {
     if (!agentPolicy) return false;

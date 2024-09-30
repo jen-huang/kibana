@@ -11,8 +11,7 @@ import type { SavedObjectsClientContract } from '@kbn/core-saved-objects-api-ser
 
 import type { ElasticsearchClient } from '@kbn/core-elasticsearch-server';
 
-import { isAgentlessApiEnabled } from '../../../services/utils/agentless';
-
+import { isAgentlessApiEnabled } from '../../../../common/services/agentless_helper';
 import { getAgentlessAgentPolicyNameFromPackagePolicyName } from '../../../../common/services/agentless_policy_helper';
 
 import type {
@@ -21,7 +20,7 @@ import type {
   PackagePolicyInput,
   NewPackagePolicyInput,
 } from '../../../types';
-import { agentPolicyService } from '../../../services';
+import { agentPolicyService, appContextService } from '../../../services';
 import type { SimplifiedPackagePolicy } from '../../../../common/services/simplified_package_policy_helper';
 import { PackagePolicyRequestError } from '../../../errors';
 import type { NewPackagePolicyInputStream } from '../../../../common';
@@ -65,7 +64,12 @@ export async function renameAgentlessAgentPolicy(
   packagePolicy: PackagePolicy,
   name: string
 ) {
-  if (!isAgentlessApiEnabled()) {
+  if (
+    !isAgentlessApiEnabled({
+      cloudSetup: appContextService.getCloud(),
+      fleetConfig: appContextService.getConfig(),
+    })
+  ) {
     return;
   }
   // If agentless is enabled for cloud, we need to rename the agent policy

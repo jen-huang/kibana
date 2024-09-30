@@ -18,13 +18,16 @@ import apm from 'elastic-apm-node';
 import { SO_SEARCH_LIMIT } from '../../constants';
 import type { AgentPolicy } from '../../types';
 import type { AgentlessApiResponse } from '../../../common/types';
+import {
+  prependAgentlessApiBasePathToEndpoint,
+  isAgentlessApiEnabled,
+} from '../../../common/services/agentless_helper';
 import { AgentlessAgentCreateError } from '../../errors';
 
 import { appContextService } from '../app_context';
 
 import { listEnrollmentApiKeys } from '../api_keys';
 import { listFleetServerHosts } from '../fleet_server_host';
-import { prependAgentlessApiBasePathToEndpoint, isAgentlessApiEnabled } from '../utils/agentless';
 
 class AgentlessAgentService {
   public async createAgentlessAgent(
@@ -41,6 +44,7 @@ class AgentlessAgentService {
       },
     };
 
+    const cloudSetup = appContextService.getCloud();
     const logger = appContextService.getLogger();
     logger.debug(`Creating agentless agent ${agentlessAgentPolicy.id}`);
 
@@ -90,7 +94,7 @@ class AgentlessAgentService {
     );
 
     const requestConfig: AxiosRequestConfig = {
-      url: prependAgentlessApiBasePathToEndpoint(agentlessConfig, '/deployments'),
+      url: prependAgentlessApiBasePathToEndpoint(agentlessConfig, '/deployments', cloudSetup),
       data: {
         policy_id: policyId,
         fleet_url: fleetUrl,
@@ -109,7 +113,6 @@ class AgentlessAgentService {
       }),
     };
 
-    const cloudSetup = appContextService.getCloud();
     if (!cloudSetup?.isServerlessEnabled) {
       requestConfig.data.stack_version = appContextService.getKibanaVersion();
     }
